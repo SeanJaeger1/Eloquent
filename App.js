@@ -1,20 +1,25 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState, useEffect } from "react"
+import { onAuthStateChanged } from "@firebase/auth"
+import { auth } from "./firebaseConfig"
+import AuthForm from "./components/AuthForm"
+import CardPage from "./components/CardPage"
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+  const [loggedIn, setLoggedIn] = useState(false)
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setLoggedIn(true)
+      } else {
+        setLoggedIn(false)
+      }
+    })
+
+    return () => {
+      unsubscribe()
+    }
+  }, [])
+
+  return loggedIn ? <CardPage /> : <AuthForm />
+}
