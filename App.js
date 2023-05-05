@@ -2,7 +2,12 @@ import React, { useState, useEffect } from "react"
 import { onAuthStateChanged } from "@firebase/auth"
 import { auth } from "./firebaseConfig"
 import AuthForm from "./components/AuthForm"
-import CardPage from "./components/CardPage"
+import MyWordsPage from "./components/MyWordsPage"
+import { NavigationContainer } from "@react-navigation/native"
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
+import Learn from "./components/Learn"
+
+const Tab = createBottomTabNavigator()
 
 export default function App() {
   const [loggedIn, setLoggedIn] = useState(false)
@@ -21,5 +26,14 @@ export default function App() {
     }
   }, [])
 
-  return loggedIn ? <CardPage /> : <AuthForm />
+  return loggedIn ? (
+    <NavigationContainer>
+      <Tab.Navigator>
+        <Tab.Screen name="My Words" component={MyWordsPage} />
+        <Tab.Screen name="Learn" component={Learn} />
+      </Tab.Navigator>
+    </NavigationContainer>
+  ) : (
+    <AuthForm />
+  )
 }
