@@ -7,7 +7,13 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native"
-import "firebase/compat/auth"
+import {
+  getFirestore,
+  collection,
+  doc,
+  setDoc,
+  serverTimestamp,
+} from "@firebase/firestore"
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -23,6 +29,7 @@ export default function AuthForm() {
 
   const handleAuth = async () => {
     try {
+      const db = getFirestore()
       if (isSignUp) {
         const userCredential = await createUserWithEmailAndPassword(
           auth,
@@ -30,6 +37,15 @@ export default function AuthForm() {
           password
         )
         await updateProfile(userCredential.user, { displayName: name })
+
+        // Create a Firestore document for the new user
+        await setDoc(doc(collection(db, "User"), userCredential.user.uid), {
+          uid: userCredential.user.uid,
+          email: email,
+          username: name,
+          dateJoined: serverTimestamp(),
+          skillLevel: "expert", // Initialize the skill level to 'expert'
+        })
       } else {
         await signInWithEmailAndPassword(auth, email, password)
       }
