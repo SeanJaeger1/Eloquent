@@ -1,53 +1,32 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { View, ScrollView, StyleSheet } from "react-native"
 import SearchBox from "./SearchBox"
 import WordPanel from "./WordPanel"
+import { httpsCallable } from "firebase/functions"
+import { functions } from "../firebaseConfig"
 
 const MyWordsPage = () => {
   const [searchText, setSearchText] = useState("")
-  const [words] = useState([
-    {
-      word: "Ambiguous",
-      type: "adjective",
-      meaning: "Open to more than one interpretation; having a double meaning",
-      example:
-        "The ambiguous wording of the contract led to a dispute between the parties.",
-    },
-    {
-      word: "Disseminate",
-      type: "verb",
-      meaning: "To spread or disperse information, knowledge, etc., widely",
-      example:
-        "The internet has made it easy to disseminate information quickly.",
-    },
-    {
-      word: "Ephemeral",
-      type: "adjective",
-      meaning: "Lasting for a very short time",
-      example: "The beauty of a sunset is ephemeral, as it fades quickly.",
-    },
-    {
-      word: "Ineffable",
-      type: "adjective",
-      meaning: "Too great or extreme to be expressed or described in words",
-      example: "The view of the mountain was so beautiful, it was ineffable.",
-    },
-    {
-      word: "Meticulous",
-      type: "adjective",
-      meaning: "Showing great attention to detail; very careful and precise",
-      example:
-        "She was meticulous in her research, ensuring every fact was accurate.",
-    },
-    {
-      word: "Quintessential",
-      type: "adjective",
-      meaning:
-        "Representing the most perfect or typical example of a quality or class",
-      example:
-        "The movie was the quintessential romantic comedy, filled with laughter and tears.",
-    },
-  ])
+  const [words, setWords] = useState([])
+
+  useEffect(() => {
+    fetchUserWords()
+  }, [])
+
+  async function fetchUserWords() {
+    try {
+      const getUserWords = httpsCallable(
+        functions,
+        "getUserWordsWithOriginalWords"
+      )
+      const result = await getUserWords()
+      const userWords = result.data
+      const wordsData = userWords.map(({ word }) => word)
+      setWords(wordsData)
+    } catch (error) {
+      console.error("Error fetching user words:", error)
+    }
+  }
 
   const filteredWords = words.filter(({ word }) =>
     word.toLowerCase().includes(searchText.toLowerCase())
