@@ -1,6 +1,8 @@
 import React from "react"
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native"
 import { Card } from "react-native-elements"
+import { functions } from "../firebaseConfig"
+import { httpsCallable } from "firebase/functions"
 
 const Learn = () => {
   const word = {
@@ -9,6 +11,19 @@ const Learn = () => {
     meaning: "A representative instance",
     example: "This is an example sentence.",
   }
+
+  async function fetchWordDetails() {
+    try {
+      const getUserWords = httpsCallable(functions, "getLearningWords")
+      const result = await getUserWords()
+      console.log(result.data)
+    } catch (error) {
+      console.error("Error fetching word details:", error)
+    }
+  }
+
+  // Replace with an actual word ID
+  fetchWordDetails()
 
   return (
     <View style={styles.container}>
