@@ -15,12 +15,10 @@ const MyWordsPage = () => {
 
   async function fetchUserWords() {
     try {
-      const getUserWords = httpsCallable(
-        functions,
-        "getUserWordsWithOriginalWords"
-      )
+      const getUserWords = httpsCallable(functions, "getUserWords")
       const result = await getUserWords()
       const userWords = result.data
+      console.log(userWords)
       const wordsData = userWords.map(({ word }) => word)
       setWords(wordsData)
     } catch (error) {
