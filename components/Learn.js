@@ -5,8 +5,6 @@ import { httpsCallable } from "firebase/functions"
 import { functions } from "../firebaseConfig"
 
 const Learn = () => {
-  const [word, setWord] = useState(null) // Set initial state to null
-  const [progress, setProgress] = useState(1)
   const [words, setWords] = useState([])
   const [currentWordIndex, setCurrentWordIndex] = useState(0)
   const [loading, setLoading] = useState(true) // Add loading state
@@ -32,7 +30,6 @@ const Learn = () => {
       const userWords = result.data
       console.log(userWords)
       setWords(userWords)
-      setWord(wordsData[0]) // Set the initial word
       setLoading(false) // Finish loading after fetch
     } catch (error) {
       console.error("Error fetching user words:", error)
@@ -51,11 +48,6 @@ const Learn = () => {
         userWordId: words[currentWordIndex].id,
         increment,
       })
-
-      console.log(result.data)
-
-      // Update the progress state with the returned progress value
-      setProgress(result.data.progress)
 
       // Go to the next word
       nextWord()
@@ -77,7 +69,7 @@ const Learn = () => {
 
   console.log("words", words)
 
-  return (
+  return words.length === 0 ? null : (
     <View style={styles.container}>
       <Card containerStyle={styles.card}>
         <Text style={styles.word}>{words[currentWordIndex].word}</Text>
@@ -99,7 +91,6 @@ const Learn = () => {
           <Text style={styles.buttonText}>✓</Text>
         </TouchableOpacity>
       </View>
-      <Text style={styles.progressText}>Progress: {progress}</Text>
     </View>
   )
 }
@@ -153,11 +144,6 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 36,
     color: "white",
-  },
-  progressText: {
-    marginTop: 20,
-    fontSize: 16,
-    fontWeight: "bold",
   },
 })
 
