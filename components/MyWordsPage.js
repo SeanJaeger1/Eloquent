@@ -30,7 +30,7 @@ const MyWordsPage = () => {
     word.toLowerCase().includes(searchText.toLowerCase())
   )
 
-  return (
+  return words.length === 0 ? null : (
     <View style={styles.container}>
       <SearchBox
         onChangeText={(text) => setSearchText(text)}
@@ -38,14 +38,8 @@ const MyWordsPage = () => {
         placeholder="Search my words..."
       />
       <ScrollView>
-        {filteredWords.map(({ word, type, meaning, example }, index) => (
-          <WordPanel
-            key={index}
-            word={word}
-            type={type}
-            meaning={meaning}
-            example={example}
-          />
+        {filteredWords.map((word, index) => (
+          <WordPanel key={index} word={word} />
         ))}
       </ScrollView>
     </View>

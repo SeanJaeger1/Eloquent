@@ -1,23 +1,26 @@
 import React, { useState } from "react"
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native"
 
-const WordPanel = ({ word, type, meaning, example }) => {
+const WordPanel = ({ word }) => {
   const [isExpanded, setIsExpanded] = useState(false)
+  const { type, meaning } = word
 
   const handlePress = () => {
     setIsExpanded(!isExpanded)
   }
 
+  console.log(word, type, meaning)
+
   return (
     <TouchableOpacity onPress={handlePress}>
       <View style={styles.container}>
-        <Text style={styles.boldText}>{word}</Text>
+        <Text style={styles.boldText}>{word.word}</Text>
         <View style={styles.row}>
-          <Text>{example}</Text>
+          <Text>{meaning}</Text>
         </View>
         {isExpanded && (
           <View style={styles.row}>
-            <Text>Here is an example</Text>
+            <Text>{meaning}</Text>
           </View>
         )}
       </View>
