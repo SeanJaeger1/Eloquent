@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import { View, ScrollView, StyleSheet } from "react-native"
+import { useFocusEffect } from "@react-navigation/native"
 import SearchBox from "../SearchBox"
 import WordPanel from "../WordPanel"
 import { httpsCallable } from "firebase/functions"
@@ -9,9 +10,11 @@ const MyWordsPage = () => {
   const [searchText, setSearchText] = useState("")
   const [words, setWords] = useState([])
 
-  useEffect(() => {
-    fetchUserWords()
-  }, [])
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchUserWords()
+    }, [])
+  )
 
   async function fetchUserWords() {
     try {
