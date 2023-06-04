@@ -19,9 +19,9 @@ import {
   signInWithEmailAndPassword,
   updateProfile,
 } from "@firebase/auth"
-import { auth } from "../firebaseConfig"
+import { auth } from "../../firebaseConfig"
 
-export default function AuthForm() {
+const AuthFormPage = () => {
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -44,7 +44,7 @@ export default function AuthForm() {
           email: email,
           username: name,
           dateJoined: serverTimestamp(),
-          skillLevel: "expert", // Initialize the skill level to 'expert'
+          skillLevel: "intermediate",
         })
       } else {
         await signInWithEmailAndPassword(auth, email, password)
@@ -130,3 +130,5 @@ const styles = StyleSheet.create({
   },
   toggleText: {},
 })
+
+export default AuthFormPage

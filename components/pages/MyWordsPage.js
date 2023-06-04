@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react"
 import { View, ScrollView, StyleSheet } from "react-native"
-import SearchBox from "./SearchBox"
-import WordPanel from "./WordPanel"
+import SearchBox from "../SearchBox"
+import WordPanel from "../WordPanel"
 import { httpsCallable } from "firebase/functions"
-import { functions } from "../firebaseConfig"
+import { functions } from "../../firebaseConfig"
 
 const MyWordsPage = () => {
   const [searchText, setSearchText] = useState("")
