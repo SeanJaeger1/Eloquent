@@ -1,9 +1,15 @@
 import React, { useState } from "react"
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native"
 
-const WordPanel = ({ word }) => {
+import ProgressMeter from "./ProgressMeter"
+
+const WordPanel = ({ userWord }) => {
   const [isExpanded, setIsExpanded] = useState(false)
+  console.log(userWord)
+  const { word, progress } = userWord
   const { type, meaning } = word
+
+  console.log(word)
 
   const handlePress = () => {
     setIsExpanded(!isExpanded)
@@ -13,6 +19,9 @@ const WordPanel = ({ word }) => {
     <TouchableOpacity onPress={handlePress}>
       <View style={styles.container}>
         <Text style={styles.boldText}>{word.word}</Text>
+        <View style={styles.row}>
+          <ProgressMeter value={progress} />
+        </View>
         <View style={styles.row}>
           <Text>{meaning}</Text>
         </View>

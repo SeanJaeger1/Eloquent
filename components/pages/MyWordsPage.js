@@ -18,15 +18,15 @@ const MyWordsPage = () => {
       const getUserWords = httpsCallable(functions, "getUserWords")
       const result = await getUserWords()
       const userWords = result.data
-      const wordsData = userWords.map(({ word }) => word)
-      setWords(wordsData)
+      console.log(userWords)
+      setWords(result.data)
     } catch (error) {
       console.error("Error fetching user words:", error)
     }
   }
 
-  const filteredWords = words.filter(({ word }) =>
-    word.toLowerCase().includes(searchText.toLowerCase())
+  const filteredWords = words.filter(
+    ({ word }) => true //word.toLowerCase().includes(searchText.toLowerCase())
   )
 
   return words.length === 0 ? null : (
@@ -38,7 +38,7 @@ const MyWordsPage = () => {
       />
       <ScrollView>
         {filteredWords.map((word, index) => (
-          <WordPanel key={index} word={word} />
+          <WordPanel key={index} userWord={word} />
         ))}
       </ScrollView>
     </View>
