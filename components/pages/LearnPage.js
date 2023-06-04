@@ -27,7 +27,6 @@ const LearnPage = () => {
       const getUserWords = httpsCallable(functions, "getLearningWords")
       const result = await getUserWords()
       const userWords = result.data
-      console.log(userWords)
       setWords(userWords)
       setLoading(false)
     } catch (error) {
