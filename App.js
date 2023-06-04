@@ -1,30 +1,28 @@
-import React, { useState, useEffect } from "react"
+import React, { useEffect } from "react"
+import { NavigationContainer } from "@react-navigation/native"
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { onAuthStateChanged } from "@firebase/auth"
+
 import { auth } from "./firebaseConfig"
 import AuthForm from "./components/AuthForm"
 import MyWordsPage from "./components/MyWordsPage"
-import { NavigationContainer } from "@react-navigation/native"
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import Learn from "./components/Learn"
 
-const Tab = createBottomTabNavigator()
-
-export default function App() {
+const useAuthState = () => {
   const [loggedIn, setLoggedIn] = useState(false)
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setLoggedIn(true)
-      } else {
-        setLoggedIn(false)
-      }
-    })
-
-    return () => {
-      unsubscribe()
-    }
+    const unsubscribe = onAuthStateChanged(auth, (user) => setLoggedIn(!!user))
+    return unsubscribe
   }, [])
+
+  return loggedIn
+}
+
+const Tab = createBottomTabNavigator()
+
+const App = () => {
+  const loggedIn = useAuthState()
 
   return loggedIn ? (
     <NavigationContainer>
@@ -37,3 +35,5 @@ export default function App() {
     <AuthForm />
   )
 }
+
+export default App
