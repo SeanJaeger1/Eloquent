@@ -1,12 +1,12 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { NavigationContainer } from "@react-navigation/native"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { onAuthStateChanged } from "@firebase/auth"
 
 import { auth } from "./firebaseConfig"
-import AuthForm from "./components/AuthForm"
-import MyWordsPage from "./components/MyWordsPage"
-import Learn from "./components/Learn"
+import AuthFormPage from "./components/pages/AuthFormPage"
+import MyWordsPage from "./components/pages/MyWordsPage"
+import LearnPage from "./components/pages/LearnPage"
 
 const useAuthState = () => {
   const [loggedIn, setLoggedIn] = useState(false)
@@ -28,11 +28,11 @@ const App = () => {
     <NavigationContainer>
       <Tab.Navigator>
         <Tab.Screen name="My Words" component={MyWordsPage} />
-        <Tab.Screen name="Learn" component={Learn} />
+        <Tab.Screen name="Learn" component={LearnPage} />
       </Tab.Navigator>
     </NavigationContainer>
   ) : (
-    <AuthForm />
+    <AuthFormPage />
   )
 }
 

@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react"
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native"
 import { Card } from "react-native-elements"
 import { httpsCallable } from "firebase/functions"
-import { functions } from "../firebaseConfig"
+import { functions } from "../../firebaseConfig"
 
-const Learn = () => {
+const LearnPage = () => {
   const [words, setWords] = useState([])
   const [currentWordIndex, setCurrentWordIndex] = useState(0)
   const [loading, setLoading] = useState(true)
@@ -145,4 +145,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default Learn
+export default LearnPage
