@@ -7,7 +7,7 @@ import { functions } from "../firebaseConfig"
 const Learn = () => {
   const [words, setWords] = useState([])
   const [currentWordIndex, setCurrentWordIndex] = useState(0)
-  const [loading, setLoading] = useState(true) // Add loading state
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     fetchUserWords()
@@ -17,23 +17,22 @@ const Learn = () => {
     if (currentWordIndex < words.length - 1) {
       setCurrentWordIndex(currentWordIndex + 1)
     } else {
-      // Show a message indicating no more words or loop back to the first word
       setCurrentWordIndex(0)
     }
   }
 
   async function fetchUserWords() {
     try {
-      setLoading(true) // Start loading before fetch
+      setLoading(true)
       const getUserWords = httpsCallable(functions, "getLearningWords")
       const result = await getUserWords()
       const userWords = result.data
       console.log(userWords)
       setWords(userWords)
-      setLoading(false) // Finish loading after fetch
+      setLoading(false)
     } catch (error) {
       console.error("Error fetching user words:", error)
-      setLoading(false) // Finish loading even in case of an error
+      setLoading(false)
     }
   }
 
@@ -49,17 +48,13 @@ const Learn = () => {
         increment,
       })
 
-      // Go to the next word
       nextWord()
     } catch (error) {
       console.error("Error updating/creating user word:", error)
     }
   }
 
-  // Other functions remain the same...
-
   if (loading) {
-    // Render loading state
     return (
       <View style={styles.container}>
         <Text>Loading...</Text>
@@ -67,26 +62,29 @@ const Learn = () => {
     )
   }
 
-  console.log("words", words)
+  const currentWord =
+    typeof words[currentWordIndex].word === "object"
+      ? words[currentWordIndex].word
+      : words[currentWordIndex]
 
-  return words.length === 0 ? null : (
+  return (
     <View style={styles.container}>
       <Card containerStyle={styles.card}>
-        <Text style={styles.word}>{words[currentWordIndex].word}</Text>
-        <Text style={styles.type}>{words[currentWordIndex].type}</Text>
-        <Text style={styles.meaning}>{words[currentWordIndex].meaning}</Text>
-        <Text style={styles.example}>{words[currentWordIndex].example}</Text>
+        <Text style={styles.word}>{currentWord.word}</Text>
+        <Text style={styles.type}>{currentWord.type}</Text>
+        <Text style={styles.meaning}>{currentWord.meaning}</Text>
+        <Text style={styles.example}>{currentWord.example}</Text>
       </Card>
       <View style={styles.buttonsContainer}>
         <TouchableOpacity
           style={[styles.button, styles.crossButton]}
-          onPress={() => updateOrCreateUserWord(-1)} // Decrement progress
+          onPress={() => updateOrCreateUserWord(-1)}
         >
           <Text style={styles.buttonText}>✗</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.button, styles.tickButton]}
-          onPress={() => updateOrCreateUserWord(1)} // Increment progress
+          onPress={() => updateOrCreateUserWord(1)}
         >
           <Text style={styles.buttonText}>✓</Text>
         </TouchableOpacity>
