@@ -9,8 +9,6 @@ const WordPanel = ({ word }) => {
     setIsExpanded(!isExpanded)
   }
 
-  console.log(word, type, meaning)
-
   return (
     <TouchableOpacity onPress={handlePress}>
       <View style={styles.container}>
@@ -20,7 +18,7 @@ const WordPanel = ({ word }) => {
         </View>
         {isExpanded && (
           <View style={styles.row}>
-            <Text>{meaning}</Text>
+            <Text>{type}</Text>
           </View>
         )}
       </View>
