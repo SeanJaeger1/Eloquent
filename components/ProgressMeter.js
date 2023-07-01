@@ -1,4 +1,5 @@
 import React from "react"
+import { View } from 'react-native';
 
 import palette from "../palette"
 
@@ -10,13 +11,13 @@ const DotsComponent = ({ value }) => {
   const filledDots = value > 0 && value <= 5 ? value : 0
 
   return (
-    <div style={{ display: "flex" }}>
+    <View style={{ display: "flex" }}>
       {dots.map((_, index) => (
-        <div
+        <View
           key={index}
           style={{
-            width: "8px",
-            height: "8px",
+            width: 8,
+            height: 8,
             borderRadius: "50%",
             backgroundColor:
               index < filledDots ? palette.secondary : palette.offWhite,
@@ -24,7 +25,7 @@ const DotsComponent = ({ value }) => {
           }}
         />
       ))}
-    </div>
+    </View>
   )
 }
 
