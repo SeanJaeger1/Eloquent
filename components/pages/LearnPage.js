@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native"
 import { Card } from "react-native-elements"
 import { httpsCallable } from "firebase/functions"
 import { functions } from "../../firebaseConfig"
+import LoadingPage from "./LoadingPage"
 
 const LearnPage = () => {
   const [words, setWords] = useState([])
@@ -54,11 +55,7 @@ const LearnPage = () => {
   }
 
   if (loading) {
-    return (
-      <View style={styles.container}>
-        <Text>Loading...</Text>
-      </View>
-    )
+    return <LoadingPage />
   }
 
   const currentWord =
