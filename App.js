@@ -7,6 +7,8 @@ import { auth } from "./firebaseConfig"
 import AuthFormPage from "./components/pages/AuthFormPage"
 import MyWordsPage from "./components/pages/MyWordsPage"
 import LearnPage from "./components/pages/LearnPage"
+import useUser from "./hooks/useUser"
+import UpdateSkillLevelPage from "./components/pages/UpdateSkillLevelPage"
 
 const useAuthState = () => {
   const [loggedIn, setLoggedIn] = useState(false)
@@ -23,6 +25,11 @@ const Tab = createBottomTabNavigator()
 
 const App = () => {
   const loggedIn = useAuthState()
+  const user = useUser()
+
+  if (loggedIn && user?.skillLevel === "") {
+    return <UpdateSkillLevelPage />
+  }
 
   return loggedIn ? (
     <NavigationContainer>

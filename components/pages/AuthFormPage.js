@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
 } from "react-native"
 import {
-  getFirestore,
   collection,
   doc,
   setDoc,
@@ -19,7 +18,7 @@ import {
   signInWithEmailAndPassword,
   updateProfile,
 } from "@firebase/auth"
-import { auth } from "../../firebaseConfig"
+import { auth, db } from "../../firebaseConfig"
 
 const AuthFormPage = () => {
   const [name, setName] = useState("")
@@ -29,7 +28,6 @@ const AuthFormPage = () => {
 
   const handleAuth = async () => {
     try {
-      const db = getFirestore()
       if (isSignUp) {
         const userCredential = await createUserWithEmailAndPassword(
           auth,
@@ -44,7 +42,7 @@ const AuthFormPage = () => {
           email: email,
           username: name,
           dateJoined: serverTimestamp(),
-          skillLevel: "intermediate",
+          skillLevel: "",
         })
       } else {
         await signInWithEmailAndPassword(auth, email, password)
@@ -90,11 +88,19 @@ const AuthFormPage = () => {
       </View>
       <Button title={isSignUp ? "Sign Up" : "Sign In"} onPress={handleAuth} />
       <TouchableOpacity onPress={() => setIsSignUp(!isSignUp)}>
-        <Text style={styles.toggleText}>
-          {isSignUp
-            ? "Already have an account? Sign In"
-            : "Don't have an account? Sign Up"}
-        </Text>
+      <Text style={styles.toggleText}>
+        {isSignUp ? (
+          <>
+            Already have an account?{" "}
+            <Text style={styles.highlighted}>Sign In</Text>
+          </>
+        ) : (
+          <>
+            Don't have an account? <Text style={styles.highlighted}>Sign Up</Text>
+          </>
+        )}
+      </Text>
+
       </TouchableOpacity>
     </View>
   )
@@ -128,7 +134,11 @@ const styles = StyleSheet.create({
     marginTop: 5,
     height: 40,
   },
-  toggleText: {},
+  toggleText: {textAlign: 'center',marginTop: 32},
+  highlighted: {
+    color: "#78CCCC",
+    fontWeight: 500
+  }
 })
 
 export default AuthFormPage
