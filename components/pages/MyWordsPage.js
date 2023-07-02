@@ -21,15 +21,14 @@ const MyWordsPage = () => {
       const getUserWords = httpsCallable(functions, "getUserWords")
       const result = await getUserWords()
       const userWords = result.data
-      console.log(userWords)
-      setWords(result.data)
+      setWords(userWords)
     } catch (error) {
       console.error("Error fetching user words:", error)
     }
   }
 
   const filteredWords = words.filter(
-    ({ word }) => true //word.toLowerCase().includes(searchText.toLowerCase())
+    ({ word: {word} }) => word.toLowerCase().includes(searchText.toLowerCase())
   )
 
   return words.length === 0 ? null : (
