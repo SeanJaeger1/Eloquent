@@ -21,7 +21,7 @@ const DotsComponent = ({ value }) => {
             borderRadius: "50%",
             backgroundColor:
               index < filledDots ? palette.secondary : palette.offWhite,
-            marginRight: "4px",
+            marginRight: 4,
           }}
         />
       ))}
