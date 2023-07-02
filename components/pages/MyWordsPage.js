@@ -5,6 +5,7 @@ import SearchBox from "../SearchBox"
 import WordPanel from "../WordPanel"
 import { httpsCallable } from "firebase/functions"
 import { functions } from "../../firebaseConfig"
+import LoadingPage from "./LoadingPage"
 
 const MyWordsPage = () => {
   const [searchText, setSearchText] = useState("")
@@ -31,7 +32,7 @@ const MyWordsPage = () => {
     ({ word: {word} }) => word.toLowerCase().includes(searchText.toLowerCase())
   )
 
-  return words.length === 0 ? null : (
+  return words.length === 0 ? <LoadingPage /> : (
     <View style={styles.container}>
       <SearchBox
         onChangeText={(text) => setSearchText(text)}
