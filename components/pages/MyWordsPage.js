@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { View, ScrollView, StyleSheet } from "react-native"
+import { View, ScrollView, StyleSheet, Text } from "react-native"
 import { useFocusEffect } from "@react-navigation/native"
 import SearchBox from "../SearchBox"
 import WordPanel from "../WordPanel"
@@ -9,7 +9,7 @@ import LoadingPage from "./LoadingPage"
 
 const MyWordsPage = () => {
   const [searchText, setSearchText] = useState("")
-  const [words, setWords] = useState([])
+  const [words, setWords] = useState(null)
 
   useFocusEffect(
     React.useCallback(() => {
@@ -28,11 +28,15 @@ const MyWordsPage = () => {
     }
   }
 
+  if (words === null) {
+    return <LoadingPage />
+  }
+
   const filteredWords = words.filter(
     ({ word: {word} }) => word.toLowerCase().includes(searchText.toLowerCase())
   )
 
-  return words.length === 0 ? <LoadingPage /> : (
+  return (
     <View style={styles.container}>
       <SearchBox
         onChangeText={(text) => setSearchText(text)}
@@ -40,9 +44,15 @@ const MyWordsPage = () => {
         placeholder="Search my words..."
       />
       <ScrollView>
-        {filteredWords.map((word, index) => (
-          <WordPanel key={index} userWord={word} />
-        ))}
+        {filteredWords.length > 0 ? (
+          filteredWords.map((word, index) => (
+            <WordPanel key={index} userWord={word} />
+          ))
+        ) : (
+          <Text style={styles.noWordsText}>
+            You don't have any words yet! Start learning new words.
+          </Text>
+        )}
       </ScrollView>
     </View>
   )
@@ -55,6 +65,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 40,
   },
+  noWordsText: {
+    fontSize: 18,
+    color: '#666',
+    textAlign: 'center',
+    marginTop: 20,
+  }
 })
 
 export default MyWordsPage
