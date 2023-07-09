@@ -9,7 +9,7 @@ const firebaseConfig = Constants.manifest.extra.firebaseConfig
 
 const app = initializeApp(firebaseConfig)
 const auth = getAuth(app)
-const functions = getFunctions(app)
+const functions = getFunctions(app, 'europe-west1')
 const db = getFirestore(app);
 
 export { auth, functions, db }

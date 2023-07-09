@@ -4,7 +4,6 @@ import { Card } from "react-native-elements"
 import { httpsCallable } from "firebase/functions"
 import { functions } from "../../firebaseConfig"
 import LoadingPage from "./LoadingPage"
-import { auth, db } from "../../firebaseConfig"
 
 const LearnPage = () => {
   const [words, setWords] = useState([])
@@ -19,6 +18,7 @@ const LearnPage = () => {
     if (currentWordIndex < words.length - 1) {
       setCurrentWordIndex(currentWordIndex + 1)
     } else {
+      fetchUserWords()
       setCurrentWordIndex(0)
     }
   }
@@ -29,7 +29,7 @@ const LearnPage = () => {
       const getUserWords = httpsCallable(functions, "getLearningWords")
       const result = await getUserWords()
       const userWords = result.data
-      setWords(userWords.userWords)
+      setWords(userWords)
       setLoading(false)
     } catch (error) {
       console.error("Error fetching user words:", error)
@@ -44,7 +44,7 @@ const LearnPage = () => {
         "updateWordProgress"
       )
 
-      const result = await updateWordProgress({
+      await updateWordProgress({
         userWordId: words[currentWordIndex].id,
         increment,
       })
@@ -59,18 +59,13 @@ const LearnPage = () => {
     return <LoadingPage />
   }
 
-  const currentWord =
-    typeof words[currentWordIndex].word === "object"
-      ? words[currentWordIndex].word
-      : words[currentWordIndex]
-
   return (
     <View style={styles.container}>
       <Card containerStyle={styles.card}>
-        <Text style={styles.word}>{currentWord.word}</Text>
-        <Text style={styles.type}>{currentWord.type}</Text>
-        <Text style={styles.meaning}>{currentWord.meaning}</Text>
-        <Text style={styles.example}>{currentWord.example}</Text>
+        <Text style={styles.word}>{words[currentWordIndex].word.word}</Text>
+        <Text style={styles.type}>{words[currentWordIndex].word.wordType}</Text>
+        <Text style={styles.meaning}>{words[currentWordIndex].word.definition}</Text>
+        <Text style={styles.example}>{words[currentWordIndex].word.examples[0]}</Text>
       </Card>
       <View style={styles.buttonsContainer}>
         <TouchableOpacity
