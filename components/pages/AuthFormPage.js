@@ -37,12 +37,13 @@ const AuthFormPage = () => {
         await updateProfile(userCredential.user, { displayName: name })
 
         // Create a Firestore document for the new user
-        await setDoc(doc(collection(db, "User"), userCredential.user.uid), {
+        await setDoc(doc(collection(db, "users"), userCredential.user.uid), {
           uid: userCredential.user.uid,
           email: email,
           username: name,
           dateJoined: serverTimestamp(),
           skillLevel: "",
+          nextWords: [0,0,0,0]
         })
       } else {
         await signInWithEmailAndPassword(auth, email, password)

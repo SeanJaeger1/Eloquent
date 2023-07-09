@@ -19,7 +19,7 @@ const UpdateSkillLevelPage = () => {
         throw new Error('User is not authenticated.');
       }
 
-      const userRef = doc(db, 'User', userId);
+      const userRef = doc(db, 'users', userId);
       await updateDoc(userRef, {
         skillLevel,
       });

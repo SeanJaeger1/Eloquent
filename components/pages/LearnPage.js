@@ -4,6 +4,7 @@ import { Card } from "react-native-elements"
 import { httpsCallable } from "firebase/functions"
 import { functions } from "../../firebaseConfig"
 import LoadingPage from "./LoadingPage"
+import { auth, db } from "../../firebaseConfig"
 
 const LearnPage = () => {
   const [words, setWords] = useState([])
@@ -28,7 +29,7 @@ const LearnPage = () => {
       const getUserWords = httpsCallable(functions, "getLearningWords")
       const result = await getUserWords()
       const userWords = result.data
-      setWords(userWords)
+      setWords(userWords.userWords)
       setLoading(false)
     } catch (error) {
       console.error("Error fetching user words:", error)
@@ -36,14 +37,14 @@ const LearnPage = () => {
     }
   }
 
-  async function updateOrCreateUserWord(increment) {
+  async function updateWordProgress(increment) {
     try {
-      const updateOrCreateUserWord = httpsCallable(
+      const updateWordProgress = httpsCallable(
         functions,
         "updateWordProgress"
       )
 
-      const result = await updateOrCreateUserWord({
+      const result = await updateWordProgress({
         userWordId: words[currentWordIndex].id,
         increment,
       })
@@ -74,13 +75,13 @@ const LearnPage = () => {
       <View style={styles.buttonsContainer}>
         <TouchableOpacity
           style={[styles.button, styles.crossButton]}
-          onPress={() => updateOrCreateUserWord(-1)}
+          onPress={() => updateWordProgress(-1)}
         >
           <Text style={styles.buttonText}>✗</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.button, styles.tickButton]}
-          onPress={() => updateOrCreateUserWord(1)}
+          onPress={() => updateWordProgress(1)}
         >
           <Text style={styles.buttonText}>✓</Text>
         </TouchableOpacity>
