@@ -33,7 +33,7 @@ const MyWordsPage = () => {
   }
 
   const filteredWords = words.filter(
-    ({ word: {word} }) => word.toLowerCase().includes(searchText.toLowerCase())
+    ({ word: { word } }) => word.toLowerCase().includes(searchText.toLowerCase())
   )
 
   return (
@@ -43,7 +43,7 @@ const MyWordsPage = () => {
         value={searchText}
         placeholder="Search my words..."
       />
-      <ScrollView>
+      <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
         {filteredWords.length > 0 ? (
           filteredWords.map((word, index) => (
             <WordPanel key={index} userWord={word} />
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     paddingHorizontal: 20,
-    paddingVertical: 40,
+    paddingTop: 20,
   },
   noWordsText: {
     fontSize: 18,
