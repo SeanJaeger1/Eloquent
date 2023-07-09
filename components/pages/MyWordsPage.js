@@ -22,6 +22,8 @@ const MyWordsPage = () => {
       const getUserWords = httpsCallable(functions, "getUserWords")
       const result = await getUserWords()
       const userWords = result.data
+      const sortingAlgo = (a, b) => a.word.word.localeCompare(b.word.word)
+      userWords.sort(sortingAlgo)
       setWords(userWords)
     } catch (error) {
       console.error("Error fetching user words:", error)
