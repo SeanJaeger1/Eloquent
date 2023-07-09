@@ -11,7 +11,7 @@ const DotsComponent = ({ value }) => {
   const filledDots = value > 0 && value <= 5 ? value : 0
 
   return (
-    <View style={{ display: "flex" }}>
+    <View style={{ display: "flex", flexDirection: 'row'}}>
       {dots.map((_, index) => (
         <View
           key={index}
