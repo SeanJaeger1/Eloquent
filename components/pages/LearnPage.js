@@ -39,6 +39,9 @@ const LearnPage = () => {
 
   async function updateWordProgress(increment) {
     try {
+      setTimeout(() => {
+        nextWord()
+      }, 500)
       const updateWordProgress = httpsCallable(
         functions,
         "updateWordProgress"
@@ -48,8 +51,6 @@ const LearnPage = () => {
         userWordId: words[currentWordIndex].id,
         increment,
       })
-
-      nextWord()
     } catch (error) {
       console.error("Error updating/creating user word:", error)
     }
