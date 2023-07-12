@@ -1,20 +1,48 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native"
+import { Audio } from 'expo-av';
+import { Icon } from "react-native-elements";
 
+import palette from "../palette";
 import ProgressMeter from "./ProgressMeter"
 
-const WordPanel = ({userWord}) => {
+const WordPanel = ({ userWord }) => {
   const [isExpanded, setIsExpanded] = useState(false)
-  const { word: {definition, meaning, word, wordType}, progress } = userWord
+  const [sound, setSound] = useState();
+  const { word: { definition, meaning, word, wordType, audioUrl }, progress } = userWord
 
   const handlePress = () => {
     setIsExpanded(!isExpanded)
   }
 
+  async function playSound() {
+    const { sound } = await Audio.Sound.createAsync(
+      { uri: audioUrl }
+    );
+    setSound(sound);
+
+    await sound.playAsync();
+  }
+
+  useEffect(() => {
+    return sound
+      ? () => {
+        sound.unloadAsync();
+      }
+      : undefined;
+  }, [sound]);
+
   return (
     <TouchableOpacity onPress={handlePress}>
       <View style={styles.container}>
-        <Text style={styles.boldText}>{word}, {wordType} </Text>
+        <View style={styles.row}>
+          <Text style={styles.boldText}>{word}, {wordType} </Text>
+          {
+            audioUrl && (<TouchableOpacity onPress={playSound}>
+              <Icon name='volume-up' type='font-awesome' color={palette.secondary} />
+            </TouchableOpacity>)
+          }
+        </View>
         <View style={styles.row}>
           <ProgressMeter value={progress} />
         </View>
@@ -38,16 +66,14 @@ const styles = StyleSheet.create({
     padding: 15,
     alignItems: "center",
     justifyContent: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
-    elevation: 3,
+    boxShadow: '1px 1px 2px 1px rgba(0, 0, 0, 0.25)',
     marginBottom: 20,
+    marginHorizontal: 8
   },
   boldText: {
     fontWeight: "bold",
     fontSize: 18,
+    marginRight: 8
   },
   row: {
     flexDirection: "row",
