@@ -19,9 +19,10 @@ import {
   updateProfile,
 } from "@firebase/auth"
 import { auth, db } from "../../firebaseConfig"
+import palette from "../../palette"
 
 const AuthFormPage = () => {
-  const [name, setName] = useState("")
+  // const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [isSignUp, setIsSignUp] = useState(true)
@@ -34,13 +35,13 @@ const AuthFormPage = () => {
           email,
           password
         )
-        await updateProfile(userCredential.user, { displayName: name })
+        // await updateProfile(userCredential.user, { displayName: name })
 
         // Create a Firestore document for the new user
         await setDoc(doc(collection(db, "users"), userCredential.user.uid), {
           uid: userCredential.user.uid,
           email: email,
-          username: name,
+          // username: name,
           dateJoined: serverTimestamp(),
           skillLevel: "",
           nextWords: [0,0,0,0]
@@ -57,7 +58,7 @@ const AuthFormPage = () => {
     <View style={styles.container}>
       <Text style={styles.title}>{isSignUp ? "Sign Up" : "Sign In"}</Text>
       <Text style={styles.subtitle}>Welcome! 👋</Text>
-      {isSignUp && (
+      {false && (
         <View style={styles.inputContainer}>
           <Text>Name</Text>
           <TextInput
@@ -87,12 +88,12 @@ const AuthFormPage = () => {
           value={password}
         />
       </View>
-      <Button title={isSignUp ? "Sign Up" : "Sign In"} onPress={handleAuth} />
+      <Button color={palette.secondary} title={isSignUp ? "Sign Up" : "Sign In"} onPress={handleAuth} />
       <TouchableOpacity onPress={() => setIsSignUp(!isSignUp)}>
       <Text style={styles.toggleText}>
         {isSignUp ? (
           <>
-            Already have an account?{" "}
+            Already have an account?
             <Text style={styles.highlighted}>Sign In</Text>
           </>
         ) : (
@@ -137,8 +138,9 @@ const styles = StyleSheet.create({
   },
   toggleText: {textAlign: 'center',marginTop: 32},
   highlighted: {
-    color: "#78CCCC",
-    fontWeight: 500
+    color: palette.secondary,
+    fontWeight: 600,
+    marginLeft: 8
   }
 })
 
