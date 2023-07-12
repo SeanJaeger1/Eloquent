@@ -28,7 +28,9 @@ const WordCard = ({word}) => {
         sound.unloadAsync()
       }
       : undefined
-  }, [])
+  }, [audioUrl])
+
+  console.log(word.phonetic)
 
   return (
     <Card containerStyle={styles.card}>
@@ -40,6 +42,7 @@ const WordCard = ({word}) => {
           </TouchableOpacity>
         )}
       </View>
+      {word.phonetic && <Text style={styles.phonetic}>{word.phonetic}</Text>}
       <Text style={styles.type}>{shortenType[word.wordType]}</Text>
       <Text style={styles.meaning}>{word.definition}</Text>
       <Text style={styles.example}>{word.examples[0]}</Text>
@@ -79,6 +82,11 @@ const styles = StyleSheet.create({
     marginTop: 5,
     color: "gray",
     textAlign: "center",
+  },
+  phonetic: {
+    fontSize: 12,
+    marginTop: 0,
+    textAlign: "center"
   }
 })
 
