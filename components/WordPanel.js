@@ -4,6 +4,7 @@ import { Audio } from 'expo-av';
 import { Icon } from "react-native-elements";
 
 import palette from "../palette";
+import shortenType from "../utils/shortenType";
 import ProgressMeter from "./ProgressMeter"
 
 const WordPanel = ({ userWord }) => {
@@ -36,7 +37,7 @@ const WordPanel = ({ userWord }) => {
     <TouchableOpacity onPress={handlePress}>
       <View style={styles.container}>
         <View style={styles.row}>
-          <Text style={styles.boldText}>{word}, {wordType} </Text>
+          <Text style={styles.boldText}>{word}, {shortenType[wordType]} </Text>
           {
             audioUrl && (<TouchableOpacity onPress={playSound}>
               <Icon name='volume-up' type='font-awesome' color={palette.secondary} />
