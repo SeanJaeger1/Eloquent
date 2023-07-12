@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react"
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native"
-import { Card } from "react-native-elements"
 import { httpsCallable } from "firebase/functions"
 import { functions } from "../../firebaseConfig"
 import LoadingPage from "./LoadingPage"
+import WordCard from "../WordCard"
 
 const LearnPage = () => {
   const [words, setWords] = useState([])
@@ -62,12 +62,7 @@ const LearnPage = () => {
 
   return (
     <View style={styles.container}>
-      <Card containerStyle={styles.card}>
-        <Text style={styles.word}>{words[currentWordIndex].word.word}</Text>
-        <Text style={styles.type}>{words[currentWordIndex].word.wordType}</Text>
-        <Text style={styles.meaning}>{words[currentWordIndex].word.definition}</Text>
-        <Text style={styles.example}>{words[currentWordIndex].word.examples[0]}</Text>
-      </Card>
+      <WordCard word={words[currentWordIndex].word} />
       <View style={styles.buttonsContainer}>
         <TouchableOpacity
           style={[styles.button, styles.crossButton]}
