@@ -9,28 +9,52 @@ import LoadingPage from "./LoadingPage"
 
 const MyWordsPage = () => {
   const [searchText, setSearchText] = useState("")
-  const [words, setWords] = useState(null)
-
+  const [words, setWords] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [nextPageToken, setNextPageToken] = useState(null)
+  
   useFocusEffect(
     React.useCallback(() => {
       fetchUserWords()
     }, [])
   )
 
+  const handleScroll = (event) => {
+    if (loading) {
+      return;
+    }
+    const offsetY = event.nativeEvent.contentOffset.y;
+    const contentHeight = event.nativeEvent.contentSize.height;
+    const height = event.nativeEvent.layoutMeasurement.height;
+    const bottom = offsetY + height;
+    const threshold = 20; // fetch more items when within 20px of the bottom
+
+    if (bottom > contentHeight - threshold) {
+      fetchUserWords();
+    }
+  };
+
   async function fetchUserWords() {
+    if (!nextPageToken && words.length !== 0) {
+      return; // All pages have been loaded
+    }
     try {
+      setLoading(true)
       const getUserWords = httpsCallable(functions, "getUserWords")
-      const result = await getUserWords()
-      const userWords = result.data
+      const result = await getUserWords({ lastSeenAt: nextPageToken })
+      const { userWords, nextPageToken: newToken } = result.data
       const sortingAlgo = (a, b) => a.word.word.localeCompare(b.word.word)
       userWords.sort(sortingAlgo)
-      setWords(userWords)
+      setWords([...words, ...userWords])
+      setNextPageToken(newToken)
+      setLoading(false)
     } catch (error) {
       console.error("Error fetching user words:", error)
+      setLoading(false)
     }
   }
 
-  if (words === null) {
+  if (loading && words.length === 0) {
     return <LoadingPage />
   }
 
@@ -45,7 +69,8 @@ const MyWordsPage = () => {
         value={searchText}
         placeholder="Search my words..."
       />
-      <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
+      <ScrollView style={styles.scroll} scrollEventThrottle={16}
+        showsVerticalScrollIndicator={false} onScroll={handleScroll}>
         {filteredWords.length > 0 ? (
           filteredWords.map((word, index) => (
             <WordPanel key={index} userWord={word} />
@@ -55,6 +80,7 @@ const MyWordsPage = () => {
             You don't have any words yet! Start learning new words.
           </Text>
         )}
+        {loading && <LoadingPage />}
       </ScrollView>
     </View>
   )
@@ -74,7 +100,8 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   scroll: {
-    padding: 8
+    padding: 8,
+    paddingBottom: 32
   }
 })
 
