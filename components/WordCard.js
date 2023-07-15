@@ -5,9 +5,11 @@ import { Audio } from 'expo-av'
 import { Icon } from "react-native-elements"
 import palette from "../palette"
 import shortenType from "../utils/shortenType"
+import ProgressMeter from "./ProgressMeter"
 
-const WordCard = ({word}) => {
-  const {audioUrl} = word
+const WordCard = ({ userWord }) => {
+  const { progress, word } = userWord
+  const { audioUrl, word: wordText, examples, definition, phonetic, wordType } = word
   const [sound, setSound] = useState(null)
 
   async function preloadSound() {
@@ -22,7 +24,7 @@ const WordCard = ({word}) => {
   }
 
   useEffect(() => {
-    preloadSound()
+    audioUrl && preloadSound()
     return sound
       ? () => {
         sound.unloadAsync()
@@ -30,22 +32,23 @@ const WordCard = ({word}) => {
       : undefined
   }, [audioUrl])
 
-  console.log(word.phonetic)
-
   return (
     <Card containerStyle={styles.card}>
       <View style={styles.header}>
-        <Text style={styles.word}>{word.word}</Text>
+        <Text style={styles.word}>{wordText}</Text>
         {audioUrl && (
           <TouchableOpacity onPress={playSound}>
             <Icon name='volume-up' type='font-awesome' color={palette.secondary} />
           </TouchableOpacity>
         )}
       </View>
-      {word.phonetic && <Text style={styles.phonetic}>{word.phonetic}</Text>}
-      <Text style={styles.type}>{shortenType[word.wordType]}</Text>
-      <Text style={styles.meaning}>{word.definition}</Text>
-      <Text style={styles.example}>{word.examples[0]}</Text>
+      {progress > 1 && <View style={styles.row}>
+        <ProgressMeter value={progress} />
+      </View>}
+      {phonetic && <Text style={styles.phonetic}>{phonetic}</Text>}
+      <Text style={styles.type}>{shortenType[wordType]}</Text>
+      <Text style={styles.meaning}>{definition}</Text>
+      <Text style={styles.example}>{examples[0]}</Text>
     </Card>
   )
 }
@@ -87,6 +90,11 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginTop: 0,
     textAlign: "center"
+  },
+  row: {
+    flexDirection: "row",
+    marginVertical: 10,
+    justifyContent: "center"
   }
 })
 
