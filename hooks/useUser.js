@@ -10,7 +10,7 @@ const useUser = () => {
 
     const fetchUser = async () => {
       const usersRef = collection(db, "users");
-      const q = query(usersRef, where("email", "==", auth.currentUser.email));
+      const q = query(usersRef, where("uid", "==", auth.currentUser.uid));
 
       unsubscribe = onSnapshot(q, (snapshot) => {
         snapshot.forEach((doc) => {
