@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { db, auth } from "../firebaseConfig";
-import { collection, query, where, onSnapshot } from "firebase/firestore";
+import { doc, onSnapshot } from "firebase/firestore";
 
 const useUser = () => {
   const [user, setUser] = useState(null);
@@ -9,17 +9,16 @@ const useUser = () => {
     let unsubscribe = null;
 
     const fetchUser = async () => {
-      const usersRef = collection(db, "users");
-      const q = query(usersRef, where("uid", "==", auth.currentUser.uid));
+      const userRef = doc(db, "users", auth.currentUser.uid);
 
-      unsubscribe = onSnapshot(q, (snapshot) => {
-        snapshot.forEach((doc) => {
+      unsubscribe = onSnapshot(userRef, (doc) => {
+        if (doc.exists()) {
           setUser(doc.data());
-        });
+        }
       });
     };
 
-    if (auth?.currentUser?.email) {
+    if (auth?.currentUser?.uid) {
       fetchUser();
     } else {
       setUser(null);
@@ -30,7 +29,7 @@ const useUser = () => {
         unsubscribe();
       }
     };
-  }, [auth?.currentUser?.email]);
+  }, [auth?.currentUser?.uid]);
 
   return user;
 };
