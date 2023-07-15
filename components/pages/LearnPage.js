@@ -62,7 +62,7 @@ const LearnPage = () => {
 
   return (
     <View style={styles.container}>
-      <WordCard word={words[currentWordIndex].word} />
+      <WordCard userWord={words[currentWordIndex]} />
       <View style={styles.buttonsContainer}>
         <TouchableOpacity
           style={[styles.button, styles.crossButton]}
