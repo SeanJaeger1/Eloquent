@@ -63,34 +63,13 @@ const App = () => {
       >
         {loggedIn ? (
           <NavigationContainer>
-            <Tab.Navigator
-              screenOptions={{
-                tabBarStyle: {
-                  backgroundColor: , // Background color
-                  marginBottom: 56, // Bottom margin
-                  marginHorizontal: 48,
-                  borderRadius: 36,
-                  height: 60,
-                  display: "inline",
-                  tabBarShowLabel: false,
-                },
-                tabBarActiveTintColor: "#ffffff", // Active icon color
-                tabBarInactiveTintColor: "#b3b3b3", // Inactive icon color
-              }}
-            >
-              <Tab.Screen
-                name="My Words"
-                component={MyWordsPage}
-                options={{
-                  tabBarIcon: ({ color, size }) => MySvgComponent,
-                  tabBarLabel: "", // This also ensures the label is not displayed, but tabBarShowLabel in screenOptions is more effective for all tabs.
-                }}
-              />
+            <Tab.Navigator screenOptions={{}}>
+              <Tab.Screen name="My Words" component={MyWordsPage} />
               <Tab.Screen name="Learn" component={LearnPage} />
             </Tab.Navigator>
           </NavigationContainer>
         ) : (
-          // <NavigationContainer id="SECOND">
+          // <NavigationContainer>
           //   <Tab.Navigator>
           //     <Tab.Screen name="My Words" component={MyWordsPage} />
           //     <Tab.Screen name="Learn" component={LearnPage} />
