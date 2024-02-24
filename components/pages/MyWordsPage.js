@@ -12,7 +12,9 @@ const MyWordsPage = () => {
   const [words, setWords] = useState([])
   const [loading, setLoading] = useState(true)
   const [nextPageToken, setNextPageToken] = useState(null)
-  
+
+  console.log(words)
+
   useFocusEffect(
     React.useCallback(() => {
       fetchUserWords()
@@ -21,30 +23,30 @@ const MyWordsPage = () => {
 
   const handleScroll = (event) => {
     if (loading) {
-      return;
+      return
     }
-    const offsetY = event.nativeEvent.contentOffset.y;
-    const contentHeight = event.nativeEvent.contentSize.height;
-    const height = event.nativeEvent.layoutMeasurement.height;
-    const bottom = offsetY + height;
-    const threshold = 20; // fetch more items when within 20px of the bottom
+    const offsetY = event.nativeEvent.contentOffset.y
+    const contentHeight = event.nativeEvent.contentSize.height
+    const height = event.nativeEvent.layoutMeasurement.height
+    const bottom = offsetY + height
+    const threshold = 20 // fetch more items when within 20px of the bottom
 
     if (bottom > contentHeight - threshold) {
-      fetchUserWords();
+      fetchUserWords()
     }
-  };
+  }
 
   async function fetchUserWords() {
     if (!nextPageToken && words.length !== 0) {
-      return; // All pages have been loaded
+      return // All pages have been loaded
     }
     try {
       setLoading(true)
       const getUserWords = httpsCallable(functions, "getUserWords")
       const result = await getUserWords({ lastSeenAt: nextPageToken })
       const { userWords, nextPageToken: newToken } = result.data
-      const sortingAlgo = (a, b) => a.word.word.localeCompare(b.word.word)
-      userWords.sort(sortingAlgo)
+      // const sortingAlgo = (a, b) => a.word.word.localeCompare(b.word.word)
+      // userWords.sort(sortingAlgo)
       setWords([...words, ...userWords])
       setNextPageToken(newToken)
       setLoading(false)
@@ -58,8 +60,8 @@ const MyWordsPage = () => {
     return <LoadingPage />
   }
 
-  const filteredWords = words.filter(
-    ({ word: { word } }) => word.toLowerCase().includes(searchText.toLowerCase())
+  const filteredWords = words.filter(({ word: { word } }) =>
+    word.toLowerCase().includes(searchText.toLowerCase())
   )
 
   return (
@@ -69,8 +71,12 @@ const MyWordsPage = () => {
         value={searchText}
         placeholder="Search my words..."
       />
-      <ScrollView style={styles.scroll} scrollEventThrottle={16}
-        showsVerticalScrollIndicator={false} onScroll={handleScroll}>
+      <ScrollView
+        style={styles.scroll}
+        scrollEventThrottle={16}
+        showsVerticalScrollIndicator={false}
+        onScroll={handleScroll}
+      >
         {filteredWords.length > 0 ? (
           filteredWords.map((word, index) => (
             <WordPanel key={index} userWord={word} />
@@ -89,20 +95,19 @@ const MyWordsPage = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
     paddingHorizontal: 20,
     paddingTop: 20,
   },
   noWordsText: {
     fontSize: 18,
-    color: '#666',
-    textAlign: 'center',
+    color: "#666",
+    textAlign: "center",
     marginTop: 20,
   },
   scroll: {
     padding: 8,
-    paddingBottom: 32
-  }
+    paddingBottom: 32,
+  },
 })
 
 export default MyWordsPage

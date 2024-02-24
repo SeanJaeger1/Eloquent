@@ -1,13 +1,14 @@
-import React from "react";
-import { View, ActivityIndicator, StyleSheet } from "react-native";
+import React from "react"
+import { View, ActivityIndicator, StyleSheet } from "react-native"
+import palette from "../../palette"
 
 const LoadingPage = () => {
   return (
     <View style={styles.container}>
-      <ActivityIndicator size="large" color="#78CCCC" />
+      <ActivityIndicator size="large" color={palette.secondary} />
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -15,6 +16,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-});
+})
 
-export default LoadingPage;
+export default LoadingPage

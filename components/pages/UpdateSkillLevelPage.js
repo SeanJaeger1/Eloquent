@@ -1,76 +1,89 @@
-import React, { useEffect, useState } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { updateDoc, doc } from 'firebase/firestore';
-import { auth, db } from '../../firebaseConfig';
+import React, { useEffect, useState } from "react"
+import { View, TouchableOpacity, Text, StyleSheet } from "react-native"
+import { updateDoc, doc } from "firebase/firestore"
+import { auth, db } from "../../firebaseConfig"
+import palette from "../../palette"
 
 const UpdateSkillLevelPage = () => {
-  const [userId, setUserId] = useState(null);
+  const [userId, setUserId] = useState(null)
 
   useEffect(() => {
-    const user = auth.currentUser;
+    const user = auth.currentUser
     if (user) {
-      setUserId(user.uid);
+      setUserId(user.uid)
     }
-  }, []);
+  }, [])
 
   const setSkillLevel = async (skillLevel) => {
     try {
       if (!userId) {
-        throw new Error('User is not authenticated.');
+        throw new Error("User is not authenticated.")
       }
 
-      const userRef = doc(db, 'users', userId);
+      const userRef = doc(db, "users", userId)
       await updateDoc(userRef, {
         skillLevel,
-      });
+      })
 
-      console.log(`Updated skill level to ${skillLevel}`);
+      console.log(`Updated skill level to ${skillLevel}`)
     } catch (error) {
-      console.error('Error updating skill level: ', error);
+      console.error("Error updating skill level: ", error)
     }
-  };
+  }
 
   if (!userId) {
-    return null;
+    return null
   }
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Select your English level</Text>
       <Text style={styles.subtitle}>Let’s get started! 👋</Text>
-      <TouchableOpacity style={styles.button} onPress={() => setSkillLevel('beginner')}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => setSkillLevel("beginner")}
+      >
         <Text style={styles.buttonText}>Beginner</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={() => setSkillLevel('intermediate')}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => setSkillLevel("intermediate")}
+      >
         <Text style={styles.buttonText}>Intermediate</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={() => setSkillLevel('advanced')}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => setSkillLevel("advanced")}
+      >
         <Text style={styles.buttonText}>Advanced</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={() => setSkillLevel('expert')}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => setSkillLevel("expert")}
+      >
         <Text style={styles.buttonText}>Expert</Text>
       </TouchableOpacity>
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    padding: 16
+    justifyContent: "center",
+    padding: 16,
   },
   button: {
-    alignItems: 'center',
-    backgroundColor: '#78CCCC',
+    alignItems: "center",
+    backgroundColor: palette.secondary,
     padding: 18,
     marginBottom: 10,
-    borderRadius: 8,
-    height: 64
+    borderRadius: 24,
+    height: 64,
   },
   buttonText: {
     fontSize: 24,
-    color: 'white'
+    color: "white",
   },
   title: {
     fontSize: 28,
@@ -82,8 +95,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 60,
     textAlign: "left",
-
   },
-});
+})
 
-export default UpdateSkillLevelPage;
+export default UpdateSkillLevelPage

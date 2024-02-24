@@ -1,5 +1,5 @@
 const palette = {
-  secondary: "#78CCCC",
+  secondary: "#0E101B",
   offWhite: "#ECECEC",
 }
 
