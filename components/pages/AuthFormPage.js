@@ -7,22 +7,15 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native"
-import {
-  collection,
-  doc,
-  setDoc,
-  serverTimestamp,
-} from "@firebase/firestore"
+import { collection, doc, setDoc, serverTimestamp } from "@firebase/firestore"
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  updateProfile,
 } from "@firebase/auth"
 import { auth, db } from "../../firebaseConfig"
 import palette from "../../palette"
 
 const AuthFormPage = () => {
-  // const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [isSignUp, setIsSignUp] = useState(true)
@@ -35,16 +28,14 @@ const AuthFormPage = () => {
           email,
           password
         )
-        // await updateProfile(userCredential.user, { displayName: name })
 
         // Create a Firestore document for the new user
         await setDoc(doc(collection(db, "users"), userCredential.user.uid), {
           uid: userCredential.user.uid,
           email: email,
-          // username: name,
           dateJoined: serverTimestamp(),
           skillLevel: "",
-          nextWords: [0,0,0,0]
+          nextWords: [0, 0, 0, 0],
         })
       } else {
         await signInWithEmailAndPassword(auth, email, password)
@@ -58,51 +49,40 @@ const AuthFormPage = () => {
     <View style={styles.container}>
       <Text style={styles.title}>{isSignUp ? "Sign Up" : "Sign In"}</Text>
       <Text style={styles.subtitle}>Welcome! 👋</Text>
-      {false && (
-        <View style={styles.inputContainer}>
-          <Text>Name</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter your name"
-            onChangeText={(text) => setName(text)}
-            value={name}
-          />
-        </View>
-      )}
-      <View style={styles.inputContainer}>
-        <Text>Email</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Enter your email"
-          onChangeText={(text) => setEmail(text)}
-          value={email}
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <Text>Password</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Enter your password"
-          secureTextEntry={true}
-          onChangeText={(text) => setPassword(text)}
-          value={password}
-        />
-      </View>
-      <Button color={palette.secondary} title={isSignUp ? "Sign Up" : "Sign In"} onPress={handleAuth} />
+      <TextInput
+        style={styles.input}
+        placeholder="Email address"
+        onChangeText={(text) => setEmail(text)}
+        value={email}
+        placeholderTextColor="black"
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Password"
+        secureTextEntry={true}
+        onChangeText={(text) => setPassword(text)}
+        value={password}
+        placeholderTextColor="black"
+      />
+      <TouchableOpacity style={styles.newClass} onPress={handleAuth}>
+        <Text style={{ color: "white", fontWeight: 600 }}>
+          {isSignUp ? "Sign Up" : "Sign In"}
+        </Text>
+      </TouchableOpacity>
       <TouchableOpacity onPress={() => setIsSignUp(!isSignUp)}>
-      <Text style={styles.toggleText}>
-        {isSignUp ? (
-          <>
-            Already have an account?
-            <Text style={styles.highlighted}>Sign In</Text>
-          </>
-        ) : (
-          <>
-            Don't have an account? <Text style={styles.highlighted}>Sign Up</Text>
-          </>
-        )}
-      </Text>
-
+        <Text style={styles.toggleText}>
+          {isSignUp ? (
+            <>
+              Already joined?
+              <Text style={styles.highlighted}> Sign In</Text>
+            </>
+          ) : (
+            <>
+              Don't have an account?
+              <Text style={styles.highlighted}> Sign Up</Text>
+            </>
+          )}
+        </Text>
       </TouchableOpacity>
     </View>
   )
@@ -125,23 +105,30 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     textAlign: "left",
   },
-  inputContainer: {
-    marginBottom: 10,
+  newClass: {
+    backgroundColor: palette.secondary,
+    color: "white",
+    borderRadius: 16,
+    height: 64,
+    alignItems: "center",
+    justifyContent: "center",
   },
   input: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 5,
+    borderRadius: 24,
     padding: 12,
     marginTop: 5,
-    height: 40,
+    height: 64,
+    marginBottom: 20,
+    color: "black",
+    color: "#000", // Text color
+    backgroundColor: "white",
   },
-  toggleText: {textAlign: 'center',marginTop: 32},
+  toggleText: { textAlign: "center", marginTop: 32, fontSize: 14 },
   highlighted: {
     color: palette.secondary,
-    fontWeight: 600,
-    marginLeft: 8
-  }
+    fontWeight: "bold",
+    marginLeft: 8,
+  },
 })
 
 export default AuthFormPage

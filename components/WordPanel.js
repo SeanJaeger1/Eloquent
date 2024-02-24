@@ -1,48 +1,55 @@
 import React, { useState, useEffect } from "react"
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native"
-import { Audio } from 'expo-av';
-import { Icon } from "react-native-elements";
+import { Audio } from "expo-av"
+import { Icon } from "react-native-elements"
 
-import palette from "../palette";
-import shortenType from "../utils/shortenType";
+import palette from "../palette"
+import shortenType from "../utils/shortenType"
 import ProgressMeter from "./ProgressMeter"
 
 const WordPanel = ({ userWord }) => {
   const [isExpanded, setIsExpanded] = useState(false)
-  const [sound, setSound] = useState();
-  const { word: { definition, meaning, word, wordType, audioUrl }, progress } = userWord
+  const [sound, setSound] = useState()
+  const {
+    word: { definition, meaning, word, wordType, audioUrl },
+    progress,
+  } = userWord
 
   const handlePress = () => {
     setIsExpanded(!isExpanded)
   }
 
   async function playSound() {
-    const { sound } = await Audio.Sound.createAsync(
-      { uri: audioUrl }
-    );
-    setSound(sound);
+    const { sound } = await Audio.Sound.createAsync({ uri: audioUrl })
+    setSound(sound)
 
-    await sound.playAsync();
+    await sound.playAsync()
   }
 
   useEffect(() => {
     return sound
       ? () => {
-        sound.unloadAsync();
-      }
-      : undefined;
-  }, [sound]);
+          sound.unloadAsync()
+        }
+      : undefined
+  }, [sound])
 
   return (
     <TouchableOpacity onPress={handlePress}>
       <View style={styles.container}>
         <View style={styles.row}>
-          <Text style={styles.boldText}>{word}, {shortenType[wordType]} </Text>
-          {
-            audioUrl && (<TouchableOpacity onPress={playSound}>
-              <Icon name='volume-up' type='font-awesome' color={palette.secondary} />
-            </TouchableOpacity>)
-          }
+          <Text style={styles.boldText}>
+            {word}, {shortenType[wordType]}{" "}
+          </Text>
+          {audioUrl && (
+            <TouchableOpacity onPress={playSound}>
+              <Icon
+                name="volume-up"
+                type="font-awesome"
+                color={palette.secondary}
+              />
+            </TouchableOpacity>
+          )}
         </View>
         <View style={styles.row}>
           <ProgressMeter value={progress} />
@@ -62,19 +69,19 @@ const WordPanel = ({ userWord }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
+    // backgroundColor: "white",
     borderRadius: 10,
     padding: 15,
     alignItems: "center",
     justifyContent: "center",
-    boxShadow: '1px 1px 2px 1px rgba(0, 0, 0, 0.25)',
+    boxShadow: "1px 1px 2px 1px rgba(0, 0, 0, 0.25)",
     marginBottom: 20,
-    marginHorizontal: 8
+    marginHorizontal: 8,
   },
   boldText: {
     fontWeight: "bold",
     fontSize: 18,
-    marginRight: 8
+    marginRight: 8,
   },
   row: {
     flexDirection: "row",

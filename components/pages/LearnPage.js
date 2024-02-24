@@ -42,10 +42,7 @@ const LearnPage = () => {
       setTimeout(() => {
         nextWord()
       }, 500)
-      const updateWordProgress = httpsCallable(
-        functions,
-        "updateWordProgress"
-      )
+      const updateWordProgress = httpsCallable(functions, "updateWordProgress")
 
       await updateWordProgress({
         userWordId: words[currentWordIndex].id,
@@ -62,21 +59,22 @@ const LearnPage = () => {
 
   return (
     <View style={styles.container}>
-      <WordCard userWord={words[currentWordIndex]} />
-      <View style={styles.buttonsContainer}>
-        <TouchableOpacity
-          style={[styles.button, styles.crossButton]}
-          onPress={() => updateWordProgress(-1)}
-        >
-          <Text style={styles.buttonText}>✗</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.button, styles.tickButton]}
-          onPress={() => updateWordProgress(1)}
-        >
-          <Text style={styles.buttonText}>✓</Text>
-        </TouchableOpacity>
-      </View>
+      <WordCard userWord={words[currentWordIndex]}>
+        <View style={styles.buttonsContainer}>
+          <TouchableOpacity
+            style={[styles.button, styles.crossButton]}
+            onPress={() => updateWordProgress(-1)}
+          >
+            <Text style={styles.buttonText}>✗</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.button, styles.tickButton]}
+            onPress={() => updateWordProgress(1)}
+          >
+            <Text style={styles.buttonText}>✓</Text>
+          </TouchableOpacity>
+        </View>
+      </WordCard>
     </View>
   )
 }
@@ -88,7 +86,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   card: {
-    width: "90%",
     alignItems: "center",
   },
   word: {
@@ -112,24 +109,21 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     width: "100%",
-    marginTop: 20,
+    backgroundColor: "white",
+    paddingHorizontal: 16,
+    borderTop: "1px solid grey",
   },
   button: {
     width: 60,
     height: 60,
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 30,
   },
-  crossButton: {
-    backgroundColor: "red",
-  },
-  tickButton: {
-    backgroundColor: "green",
-  },
+  crossButton: {},
+  tickButton: {},
   buttonText: {
     fontSize: 36,
-    color: "white",
+    color: "#A3A3A3",
   },
 })
 
