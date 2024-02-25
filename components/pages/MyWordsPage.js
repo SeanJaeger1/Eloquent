@@ -13,8 +13,6 @@ const MyWordsPage = () => {
   const [loading, setLoading] = useState(true)
   const [nextPageToken, setNextPageToken] = useState(null)
 
-  console.log(words)
-
   useFocusEffect(
     React.useCallback(() => {
       fetchUserWords()
