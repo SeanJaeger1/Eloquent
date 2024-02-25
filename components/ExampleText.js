@@ -1,5 +1,6 @@
-import React, { useState } from "react"
-import { View, ScrollView, StyleSheet, Text } from "react-native"
+import React from "react"
+import { View, StyleSheet, Text } from "react-native"
+import palette from "../palette"
 
 const ExampleText = ({ text }) => {
   return (
@@ -16,7 +17,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   box: {
-    backgroundColor: "rgba(128, 182, 182, 0.5)",
+    backgroundColor: palette.subtleBlue,
     width: 6,
     height: "100%",
     marginRight: 8,
