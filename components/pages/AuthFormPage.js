@@ -2,7 +2,6 @@ import React, { useState } from "react"
 import {
   View,
   TextInput,
-  Button,
   Text,
   StyleSheet,
   TouchableOpacity,
@@ -120,7 +119,7 @@ const styles = StyleSheet.create({
     height: 64,
     marginBottom: 20,
     color: "black",
-    color: "#000", // Text color
+    color: "#000",
     backgroundColor: "white",
   },
   toggleText: { textAlign: "center", marginTop: 32, fontSize: 14 },
