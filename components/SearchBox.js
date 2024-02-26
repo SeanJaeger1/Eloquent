@@ -1,14 +1,14 @@
 import React from "react"
 import { TextInput, StyleSheet } from "react-native"
 
-const SearchBox = ({onChangeText, value}) => {
+const SearchBox = ({ onChangeText, value }) => {
   return (
     <TextInput
-    style={styles.input}
-    placeholder="Search..."
-    placeholderTextColor="#000" // specify placeholder text color
-    onChangeText={onChangeText}
-    value={value}
+      style={styles.input}
+      placeholder="Search..."
+      placeholderTextColor="#000"
+      onChangeText={onChangeText}
+      value={value}
     />
   )
 }

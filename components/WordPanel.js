@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native"
-import { Audio } from "expo-av"
-import { Icon } from "react-native-elements"
 
 import palette from "../palette"
 import shortenType from "../utils/shortenType"
@@ -9,30 +7,14 @@ import ProgressMeter from "./ProgressMeter"
 
 const WordPanel = ({ userWord }) => {
   const [isExpanded, setIsExpanded] = useState(false)
-  const [sound, setSound] = useState()
   const {
-    word: { definition, meaning, word, wordType, audioUrl },
+    word: { definition, meaning, word, wordType },
     progress,
   } = userWord
 
   const handlePress = () => {
     setIsExpanded(!isExpanded)
   }
-
-  async function playSound() {
-    const { sound } = await Audio.Sound.createAsync({ uri: audioUrl })
-    setSound(sound)
-
-    await sound.playAsync()
-  }
-
-  useEffect(() => {
-    return sound
-      ? () => {
-          sound.unloadAsync()
-        }
-      : undefined
-  }, [sound])
 
   return (
     <TouchableOpacity onPress={handlePress}>
@@ -41,15 +23,6 @@ const WordPanel = ({ userWord }) => {
           <Text style={styles.boldText}>
             {word}, {shortenType[wordType]}{" "}
           </Text>
-          {audioUrl && (
-            <TouchableOpacity onPress={playSound}>
-              <Icon
-                name="volume-up"
-                type="font-awesome"
-                color={palette.secondary}
-              />
-            </TouchableOpacity>
-          )}
         </View>
         <View style={styles.row}>
           <ProgressMeter value={progress} />
@@ -69,7 +42,7 @@ const WordPanel = ({ userWord }) => {
 
 const styles = StyleSheet.create({
   container: {
-    // backgroundColor: "white",
+    backgroundColor: "white",
     borderRadius: 10,
     padding: 15,
     alignItems: "center",

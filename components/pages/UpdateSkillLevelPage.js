@@ -32,13 +32,13 @@ const UpdateSkillLevelPage = () => {
   }
 
   if (!userId) {
-    return null
+    return <Background></Background>
   }
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Select your English level</Text>
-      <Text style={styles.subtitle}>Let’s get started! 👋</Text>
+      <Text style={styles.subtitle}>Let's get started! 👋</Text>
       <TouchableOpacity
         style={styles.button}
         onPress={() => setSkillLevel("beginner")}
