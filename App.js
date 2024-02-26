@@ -47,7 +47,11 @@ const App = () => {
         <Tab.Screen
           options={{
             tabBarIcon: ({ focused }) => (
-              <SquaresIcon stroke={focused ? "white" : "#A3A3A3"} />
+              <SquaresIcon
+                stroke={focused ? "white" : "#A3A3A3"}
+                width={30}
+                height={30}
+              />
             ),
           }}
           name="My Words"
@@ -56,7 +60,11 @@ const App = () => {
         <Tab.Screen
           options={{
             tabBarIcon: ({ focused }) => (
-              <BookIcon stroke={focused ? "white" : "#A3A3A3"} />
+              <BookIcon
+                stroke={focused ? "white" : "#A3A3A3"}
+                width={30}
+                height={30}
+              />
             ),
           }}
           name="Learn"
