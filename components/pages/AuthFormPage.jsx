@@ -66,9 +66,7 @@ const AuthFormPage = () => {
         placeholderTextColor="black"
       />
       <TouchableOpacity style={styles.newClass} onPress={handleAuth}>
-        <Text style={{ color: "white", fontWeight: 600 }}>
-          {isSignUp ? "Sign Up" : "Sign In"}
-        </Text>
+        <Text>{isSignUp ? "Sign Up" : "Sign In"}</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => setIsSignUp(!isSignUp)}>
         <Text style={styles.toggleText}>
