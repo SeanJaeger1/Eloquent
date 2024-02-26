@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from "react"
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native"
+import { useState, useEffect } from "react"
+
 import { httpsCallable } from "firebase/functions"
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native"
+
 import { functions } from "../../firebaseConfig"
-import LoadingPage from "./LoadingPage"
 import WordCard from "../WordCard"
+
+import LoadingPage from "./LoadingPage"
 
 const LearnPage = () => {
   const [words, setWords] = useState([])

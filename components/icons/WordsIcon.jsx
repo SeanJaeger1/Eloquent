@@ -1,5 +1,4 @@
-import React from "react"
-import Svg, { Path } from "react-native-svg"
+import { Path, Svg } from "react-native-svg"
 
 const BookIcon = ({ stroke }) => (
   <Svg width="20" height="16" viewBox="0 0 20 16" fill="none">

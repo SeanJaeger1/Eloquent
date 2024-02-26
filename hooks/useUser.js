@@ -1,37 +1,39 @@
-import { useEffect, useState } from "react";
-import { db, auth } from "../firebaseConfig";
-import { doc, onSnapshot } from "firebase/firestore";
+import { useEffect, useState } from "react"
+
+import { doc, onSnapshot } from "firebase/firestore"
+
+import { db, auth } from "../firebaseConfig"
 
 const useUser = () => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null)
 
   useEffect(() => {
-    let unsubscribe = null;
+    let unsubscribe = null
 
     const fetchUser = async () => {
-      const userRef = doc(db, "users", auth.currentUser.uid);
+      const userRef = doc(db, "users", auth.currentUser.uid)
 
       unsubscribe = onSnapshot(userRef, (doc) => {
         if (doc.exists()) {
-          setUser(doc.data());
+          setUser(doc.data())
         }
-      });
-    };
+      })
+    }
 
     if (auth?.currentUser?.uid) {
-      fetchUser();
+      fetchUser()
     } else {
-      setUser(null);
+      setUser(null)
     }
 
     return () => {
       if (unsubscribe) {
-        unsubscribe();
+        unsubscribe()
       }
-    };
-  }, [auth?.currentUser?.uid]);
+    }
+  }, [auth?.currentUser?.uid])
 
-  return user;
-};
+  return user
+}
 
-export default useUser;
+export default useUser

@@ -1,5 +1,5 @@
-import React from "react"
 import { View, StyleSheet, Text } from "react-native"
+
 import palette from "../palette"
 
 const ExampleText = ({ text }) => {

@@ -1,8 +1,9 @@
-import React, { useState } from "react"
+import { useState } from "react"
+
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native"
 
-import palette from "../palette"
 import shortenType from "../utils/shortenType"
+
 import ProgressMeter from "./ProgressMeter"
 
 const WordPanel = ({ userWord }) => {

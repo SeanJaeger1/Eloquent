@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from "react"
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native"
+import { View, Text, StyleSheet } from "react-native"
 import { Card } from "react-native-elements"
-import { Icon } from "react-native-elements"
-import palette from "../palette"
-import shortenType from "../utils/shortenType"
-import ProgressMeter from "./ProgressMeter"
-import ExampleText from "./ExampleText"
+
 import capitalizeFirstLetter from "../utils/capitalizeFirstLetter"
+
+import ExampleText from "./ExampleText"
+import ProgressMeter from "./ProgressMeter"
 
 const WordCard = ({ userWord, children }) => {
   const { progress, word } = userWord

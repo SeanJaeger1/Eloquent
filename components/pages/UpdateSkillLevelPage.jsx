@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react"
-import { View, TouchableOpacity, Text, StyleSheet } from "react-native"
+import { useEffect, useState } from "react"
+
 import { updateDoc, doc } from "firebase/firestore"
+import { View, TouchableOpacity, Text, StyleSheet } from "react-native"
+
 import { auth, db } from "../../firebaseConfig"
 import palette from "../../palette"
-import Background from "../Background"
 
 const UpdateSkillLevelPage = () => {
   const [userId, setUserId] = useState(null)
@@ -39,7 +40,7 @@ const UpdateSkillLevelPage = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Select your English level</Text>
-      <Text style={styles.subtitle}>Let's get started! 👋</Text>
+      <Text style={styles.subtitle}>Let&apos;s get started! 👋</Text>
       <TouchableOpacity
         style={styles.button}
         onPress={() => setSkillLevel("beginner")}
