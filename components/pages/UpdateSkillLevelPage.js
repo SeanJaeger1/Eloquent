@@ -33,7 +33,7 @@ const UpdateSkillLevelPage = () => {
   }
 
   if (!userId) {
-    return <Background></Background>
+    return null
   }
 
   return (

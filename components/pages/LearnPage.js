@@ -4,7 +4,6 @@ import { httpsCallable } from "firebase/functions"
 import { functions } from "../../firebaseConfig"
 import LoadingPage from "./LoadingPage"
 import WordCard from "../WordCard"
-import Background from "../Background"
 
 const LearnPage = () => {
   const [words, setWords] = useState([])
@@ -55,34 +54,28 @@ const LearnPage = () => {
   }
 
   if (loading) {
-    return (
-      <Background>
-        <LoadingPage />
-      </Background>
-    )
+    return <LoadingPage />
   }
 
   return (
-    <Background>
-      <View style={styles.container}>
-        <WordCard userWord={words[currentWordIndex]}>
-          <View style={styles.buttonsContainer}>
-            <TouchableOpacity
-              style={[styles.button, styles.crossButton]}
-              onPress={() => updateWordProgress(-1)}
-            >
-              <Text style={styles.buttonText}>✗</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.button, styles.tickButton]}
-              onPress={() => updateWordProgress(1)}
-            >
-              <Text style={styles.buttonText}>✓</Text>
-            </TouchableOpacity>
-          </View>
-        </WordCard>
-      </View>
-    </Background>
+    <View style={styles.container}>
+      <WordCard userWord={words[currentWordIndex]}>
+        <View style={styles.buttonsContainer}>
+          <TouchableOpacity
+            style={[styles.button, styles.crossButton]}
+            onPress={() => updateWordProgress(-1)}
+          >
+            <Text style={styles.buttonText}>✗</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.button, styles.tickButton]}
+            onPress={() => updateWordProgress(1)}
+          >
+            <Text style={styles.buttonText}>✓</Text>
+          </TouchableOpacity>
+        </View>
+      </WordCard>
+    </View>
   )
 }
 
