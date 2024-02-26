@@ -1,7 +1,6 @@
 import React, { useState } from "react"
-import { View, ScrollView, StyleSheet, Text } from "react-native"
+import { View, ScrollView, StyleSheet, Text, TextInput } from "react-native"
 import { useFocusEffect } from "@react-navigation/native"
-import SearchBox from "../SearchBox"
 import WordPanel from "../WordPanel"
 import { httpsCallable } from "firebase/functions"
 import { functions } from "../../firebaseConfig"
@@ -70,12 +69,14 @@ const MyWordsPage = () => {
   return (
     <Background>
       <View style={styles.container}>
-        <SearchBox
+        <TextInput
+          style={styles.input}
+          placeholder="Search my words..."
+          placeholderTextColor="#000"
           onChangeText={(text) => setSearchText(text)}
           value={searchText}
-          placeholder="Search my words..."
-          style={styles.searchBar}
         />
+
         <ScrollView
           style={styles.scroll}
           scrollEventThrottle={16}
@@ -111,12 +112,19 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   scroll: {
-    padding: 8,
     paddingBottom: 148,
   },
-  searchBar: {
+  input: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+    padding: 12,
+    marginTop: 5,
+    marginBottom: 10,
+    width: "100%",
     backgroundColor: "white",
-    padding: 8,
+    borderRadius: 24,
+    paddingLeft: 24,
   },
 })
 
