@@ -1,60 +1,28 @@
 import React, { useState, useEffect } from "react"
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native"
 import { Card } from "react-native-elements"
-import { Audio } from "expo-av"
 import { Icon } from "react-native-elements"
 import palette from "../palette"
 import shortenType from "../utils/shortenType"
 import ProgressMeter from "./ProgressMeter"
 import ExampleText from "./ExampleText"
+import capitalizeFirstLetter from "../utils/capitalizeFirstLetter"
 
 const WordCard = ({ userWord, children }) => {
   const { progress, word } = userWord
-  const {
-    audioUrl,
-    word: wordText,
-    examples,
-    definition,
-    phonetic,
-    wordType,
-  } = word
-  const [sound, setSound] = useState(null)
-
-  async function preloadSound() {
-    const { sound } = await Audio.Sound.createAsync({ uri: audioUrl })
-    setSound(sound)
-  }
-
-  async function playSound() {
-    await sound.playAsync()
-  }
-
-  useEffect(() => {
-    audioUrl && preloadSound()
-    return sound
-      ? () => {
-          sound.unloadAsync()
-        }
-      : undefined
-  }, [audioUrl])
+  const { word: wordText, examples, definition, wordType } = word
 
   return (
     <Card containerStyle={styles.card}>
       <View style={styles.header}>
         <Text style={styles.word}>{wordText}</Text>
-        {audioUrl && (
-          <TouchableOpacity onPress={playSound}>
-            <Icon name="volume-up" type="font-awesome" color={palette.sound} />
-          </TouchableOpacity>
-        )}
       </View>
+      <Text style={styles.type}>({capitalizeFirstLetter(wordType)})</Text>
       {progress > 1 && (
         <View style={styles.row}>
           <ProgressMeter value={progress} />
         </View>
       )}
-      {phonetic && <Text style={styles.phonetic}>{phonetic}</Text>}
-      <Text style={styles.type}>({shortenType[wordType]})</Text>
       <Text style={styles.meaning}>{definition}</Text>
       <ExampleText text={examples[0]} />
       {children}

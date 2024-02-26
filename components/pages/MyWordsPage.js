@@ -6,6 +6,7 @@ import WordPanel from "../WordPanel"
 import { httpsCallable } from "firebase/functions"
 import { functions } from "../../firebaseConfig"
 import LoadingPage from "./LoadingPage"
+import Background from "../Background"
 
 const MyWordsPage = () => {
   const [searchText, setSearchText] = useState("")
@@ -55,7 +56,11 @@ const MyWordsPage = () => {
   }
 
   if (loading && words.length === 0) {
-    return <LoadingPage />
+    return (
+      <Background>
+        <LoadingPage />
+      </Background>
+    )
   }
 
   const filteredWords = words.filter(({ word: { word } }) =>
@@ -63,30 +68,33 @@ const MyWordsPage = () => {
   )
 
   return (
-    <View style={styles.container}>
-      <SearchBox
-        onChangeText={(text) => setSearchText(text)}
-        value={searchText}
-        placeholder="Search my words..."
-      />
-      <ScrollView
-        style={styles.scroll}
-        scrollEventThrottle={16}
-        showsVerticalScrollIndicator={false}
-        onScroll={handleScroll}
-      >
-        {filteredWords.length > 0 ? (
-          filteredWords.map((word, index) => (
-            <WordPanel key={index} userWord={word} />
-          ))
-        ) : (
-          <Text style={styles.noWordsText}>
-            You don't have any words yet! Start learning new words.
-          </Text>
-        )}
-        {loading && <LoadingPage />}
-      </ScrollView>
-    </View>
+    <Background>
+      <View style={styles.container}>
+        <SearchBox
+          onChangeText={(text) => setSearchText(text)}
+          value={searchText}
+          placeholder="Search my words..."
+          style={styles.searchBar}
+        />
+        <ScrollView
+          style={styles.scroll}
+          scrollEventThrottle={16}
+          showsVerticalScrollIndicator={false}
+          onScroll={handleScroll}
+        >
+          {filteredWords.length > 0 ? (
+            filteredWords.map((word, index) => (
+              <WordPanel key={index} userWord={word} />
+            ))
+          ) : (
+            <Text style={styles.noWordsText}>
+              You don't have any words yet! Start learning new words.
+            </Text>
+          )}
+          {loading && <LoadingPage />}
+        </ScrollView>
+      </View>
+    </Background>
   )
 }
 
@@ -104,7 +112,11 @@ const styles = StyleSheet.create({
   },
   scroll: {
     padding: 8,
-    paddingBottom: 32,
+    paddingBottom: 148,
+  },
+  searchBar: {
+    backgroundColor: "white",
+    padding: 8,
   },
 })
 
