@@ -3,6 +3,7 @@ import { View, TouchableOpacity, Text, StyleSheet } from "react-native"
 import { updateDoc, doc } from "firebase/firestore"
 import { auth, db } from "../../firebaseConfig"
 import palette from "../../palette"
+import Background from "../Background"
 
 const UpdateSkillLevelPage = () => {
   const [userId, setUserId] = useState(null)

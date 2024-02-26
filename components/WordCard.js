@@ -69,11 +69,6 @@ const styles = StyleSheet.create({
     color: "gray",
     textAlign: "left",
   },
-  phonetic: {
-    fontSize: 12,
-    marginTop: 8,
-    textAlign: "center",
-  },
   row: {
     flexDirection: "row",
     marginVertical: 16,

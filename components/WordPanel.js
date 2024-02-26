@@ -49,7 +49,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     boxShadow: "1px 1px 2px 1px rgba(0, 0, 0, 0.25)",
     marginBottom: 20,
-    marginHorizontal: 8,
   },
   boldText: {
     fontWeight: "bold",
