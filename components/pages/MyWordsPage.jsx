@@ -1,9 +1,12 @@
-import React, { useState } from "react"
-import { View, ScrollView, StyleSheet, Text, TextInput } from "react-native"
+import { useState } from "react"
+
 import { useFocusEffect } from "@react-navigation/native"
-import WordPanel from "../WordPanel"
 import { httpsCallable } from "firebase/functions"
+import { View, ScrollView, StyleSheet, Text, TextInput } from "react-native"
+
 import { functions } from "../../firebaseConfig"
+import WordPanel from "../WordPanel"
+
 import LoadingPage from "./LoadingPage"
 
 const MyWordsPage = () => {

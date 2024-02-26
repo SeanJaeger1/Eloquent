@@ -1,4 +1,10 @@
-import React, { useState } from "react"
+import { useState } from "react"
+
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "@firebase/auth"
+import { collection, doc, setDoc, serverTimestamp } from "@firebase/firestore"
 import {
   View,
   TextInput,
@@ -6,11 +12,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native"
-import { collection, doc, setDoc, serverTimestamp } from "@firebase/firestore"
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from "@firebase/auth"
+
 import { auth, db } from "../../firebaseConfig"
 import palette from "../../palette"
 
