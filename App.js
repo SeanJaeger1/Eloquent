@@ -1,7 +1,6 @@
 import React from "react"
-import { NavigationContainer } from "@react-navigation/native"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
-
+import { DefaultTheme, NavigationContainer } from "@react-navigation/native"
 import useAuthState from "./hooks/useAuthState"
 import AuthFormPage from "./components/pages/AuthFormPage"
 import MyWordsPage from "./components/pages/MyWordsPage"
@@ -19,9 +18,16 @@ const App = () => {
   const loggedIn = useAuthState()
   const user = useUser()
   const unranked = loggedIn && user?.skillLevel === ""
+  const navTheme = {
+    ...DefaultTheme,
+    colors: {
+      ...DefaultTheme.colors,
+      background: "transparent",
+    },
+  }
 
   let content = (
-    <NavigationContainer>
+    <NavigationContainer theme={navTheme}>
       <Tab.Navigator
         screenOptions={{
           tabBarShowLabel: false,

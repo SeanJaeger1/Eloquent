@@ -5,7 +5,6 @@ import WordPanel from "../WordPanel"
 import { httpsCallable } from "firebase/functions"
 import { functions } from "../../firebaseConfig"
 import LoadingPage from "./LoadingPage"
-import Background from "../Background"
 
 const MyWordsPage = () => {
   const [searchText, setSearchText] = useState("")
@@ -55,11 +54,7 @@ const MyWordsPage = () => {
   }
 
   if (loading && words.length === 0) {
-    return (
-      <Background>
-        <LoadingPage />
-      </Background>
-    )
+    return <LoadingPage />
   }
 
   const filteredWords = words.filter(({ word: { word } }) =>
@@ -67,35 +62,33 @@ const MyWordsPage = () => {
   )
 
   return (
-    <Background>
-      <View style={styles.container}>
-        <TextInput
-          style={styles.input}
-          placeholder="Search my words..."
-          placeholderTextColor="#000"
-          onChangeText={(text) => setSearchText(text)}
-          value={searchText}
-        />
+    <View style={styles.container}>
+      <TextInput
+        style={styles.input}
+        placeholder="Search my words..."
+        placeholderTextColor="#000"
+        onChangeText={(text) => setSearchText(text)}
+        value={searchText}
+      />
 
-        <ScrollView
-          style={styles.scroll}
-          scrollEventThrottle={16}
-          showsVerticalScrollIndicator={false}
-          onScroll={handleScroll}
-        >
-          {filteredWords.length > 0 ? (
-            filteredWords.map((word, index) => (
-              <WordPanel key={index} userWord={word} />
-            ))
-          ) : (
-            <Text style={styles.noWordsText}>
-              You don't have any words yet! Start learning new words.
-            </Text>
-          )}
-          {loading && <LoadingPage />}
-        </ScrollView>
-      </View>
-    </Background>
+      <ScrollView
+        style={styles.scroll}
+        scrollEventThrottle={16}
+        showsVerticalScrollIndicator={false}
+        onScroll={handleScroll}
+      >
+        {filteredWords.length > 0 ? (
+          filteredWords.map((word, index) => (
+            <WordPanel key={index} userWord={word} />
+          ))
+        ) : (
+          <Text style={styles.noWordsText}>
+            You don't have any words yet! Start learning new words.
+          </Text>
+        )}
+        {loading && <LoadingPage />}
+      </ScrollView>
+    </View>
   )
 }
 
