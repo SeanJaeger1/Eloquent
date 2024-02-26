@@ -1,7 +1,7 @@
 import { Path, Svg } from "react-native-svg"
 
-const SquaresIcon = ({ stroke }) => (
-  <Svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+const SquaresIcon = ({ stroke, width = "20", height = "20" }) => (
+  <Svg width={width} height={height} viewBox="0 0 20 20" fill="none">
     <Path
       d="M7.5 2.5H3.33333C2.8731 2.5 2.5 2.8731 2.5 3.33333V7.5C2.5 7.96024 2.8731 8.33333 3.33333 8.33333H7.5C7.96024 8.33333 8.33333 7.96024 8.33333 7.5V3.33333C8.33333 2.8731 7.96024 2.5 7.5 2.5Z"
       stroke={stroke}
