@@ -7,6 +7,7 @@ import { functions } from "../../firebaseConfig"
 import WordCard from "../WordCard"
 
 import LoadingPage from "./LoadingPage"
+import palette from "../../palette"
 
 const LearnPage = () => {
   const [words, setWords] = useState([])
@@ -126,7 +127,7 @@ const styles = StyleSheet.create({
   tickButton: {},
   buttonText: {
     fontSize: 36,
-    color: "#A3A3A3",
+    color: palette.lightGrey,
   },
 })
 
