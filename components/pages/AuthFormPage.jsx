@@ -121,7 +121,6 @@ const styles = StyleSheet.create({
     height: 64,
     marginBottom: 20,
     color: "black",
-    color: "#000",
     backgroundColor: "white",
   },
   toggleText: { textAlign: "center", marginTop: 32, fontSize: 14 },

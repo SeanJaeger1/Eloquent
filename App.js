@@ -48,7 +48,7 @@ const App = () => {
           options={{
             tabBarIcon: ({ focused }) => (
               <SquaresIcon
-                stroke={focused ? "white" : "#A3A3A3"}
+                stroke={focused ? "white" : palette.lightGrey}
                 width={30}
                 height={30}
               />
@@ -61,7 +61,7 @@ const App = () => {
           options={{
             tabBarIcon: ({ focused }) => (
               <BookIcon
-                stroke={focused ? "white" : "#A3A3A3"}
+                stroke={focused ? "white" : palette.lightGrey}
                 width={30}
                 height={30}
               />

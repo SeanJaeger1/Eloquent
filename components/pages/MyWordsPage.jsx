@@ -69,7 +69,7 @@ const MyWordsPage = () => {
       <TextInput
         style={styles.input}
         placeholder="Search my words..."
-        placeholderTextColor="#000"
+        placeholderTextColor="black"
         onChangeText={(text) => setSearchText(text)}
         value={searchText}
       />
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
   },
   noWordsText: {
     fontSize: 18,
-    color: "#666",
+    color: "white",
     textAlign: "center",
     marginTop: 20,
   },
@@ -112,7 +112,6 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: "#ccc",
     borderRadius: 5,
     padding: 12,
     marginTop: 5,
