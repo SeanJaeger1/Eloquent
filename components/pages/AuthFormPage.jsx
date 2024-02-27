@@ -66,7 +66,9 @@ const AuthFormPage = () => {
         placeholderTextColor="black"
       />
       <TouchableOpacity style={styles.newClass} onPress={handleAuth}>
-        <Text>{isSignUp ? "Sign Up" : "Sign In"}</Text>
+        <Text style={styles.signUpButton}>
+          {isSignUp ? "Sign Up" : "Sign In"}
+        </Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => setIsSignUp(!isSignUp)}>
         <Text style={styles.toggleText}>
@@ -111,6 +113,9 @@ const styles = StyleSheet.create({
     height: 64,
     alignItems: "center",
     justifyContent: "center",
+  },
+  signUpButton: {
+    color: "white",
   },
   input: {
     borderRadius: 24,
