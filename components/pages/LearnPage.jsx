@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 
 import { httpsCallable } from "firebase/functions"
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native"
+import { View, Text, StyleSheet, Pressable } from "react-native"
 
 import { functions } from "../../firebaseConfig"
 import WordCard from "../WordCard"
@@ -65,18 +65,18 @@ const LearnPage = () => {
     <View style={styles.container}>
       <WordCard userWord={words[currentWordIndex]}>
         <View style={styles.buttonsContainer}>
-          <TouchableOpacity
+          <Pressable
             style={[styles.button, styles.crossButton]}
             onPress={() => updateWordProgress(-1)}
           >
             <Text style={styles.buttonText}>✗</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
+          </Pressable>
+          <Pressable
             style={[styles.button, styles.tickButton]}
             onPress={() => updateWordProgress(1)}
           >
             <Text style={styles.buttonText}>✓</Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </WordCard>
     </View>

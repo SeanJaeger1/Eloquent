@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 
 import { updateDoc, doc } from "firebase/firestore"
-import { View, TouchableOpacity, Text, StyleSheet } from "react-native"
+import { View, Pressable, Text, StyleSheet } from "react-native"
 
 import { auth, db } from "../../firebaseConfig"
 import palette from "../../palette"
@@ -41,30 +41,27 @@ const UpdateSkillLevelPage = () => {
     <View style={styles.container}>
       <Text style={styles.title}>Select your English level</Text>
       <Text style={styles.subtitle}>Let&apos;s get started! 👋</Text>
-      <TouchableOpacity
+      <Pressable
         style={styles.button}
         onPress={() => setSkillLevel("beginner")}
       >
         <Text style={styles.buttonText}>Beginner</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
+      </Pressable>
+      <Pressable
         style={styles.button}
         onPress={() => setSkillLevel("intermediate")}
       >
         <Text style={styles.buttonText}>Intermediate</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
+      </Pressable>
+      <Pressable
         style={styles.button}
         onPress={() => setSkillLevel("advanced")}
       >
         <Text style={styles.buttonText}>Advanced</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => setSkillLevel("expert")}
-      >
+      </Pressable>
+      <Pressable style={styles.button} onPress={() => setSkillLevel("expert")}>
         <Text style={styles.buttonText}>Expert</Text>
-      </TouchableOpacity>
+      </Pressable>
     </View>
   )
 }
