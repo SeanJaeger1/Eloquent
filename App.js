@@ -3,7 +3,7 @@ import { DefaultTheme, NavigationContainer } from "@react-navigation/native"
 
 import Background from "./components/Background"
 import SquaresIcon from "./components/icons/SquaresIcon"
-import BookIcon from "./components/icons/WordsIcon"
+import BookIcon from "./components/icons/BookIcon"
 import AuthFormPage from "./components/pages/AuthFormPage"
 import LearnPage from "./components/pages/LearnPage"
 import MyWordsPage from "./components/pages/MyWordsPage"
