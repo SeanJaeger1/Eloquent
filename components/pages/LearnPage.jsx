@@ -115,7 +115,9 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: "white",
     paddingHorizontal: 16,
-    borderTop: "1px solid grey",
+    borderTopWidth: 1,
+    borderTopColor: "grey",
+    borderTopStyle: "solid",
   },
   button: {
     width: 60,
