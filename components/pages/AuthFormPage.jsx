@@ -5,13 +5,7 @@ import {
   signInWithEmailAndPassword,
 } from "@firebase/auth"
 import { collection, doc, setDoc, serverTimestamp } from "@firebase/firestore"
-import {
-  View,
-  TextInput,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-} from "react-native"
+import { View, TextInput, Text, StyleSheet, Pressable } from "react-native"
 
 import { auth, db } from "../../firebaseConfig"
 import palette from "../../palette"
@@ -65,12 +59,12 @@ const AuthFormPage = () => {
         value={password}
         placeholderTextColor="black"
       />
-      <TouchableOpacity style={styles.newClass} onPress={handleAuth}>
+      <Pressable style={styles.newClass} onPress={handleAuth}>
         <Text style={styles.signUpButton}>
           {isSignUp ? "Sign Up" : "Sign In"}
         </Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => setIsSignUp(!isSignUp)}>
+      </Pressable>
+      <Pressable onPress={() => setIsSignUp(!isSignUp)}>
         <Text style={styles.toggleText}>
           {isSignUp ? (
             <>
@@ -84,7 +78,7 @@ const AuthFormPage = () => {
             </>
           )}
         </Text>
-      </TouchableOpacity>
+      </Pressable>
     </View>
   )
 }

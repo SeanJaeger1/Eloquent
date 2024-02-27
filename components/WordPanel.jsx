@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native"
+import { View, Text, StyleSheet, Pressable } from "react-native"
 
 import shortenType from "../utils/shortenType"
 
@@ -18,7 +18,7 @@ const WordPanel = ({ userWord }) => {
   }
 
   return (
-    <TouchableOpacity onPress={handlePress}>
+    <Pressable onPress={handlePress}>
       <View style={styles.container}>
         <View style={styles.row}>
           <Text style={styles.boldText}>
@@ -37,7 +37,7 @@ const WordPanel = ({ userWord }) => {
           </View>
         )}
       </View>
-    </TouchableOpacity>
+    </Pressable>
   )
 }
 
