@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   pressable: {
     backgroundColor: palette.secondary,
     color: "white",
-    borderRadius: 16,
+    borderRadius: 24,
     height: 64,
     alignItems: "center",
     justifyContent: "center",
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     fontWeight: 600,
     fontSize: 18,
   },
-  arrowContainer: { position: "absolute", right: 32 },
+  arrowContainer: { position: "absolute", right: 36 },
 })
 
 export default PrimaryButton
