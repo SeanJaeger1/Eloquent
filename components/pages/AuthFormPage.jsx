@@ -59,7 +59,7 @@ const AuthFormPage = () => {
         value={password}
         placeholderTextColor="black"
       />
-      <Pressable style={styles.newClass} onPress={handleAuth}>
+      <Pressable style={styles.pressable} onPress={handleAuth}>
         <Text style={styles.signUpButton}>
           {isSignUp ? "Sign Up" : "Sign In"}
         </Text>
@@ -87,20 +87,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    paddingHorizontal: 20,
+    paddingHorizontal: 32,
   },
   title: {
-    fontSize: 42,
+    fontSize: 40,
     fontWeight: "bold",
     marginBottom: 20,
     textAlign: "left",
   },
   subtitle: {
     fontSize: 16,
-    marginBottom: 20,
+    marginBottom: 40,
     textAlign: "left",
   },
-  newClass: {
+  pressable: {
     backgroundColor: palette.secondary,
     color: "white",
     borderRadius: 16,
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     color: "black",
     backgroundColor: "white",
   },
-  toggleText: { textAlign: "center", marginTop: 32, fontSize: 14 },
+  toggleText: { textAlign: "center", marginTop: 32, fontSize: 16 },
   highlighted: {
     color: palette.secondary,
     fontWeight: "bold",
