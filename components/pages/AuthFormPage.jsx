@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     paddingLeft: 24,
   },
-  toggleText: { textAlign: "center", marginTop: 32, fontSize: 16 },
+  toggleText: { textAlign: "center", marginTop: 16, fontSize: 16 },
   highlighted: {
     color: palette.secondary,
     fontWeight: "bold",

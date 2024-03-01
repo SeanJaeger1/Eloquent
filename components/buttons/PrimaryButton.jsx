@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     display: "flex",
     flexDirection: "row",
+    marginBottom: 16,
   },
   signUpButton: {
     color: "white",

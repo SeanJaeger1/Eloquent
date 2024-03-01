@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react"
 
 import { updateDoc, doc } from "firebase/firestore"
-import { View, Pressable, Text, StyleSheet } from "react-native"
+import { View, Text, StyleSheet } from "react-native"
 
 import { auth, db } from "../../firebaseConfig"
-import palette from "../../palette"
+import PrimaryButton from "../buttons/PrimaryButton"
 
 const UpdateSkillLevelPage = () => {
   const [userId, setUserId] = useState(null)
@@ -41,27 +41,20 @@ const UpdateSkillLevelPage = () => {
     <View style={styles.container}>
       <Text style={styles.title}>Select your English level</Text>
       <Text style={styles.subtitle}>Let&apos;s get started! 👋</Text>
-      <Pressable
-        style={styles.button}
+      <PrimaryButton
+        text={"Beginner"}
         onPress={() => setSkillLevel("beginner")}
-      >
-        <Text style={styles.buttonText}>Beginner</Text>
-      </Pressable>
-      <Pressable
-        style={styles.button}
+      />
+      <PrimaryButton
+        text={"Intermediate"}
         onPress={() => setSkillLevel("intermediate")}
-      >
-        <Text style={styles.buttonText}>Intermediate</Text>
-      </Pressable>
-      <Pressable
-        style={styles.button}
+      />
+      <PrimaryButton
+        text={"Advanced"}
         onPress={() => setSkillLevel("advanced")}
-      >
-        <Text style={styles.buttonText}>Advanced</Text>
-      </Pressable>
-      <Pressable style={styles.button} onPress={() => setSkillLevel("expert")}>
-        <Text style={styles.buttonText}>Expert</Text>
-      </Pressable>
+        style={styles.button}
+      />
+      <PrimaryButton text={"Expert"} onPress={() => setSkillLevel("expert")} />
     </View>
   )
 }
@@ -70,15 +63,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    padding: 16,
+    padding: 32,
   },
   button: {
-    alignItems: "center",
-    backgroundColor: palette.secondary,
-    padding: 18,
-    marginBottom: 10,
-    borderRadius: 24,
-    height: 64,
+    marginBottom: 18,
   },
   buttonText: {
     fontSize: 24,
