@@ -110,6 +110,8 @@ const styles = StyleSheet.create({
   },
   signUpButton: {
     color: "white",
+    fontWeight: 600,
+    fontSize: 18,
   },
   input: {
     borderRadius: 24,
@@ -119,12 +121,12 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     color: "black",
     backgroundColor: "white",
+    paddingLeft: 24,
   },
   toggleText: { textAlign: "center", marginTop: 32, fontSize: 16 },
   highlighted: {
     color: palette.secondary,
     fontWeight: "bold",
-    marginLeft: 8,
   },
 })
 
