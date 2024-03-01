@@ -9,6 +9,7 @@ import { View, TextInput, Text, StyleSheet, Pressable } from "react-native"
 
 import { auth, db } from "../../firebaseConfig"
 import palette from "../../palette"
+import PrimaryButton from "../buttons/PrimaryButton"
 
 const AuthFormPage = () => {
   const [email, setEmail] = useState("")
@@ -59,11 +60,10 @@ const AuthFormPage = () => {
         value={password}
         placeholderTextColor="black"
       />
-      <Pressable style={styles.pressable} onPress={handleAuth}>
-        <Text style={styles.signUpButton}>
-          {isSignUp ? "Sign Up" : "Sign In"}
-        </Text>
-      </Pressable>
+      <PrimaryButton
+        text={isSignUp ? "Sign Up" : "Sign In"}
+        onPress={handleAuth}
+      />
       <Pressable onPress={() => setIsSignUp(!isSignUp)}>
         <Text style={styles.toggleText}>
           {isSignUp ? (
