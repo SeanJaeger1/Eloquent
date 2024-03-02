@@ -7,7 +7,7 @@ import { functions } from "../../firebaseConfig"
 import LearnWordCard from "../LearnWordCard"
 
 import LoadingPage from "./LoadingPage"
-import TransleucentButton from "../buttons/translucentButton"
+import TransleucentButton from "../buttons/TranslucentButton"
 import useSetSkillLevel from "../../hooks/useSetSkillLevel"
 import useUser from "../../hooks/useUser"
 import capitalizeFirstLetter from "../../utils/capitalizeFirstLetter"
