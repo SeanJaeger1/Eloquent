@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react"
 
-import { updateDoc, doc } from "firebase/firestore"
 import { View, Text, StyleSheet } from "react-native"
 
-import { auth, db } from "../../firebaseConfig"
+import { auth } from "../../firebaseConfig"
 import PrimaryButton from "../buttons/PrimaryButton"
+import useSetSkillLevel from "../../hooks/useSetSkillLevel"
 
 const UpdateSkillLevelPage = () => {
   const [userId, setUserId] = useState(null)
@@ -16,23 +16,6 @@ const UpdateSkillLevelPage = () => {
     }
   }, [])
 
-  const setSkillLevel = async (skillLevel) => {
-    try {
-      if (!userId) {
-        throw new Error("User is not authenticated.")
-      }
-
-      const userRef = doc(db, "users", userId)
-      await updateDoc(userRef, {
-        skillLevel,
-      })
-
-      console.log(`Updated skill level to ${skillLevel}`)
-    } catch (error) {
-      console.error("Error updating skill level: ", error)
-    }
-  }
-
   if (!userId) {
     return null
   }
@@ -43,18 +26,21 @@ const UpdateSkillLevelPage = () => {
       <Text style={styles.subtitle}>Let&apos;s get started! 👋</Text>
       <PrimaryButton
         text={"Beginner"}
-        onPress={() => setSkillLevel("beginner")}
+        onPress={() => useSetSkillLevel("beginner")}
       />
       <PrimaryButton
         text={"Intermediate"}
-        onPress={() => setSkillLevel("intermediate")}
+        onPress={() => useSetSkillLevel("intermediate")}
       />
       <PrimaryButton
         text={"Advanced"}
-        onPress={() => setSkillLevel("advanced")}
+        onPress={() => useSetSkillLevel("advanced")}
         style={styles.button}
       />
-      <PrimaryButton text={"Expert"} onPress={() => setSkillLevel("expert")} />
+      <PrimaryButton
+        text={"Expert"}
+        onPress={() => useSetSkillLevel("expert")}
+      />
     </View>
   )
 }
