@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react"
 
 import { httpsCallable } from "firebase/functions"
-import { View, Text, StyleSheet, Pressable } from "react-native"
+import { View, StyleSheet } from "react-native"
 
 import { functions } from "../../firebaseConfig"
-import WordCard from "../WordCard"
+import LearnWordCard from "../LearnWordCard"
 
 import LoadingPage from "./LoadingPage"
 import palette from "../../palette"
@@ -63,22 +63,11 @@ const LearnPage = () => {
 
   return (
     <View style={styles.container}>
-      <WordCard userWord={words[currentWordIndex]}>
-        <View style={styles.buttonsContainer}>
-          <Pressable
-            style={[styles.button, styles.crossButton]}
-            onPress={() => updateWordProgress(-1)}
-          >
-            <Text style={styles.buttonText}>✗</Text>
-          </Pressable>
-          <Pressable
-            style={[styles.button, styles.tickButton]}
-            onPress={() => updateWordProgress(1)}
-          >
-            <Text style={styles.buttonText}>✓</Text>
-          </Pressable>
-        </View>
-      </WordCard>
+      <LearnWordCard
+        userWord={words[currentWordIndex]}
+        onTick={() => updateWordProgress(1)}
+        onCross={() => updateWordProgress(-1)}
+      />
     </View>
   )
 }
@@ -88,48 +77,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-  },
-  card: {
-    alignItems: "center",
-  },
-  word: {
-    fontSize: 24,
-    fontWeight: "bold",
-  },
-  type: {
-    fontSize: 18,
-    fontStyle: "italic",
-  },
-  meaning: {
-    fontSize: 16,
-    marginTop: 10,
-  },
-  example: {
-    fontSize: 14,
-    marginTop: 5,
-    color: "gray",
-  },
-  buttonsContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    width: "100%",
-    backgroundColor: "white",
-    paddingHorizontal: 16,
-    borderTopWidth: 1,
-    borderTopColor: "grey",
-    borderTopStyle: "solid",
-  },
-  button: {
-    width: 60,
-    height: 60,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  crossButton: {},
-  tickButton: {},
-  buttonText: {
-    fontSize: 36,
-    color: palette.lightGrey,
   },
 })
 

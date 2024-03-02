@@ -22,7 +22,7 @@ const WordPanel = ({ userWord }) => {
       <View style={styles.container}>
         <View style={styles.row}>
           <Text style={styles.boldText}>
-            {word}, {shortenType[wordType]}{" "}
+            {word}, {shortenType[wordType]}
           </Text>
         </View>
         <View style={styles.row}>
