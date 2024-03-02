@@ -24,7 +24,7 @@ const WordCard = ({ userWord, onTick, onCross }) => {
           </View>
         )}
         <Text style={styles.meaning}>{definition}</Text>
-        <ExampleText text={examples[0]} />
+        {examples.length > 0 && <ExampleText text={examples[0]} />}
       </View>
       <View style={styles.buttonsContainer}>
         <Pressable
