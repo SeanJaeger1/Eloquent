@@ -29,10 +29,11 @@ const App = () => {
   let content = (
     <NavigationContainer theme={navTheme}>
       <Tab.Navigator
+        initialRouteName="Learn"
         screenOptions={{
           tabBarShowLabel: false,
           tabBarStyle: {
-            backgroundColor: palette.secondary, // Semi-transparent or any color of choice
+            backgroundColor: palette.secondary,
             position: "absolute",
             bottom: 56,
             left: 48,
