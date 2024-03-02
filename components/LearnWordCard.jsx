@@ -13,17 +13,19 @@ const WordCard = ({ userWord, onTick, onCross }) => {
 
   return (
     <Card containerStyle={styles.card}>
-      <View style={styles.header}>
-        <Text style={styles.word}>{wordText}</Text>
-      </View>
-      <Text style={styles.type}>({capitalizeFirstLetter(wordType)})</Text>
-      {progress > 1 && (
-        <View style={styles.row}>
-          <ProgressMeter value={progress} />
+      <View style={styles.infoContainer}>
+        <View style={styles.header}>
+          <Text style={styles.word}>{wordText}</Text>
         </View>
-      )}
-      <Text style={styles.meaning}>{definition}</Text>
-      <ExampleText text={examples[0]} />
+        <Text style={styles.type}>({capitalizeFirstLetter(wordType)})</Text>
+        {progress > 1 && (
+          <View style={styles.row}>
+            <ProgressMeter value={progress} />
+          </View>
+        )}
+        <Text style={styles.meaning}>{definition}</Text>
+        <ExampleText text={examples[0]} />
+      </View>
       <View style={styles.buttonsContainer}>
         <Pressable
           style={[styles.button, styles.crossButton]}
@@ -45,15 +47,14 @@ const styles = StyleSheet.create({
     alignItems: "left",
     justifyContent: "center",
     borderRadius: 20,
-    paddingHorizontal: 28,
     paddingTop: 28,
+    paddingHorizontal: 0,
   },
   buttonsContainer: {
     flexDirection: "row",
     justifyContent: "space-around",
     width: "100%",
     backgroundColor: "white",
-    paddingHorizontal: 16,
     borderTopWidth: 1,
     borderTopColor: palette.lightGrey,
     borderTopStyle: "solid",
@@ -82,12 +83,6 @@ const styles = StyleSheet.create({
     textAlign: "left",
     marginBottom: 24,
   },
-  example: {
-    fontSize: 14,
-    marginTop: 24,
-    color: "gray",
-    textAlign: "left",
-  },
   row: {
     flexDirection: "row",
     marginVertical: 16,
@@ -99,11 +94,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  crossButton: {},
+  infoContainer: {
+    paddingHorizontal: 28,
+  },
+  crossButton: { borderRight: "1px solid grey" },
   tickButton: {},
   buttonText: {
     fontSize: 36,
     color: palette.lightGrey,
+    width: "100%",
+    textAlign: "center",
   },
 })
 
