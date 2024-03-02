@@ -7,12 +7,16 @@ import { functions } from "../../firebaseConfig"
 import LearnWordCard from "../LearnWordCard"
 
 import LoadingPage from "./LoadingPage"
-import palette from "../../palette"
+import TransleucentButton from "../buttons/translucentButton"
+import useSetSkillLevel from "../../hooks/useSetSkillLevel"
+import useUser from "../../hooks/useUser"
+import capitalizeFirstLetter from "../../utils/capitalizeFirstLetter"
 
 const LearnPage = () => {
   const [words, setWords] = useState([])
   const [currentWordIndex, setCurrentWordIndex] = useState(0)
   const [loading, setLoading] = useState(true)
+  const user = useUser()
 
   useEffect(() => {
     fetchUserWords()
@@ -63,6 +67,14 @@ const LearnPage = () => {
 
   return (
     <View style={styles.container}>
+      <View style={styles.buttonContainer}>
+        <TransleucentButton
+          text={capitalizeFirstLetter(user?.skillLevel)}
+          onPress={() => {
+            useSetSkillLevel("")
+          }}
+        />
+      </View>
       <LearnWordCard
         userWord={words[currentWordIndex]}
         onTick={() => updateWordProgress(1)}
@@ -77,6 +89,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  buttonContainer: {
+    position: "absolute",
+    top: 28,
+    right: 24,
   },
 })
 
