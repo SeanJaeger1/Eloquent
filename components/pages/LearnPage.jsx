@@ -61,7 +61,7 @@ const LearnPage = () => {
     }
   }
 
-  if (loading) {
+  if (loading || user?.skillLevel === undefined) {
     return <LoadingPage />
   }
 
