@@ -56,10 +56,6 @@ const MyWordsPage = () => {
     }
   }
 
-  if (loading && words.length === 0) {
-    return <LoadingPage />
-  }
-
   const filteredWords = words.filter(({ word: { word } }) =>
     word.toLowerCase().includes(searchText.toLowerCase())
   )
@@ -73,24 +69,27 @@ const MyWordsPage = () => {
         onChangeText={(text) => setSearchText(text)}
         value={searchText}
       />
-
-      <ScrollView
-        style={styles.scroll}
-        scrollEventThrottle={16}
-        showsVerticalScrollIndicator={false}
-        onScroll={handleScroll}
-      >
-        {filteredWords.length > 0 ? (
-          filteredWords.map((word, index) => (
-            <WordPanel key={index} userWord={word} />
-          ))
-        ) : (
-          <Text style={styles.noWordsText}>
-            You don't have any words yet! Start learning new words.
-          </Text>
-        )}
-        {loading && <LoadingPage />}
-      </ScrollView>
+      {loading && words.length === 0 ? (
+        <LoadingPage />
+      ) : (
+        <ScrollView
+          style={styles.scroll}
+          scrollEventThrottle={16}
+          showsVerticalScrollIndicator={false}
+          onScroll={handleScroll}
+        >
+          {filteredWords.length > 0 ? (
+            filteredWords.map((word, index) => (
+              <WordPanel key={index} userWord={word} />
+            ))
+          ) : (
+            <Text style={styles.noWordsText}>
+              You don't have any words yet! Start learning new words.
+            </Text>
+          )}
+          {loading && <LoadingPage />}
+        </ScrollView>
+      )}
     </View>
   )
 }
