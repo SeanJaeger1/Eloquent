@@ -76,11 +76,14 @@ const LearnPage = () => {
           }}
         />
       </View>
-      {loading ? (
+      {loading || words.length === 0 ? (
         <LoadingPage />
       ) : (
         <View style={styles.cardContainer}>
-          <ProgressBar currentIndex={currentWordIndex} totalCount={5} />
+          <ProgressBar
+            currentIndex={currentWordIndex}
+            totalCount={words.length}
+          />
           <LearnWordCard
             userWord={words[currentWordIndex]}
             onTick={() => updateWordProgress(1)}
