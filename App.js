@@ -26,59 +26,61 @@ const App = () => {
     },
   }
 
-  let content = (
-    <NavigationContainer theme={navTheme}>
-      <Tab.Navigator
-        initialRouteName="Learn"
-        screenOptions={{
-          tabBarShowLabel: false,
-          tabBarStyle: {
-            backgroundColor: palette.secondary,
-            position: "absolute",
-            bottom: 56,
-            left: 48,
-            right: 48,
-            elevation: 0,
-            borderRadius: 36,
-            height: 64,
-          },
-          headerShown: false,
-        }}
-      >
-        <Tab.Screen
-          options={{
-            tabBarIcon: ({ focused }) => (
-              <SquaresIcon
-                stroke={focused ? "white" : palette.lightGrey}
-                width={30}
-                height={30}
-              />
-            ),
-          }}
-          name="My Words"
-          component={MyWordsPage}
-        />
-        <Tab.Screen
-          options={{
-            tabBarIcon: ({ focused }) => (
-              <BookIcon
-                stroke={focused ? "white" : palette.lightGrey}
-                width={30}
-                height={30}
-              />
-            ),
-          }}
-          name="Learn"
-          component={LearnPage}
-        />
-      </Tab.Navigator>
-    </NavigationContainer>
-  )
+  let content
 
-  if (loggedIn && unranked) {
+  if (unranked) {
     content = <UpdateSkillLevelPage />
   } else if (!loggedIn) {
     content = <AuthFormPage />
+  } else {
+    content = (
+      <NavigationContainer theme={navTheme}>
+        <Tab.Navigator
+          initialRouteName="Learn"
+          screenOptions={{
+            tabBarShowLabel: false,
+            tabBarStyle: {
+              backgroundColor: palette.secondary,
+              position: "absolute",
+              bottom: 56,
+              left: 48,
+              right: 48,
+              elevation: 0,
+              borderRadius: 36,
+              height: 64,
+            },
+            headerShown: false,
+          }}
+        >
+          <Tab.Screen
+            options={{
+              tabBarIcon: ({ focused }) => (
+                <SquaresIcon
+                  stroke={focused ? "white" : palette.lightGrey}
+                  width={30}
+                  height={30}
+                />
+              ),
+            }}
+            name="My Words"
+            component={MyWordsPage}
+          />
+          <Tab.Screen
+            options={{
+              tabBarIcon: ({ focused }) => (
+                <BookIcon
+                  stroke={focused ? "white" : palette.lightGrey}
+                  width={30}
+                  height={30}
+                />
+              ),
+            }}
+            name="Learn"
+            component={LearnPage}
+          />
+        </Tab.Navigator>
+      </NavigationContainer>
+    )
   }
 
   return <Background>{content}</Background>
