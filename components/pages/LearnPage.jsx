@@ -5,6 +5,7 @@ import { View, StyleSheet } from "react-native"
 
 import { functions } from "../../firebaseConfig"
 import LearnWordCard from "../LearnWordCard"
+import ProgressBar from "../ProgressBar"
 
 import LoadingPage from "./LoadingPage"
 import TransleucentButton from "../buttons/TranslucentButton"
@@ -78,11 +79,14 @@ const LearnPage = () => {
       {loading ? (
         <LoadingPage />
       ) : (
-        <LearnWordCard
-          userWord={words[currentWordIndex]}
-          onTick={() => updateWordProgress(1)}
-          onCross={() => updateWordProgress(-1)}
-        />
+        <View style={styles.cardContainer}>
+          <ProgressBar currentIndex={currentWordIndex} totalCount={5} />
+          <LearnWordCard
+            userWord={words[currentWordIndex]}
+            onTick={() => updateWordProgress(1)}
+            onCross={() => updateWordProgress(-1)}
+          />
+        </View>
       )}
     </View>
   )
@@ -98,6 +102,20 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 28,
     right: 24,
+  },
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  buttonContainer: {
+    position: "absolute",
+    top: 28,
+    right: 24,
+  },
+  cardContainer: {
+    width: "90%", // Or set to the exact width of LearnWordCard if it's defined
+    alignItems: "center", // Ensure the ProgressBar and LearnWordCard are aligned
   },
 })
 

@@ -43,12 +43,10 @@ const LearnWordCard = ({ userWord, onTick, onCross }) => {
 
 const styles = StyleSheet.create({
   card: {
-    width: "calc(100% - 56px)",
+    width: "100%",
     alignItems: "left",
     justifyContent: "center",
     borderRadius: 20,
-    paddingTop: 28,
-    paddingHorizontal: 0,
   },
   buttonsContainer: {
     flexDirection: "row",
