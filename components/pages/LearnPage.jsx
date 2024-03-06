@@ -61,7 +61,7 @@ const LearnPage = () => {
     }
   }
 
-  if (loading || user?.skillLevel === undefined) {
+  if (user?.skillLevel === undefined) {
     return <LoadingPage />
   }
 
@@ -75,11 +75,15 @@ const LearnPage = () => {
           }}
         />
       </View>
-      <LearnWordCard
-        userWord={words[currentWordIndex]}
-        onTick={() => updateWordProgress(1)}
-        onCross={() => updateWordProgress(-1)}
-      />
+      {loading ? (
+        <LoadingPage />
+      ) : (
+        <LearnWordCard
+          userWord={words[currentWordIndex]}
+          onTick={() => updateWordProgress(1)}
+          onCross={() => updateWordProgress(-1)}
+        />
+      )}
     </View>
   )
 }
