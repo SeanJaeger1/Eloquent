@@ -7,7 +7,7 @@ import ExampleText from "./ExampleText"
 import ProgressMeter from "./ProgressMeter"
 import palette from "../palette"
 
-const WordCard = ({ userWord, onTick, onCross }) => {
+const LearnWordCard = ({ userWord, onTick, onCross }) => {
   const { progress, word } = userWord
   const { word: wordText, examples, definition, wordType } = word
 
@@ -107,4 +107,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default WordCard
+export default LearnWordCard
