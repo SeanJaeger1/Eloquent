@@ -28,7 +28,7 @@ const App = () => {
 
   let content
 
-  if (!loggedIn) {
+  if (!loggedIn || user === null) {
     content = <AuthFormPage />
   } else if (unranked) {
     content = <UpdateSkillLevelPage />
