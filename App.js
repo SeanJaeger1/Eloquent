@@ -28,10 +28,10 @@ const App = () => {
 
   let content
 
-  if (unranked) {
-    content = <UpdateSkillLevelPage />
-  } else if (!loggedIn) {
+  if (!loggedIn) {
     content = <AuthFormPage />
+  } else if (unranked) {
+    content = <UpdateSkillLevelPage />
   } else {
     content = (
       <NavigationContainer theme={navTheme}>
