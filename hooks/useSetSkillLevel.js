@@ -14,8 +14,6 @@ const useSetSkillLevel = async (skillLevel) => {
     await updateDoc(userRef, {
       skillLevel,
     })
-
-    console.log(`Updated skill level to ${skillLevel}`)
   } catch (error) {
     console.error("Error updating skill level: ", error)
   }
