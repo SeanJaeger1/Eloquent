@@ -6,7 +6,7 @@ const ProgressBar = ({ currentIndex, totalCount }) => {
   const animatedWidth = useRef(new Animated.Value(initialWidthPercent)).current
 
   useEffect(() => {
-    const targetWidthPercent = (currentIndex / totalCount) * 100
+    const targetWidthPercent = ((currentIndex + 1) / totalCount) * 100
     Animated.timing(animatedWidth, {
       toValue: targetWidthPercent,
       duration: 500,
