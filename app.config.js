@@ -25,7 +25,7 @@ export default {
       },
     },
     web: {
-      bundler: "metro",
+      bundler: "webpack",
       output: "static",
       favicon: "./assets/eloquent-favicon.png",
     },
