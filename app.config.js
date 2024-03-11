@@ -27,7 +27,7 @@ export default {
     web: {
       bundler: "metro",
       output: "static",
-      favicon: "./assets/favicon.png",
+      favicon: "./assets/eloquent-favicon.png",
     },
     extra: {
       firebaseConfig: {
