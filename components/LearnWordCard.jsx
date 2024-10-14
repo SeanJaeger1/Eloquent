@@ -18,11 +18,9 @@ const LearnWordCard = ({ userWord, onTick, onCross }) => {
           <Text style={styles.word}>{wordText}</Text>
         </View>
         <Text style={styles.type}>({capitalizeFirstLetter(wordType)})</Text>
-        {progress > 1 && (
           <View style={styles.row}>
             <ProgressMeter value={progress} />
           </View>
-        )}
         <Text style={styles.meaning}>{definition}</Text>
         {examples.length > 0 && <ExampleText text={examples[0]} />}
       </View>
