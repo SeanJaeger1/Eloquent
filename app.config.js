@@ -39,6 +39,7 @@ export default {
         appId: process.env.FIREBASE_APP_ID,
         measurementId: process.env.FIREBASE_MEASUREMENT_ID,
       },
+      GOOGLE_TEXT_SPEECH_API_KEY: process.env.GOOGLE_TEXT_SPEECH_API_KEY,
       eas: {
         projectId: "9ef30b88-ee33-41c5-9039-11c413596d0a",
       },
