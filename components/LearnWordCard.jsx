@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { View, Text, StyleSheet, Pressable, TouchableOpacity } from "react-native"
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native"
 import { Card } from "react-native-elements"
 import { Ionicons } from '@expo/vector-icons'
 import { Audio } from 'expo-av'
@@ -12,15 +12,15 @@ import palette from "../palette"
 
 const GOOGLE_TTS_API_KEY = Constants.expoConfig.extra.GOOGLE_TEXT_SPEECH_API_KEY;
 
-const SynonymChip = ({ word }) => (
-  <View style={styles.synonymChip}>
-    <Text style={styles.synonymText}>{word}</Text>
+const WordChip = ({ word }) => (
+  <View style={styles.wordChip}>
+    <Text style={styles.wordChipText}>{word}</Text>
   </View>
 );
 
 const LearnWordCard = ({ userWord, onTick, onCross }) => {
   const { progress, word } = userWord
-  const { word: wordText, examples, definition, wordType, synonyms, antonyms } = word
+  const { word: wordText, examples, definition, wordType, synonyms } = word
   const [isPlaying, setIsPlaying] = useState(false)
 
   const pronounceWord = async () => {
@@ -66,7 +66,7 @@ const LearnWordCard = ({ userWord, onTick, onCross }) => {
         <Text style={styles.synonymsTitle}>SYNONYMS</Text>
         <View style={styles.synonymsWrapper}>
           {synonyms.map((synonym, index) => (
-            <SynonymChip key={index} word={synonym} />
+            <WordChip key={index} word={synonym} />
           ))}
         </View>
       </View>
@@ -82,12 +82,12 @@ const LearnWordCard = ({ userWord, onTick, onCross }) => {
             <Ionicons 
               name={isPlaying ? "volume-high" : "volume-high-outline"} 
               size={24} 
-              color={isPlaying ? palette.lightGrey : "black"} 
+              color={isPlaying ? palette.lightGrey : "#4AC3BE"} 
             />
           </TouchableOpacity>
         </View>
         <Text style={styles.type}>({capitalizeFirstLetter(wordType)})</Text>
-        <View style={styles.row}>
+        <View style={styles.progressContainer}>
           <ProgressMeter value={progress} />
         </View>
         <Text style={styles.meaning}>{definition}</Text>
@@ -95,15 +95,16 @@ const LearnWordCard = ({ userWord, onTick, onCross }) => {
         {renderSynonyms(synonyms)}
       </View>
       <View style={styles.buttonsContainer}>
-        <Pressable
+        <TouchableOpacity
           style={[styles.button, styles.crossButton]}
           onPress={onCross}
         >
-          <Text style={styles.buttonText}>✗</Text>
-        </Pressable>
-        <Pressable style={[styles.button, styles.tickButton]} onPress={onTick}>
-          <Text style={styles.buttonText}>✓</Text>
-        </Pressable>
+          <Ionicons name="close" size={24} color="#8F8F8F" />
+        </TouchableOpacity>
+        <View style={styles.buttonSeparator} />
+        <TouchableOpacity style={[styles.button, styles.tickButton]} onPress={onTick}>
+          <Ionicons name="checkmark" size={24} color="#4AC3BE" />
+        </TouchableOpacity>
       </View>
     </Card>
   )
@@ -111,86 +112,44 @@ const LearnWordCard = ({ userWord, onTick, onCross }) => {
 
 const styles = StyleSheet.create({
   card: {
-    width: "100%",
-    alignItems: "left",
-    justifyContent: "center",
-    borderRadius: 20,
+    borderRadius: 16,
+    padding: 0,
+    margin: 0,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+    marginVertical: 16
   },
-  buttonsContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    width: "100%",
-    backgroundColor: "white",
-    borderTopWidth: 1,
-    borderTopColor: palette.lightGrey,
-    borderTopStyle: "solid",
+  infoContainer: {
+    padding: 20,
   },
   header: {
-    display: "flex",
     flexDirection: "row",
-    justifyContent: "left",
-    alignItems: "left",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 4,
   },
   word: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: "bold",
-    marginRight: 8,
-    marginBottom: 8,
+    color: "#000000",
   },
   type: {
-    fontSize: 18,
+    fontSize: 16,
     fontStyle: "italic",
-    textAlign: "left",
-    color: palette.lightGrey,
+    color: "#8F8F8F",
+    marginBottom: 12,
+  },
+  progressContainer: {
+    marginBottom: 16,
   },
   meaning: {
     fontSize: 16,
-    marginTop: 10,
-    textAlign: "left",
-    marginBottom: 24,
-  },
-  row: {
-    flexDirection: "row",
-    marginVertical: 16,
-    justifyContent: "left",
-  },
-  button: {
-    width: 60,
-    height: 60,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  infoContainer: {
-    paddingHorizontal: 28,
-  },
-  crossButton: { borderRight: "1px solid grey" },
-  tickButton: {},
-  buttonText: {
-    fontSize: 36,
-    color: palette.lightGrey,
-    width: "100%",
-    textAlign: "center",
-  },
-  wordListContainer: {
-    marginTop: 10,
-  },
-  wordListTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 5,
-    color: "grey"
-  },
-  wordList: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
-  wordListItem: {
-    fontSize: 14,
-    marginRight: 5,
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    border: "1px solid grey",
-    borderRadius: 28
+    color: "#000000",
+    marginBottom: 16,
+    lineHeight: 24,
   },
   synonymsContainer: {
     marginTop: 16,
@@ -198,14 +157,14 @@ const styles = StyleSheet.create({
   synonymsTitle: {
     fontSize: 12,
     fontWeight: '500',
-    color: '#474847',
+    color: '#8F8F8F',
     marginBottom: 8,
   },
   synonymsWrapper: {
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
-  synonymChip: {
+  wordChip: {
     backgroundColor: 'white',
     borderRadius: 13,
     borderWidth: 1,
@@ -215,11 +174,28 @@ const styles = StyleSheet.create({
     marginRight: 8,
     marginBottom: 8,
   },
-  synonymText: {
+  wordChipText: {
     fontSize: 13,
     color: '#474847',
     fontWeight: '400',
   },
+  buttonsContainer: {
+    flexDirection: "row",
+    borderTopWidth: 1,
+    borderTopColor: '#E5E5E5',
+  },
+  button: {
+    flex: 1,
+    paddingVertical: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonSeparator: {
+    width: 1,
+    backgroundColor: '#E5E5E5',
+  },
+  crossButton: {},
+  tickButton: {},
 })
 
 export default LearnWordCard
