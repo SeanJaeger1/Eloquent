@@ -24,7 +24,39 @@ const LearnWordCard = ({ userWord, onTick, onCross }) => {
   const [isPlaying, setIsPlaying] = useState(false)
 
   const pronounceWord = async () => {
-    // ... (pronounceWord function remains unchanged)
+    setIsPlaying(true)
+    try {
+      const response = await fetch(`https://texttospeech.googleapis.com/v1/text:synthesize?key=${GOOGLE_TTS_API_KEY}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          input: { text: wordText },
+          voice: { languageCode: 'en-US', ssmlGender: 'NEUTRAL' },
+          audioConfig: { audioEncoding: 'MP3' },
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      const audioContent = data.audioContent;
+      const audioUri = `data:audio/mp3;base64,${audioContent}`;
+      
+      const { sound } = await Audio.Sound.createAsync({ uri: audioUri });
+      await sound.playAsync();
+      sound.setOnPlaybackStatusUpdate((status) => {
+        if (status.didJustFinish) {
+          setIsPlaying(false);
+        }
+      });
+    } catch (error) {
+      console.error('Error pronouncing word:', error);
+      setIsPlaying(false);
+    }
   };
 
   const renderSynonyms = (synonyms) => {
