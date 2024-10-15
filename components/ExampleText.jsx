@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
   container: {
     display: "flex",
     flexDirection: "row",
-    marginBottom: 32,
+    marginBottom: 8,
   },
   box: {
     backgroundColor: palette.subtleBlue,
