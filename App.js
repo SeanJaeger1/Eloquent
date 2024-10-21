@@ -1,3 +1,5 @@
+import React from 'react';
+import { View, Dimensions } from 'react-native';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native"
 
@@ -13,6 +15,28 @@ import useUser from "./hooks/useUser"
 import palette from "./palette"
 
 const Tab = createBottomTabNavigator()
+
+const SCREEN_WIDTH = Dimensions.get('window').width;
+const NAV_BAR_WIDTH = 280;
+const NAV_BAR_HEIGHT = 60;
+const ICON_SIZE = 48;
+
+const TabIcon = ({ focused, Icon }) => (
+  <View style={{
+    width: ICON_SIZE,
+    height: ICON_SIZE,
+    borderRadius: ICON_SIZE / 2,
+    backgroundColor: focused ? 'white' : 'transparent',
+    justifyContent: 'center',
+    alignItems: 'center',
+  }}>
+    <Icon
+      stroke={focused ? palette.secondary : palette.lightGrey}
+      width={24}
+      height={24}
+    />
+  </View>
+);
 
 const App = () => {
   const loggedIn = useAuthState()
@@ -42,12 +66,15 @@ const App = () => {
             tabBarStyle: {
               backgroundColor: palette.secondary,
               position: "absolute",
-              bottom: 56,
-              left: 48,
-              right: 48,
+              bottom: 54,
+              left: (SCREEN_WIDTH - NAV_BAR_WIDTH) / 2,
+              width: NAV_BAR_WIDTH,
+              height: NAV_BAR_HEIGHT,
               elevation: 0,
-              borderRadius: 36,
-              height: 64,
+              borderRadius: NAV_BAR_HEIGHT / 2,
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
             },
             headerShown: false,
           }}
@@ -55,11 +82,7 @@ const App = () => {
           <Tab.Screen
             options={{
               tabBarIcon: ({ focused }) => (
-                <SquaresIcon
-                  stroke={focused ? "white" : palette.lightGrey}
-                  width={30}
-                  height={30}
-                />
+                <TabIcon focused={focused} Icon={SquaresIcon} />
               ),
             }}
             name="My Words"
@@ -68,11 +91,7 @@ const App = () => {
           <Tab.Screen
             options={{
               tabBarIcon: ({ focused }) => (
-                <BookIcon
-                  stroke={focused ? "white" : palette.lightGrey}
-                  width={30}
-                  height={30}
-                />
+                <TabIcon focused={focused} Icon={BookIcon} />
               ),
             }}
             name="Learn"
