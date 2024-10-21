@@ -75,6 +75,7 @@ const App = () => {
               flexDirection: 'row',
               justifyContent: 'center',
               alignItems: 'center',
+              borderTop: 'none'
             },
             headerShown: false,
           }}
