@@ -1,8 +1,7 @@
 import { initializeApp } from '@firebase/app'
 import { getAuth } from '@firebase/auth'
-import { getFunctions } from '@firebase/functions'
 import { getFirestore } from '@firebase/firestore'
-
+import { getFunctions } from '@firebase/functions'
 import Constants from 'expo-constants'
 
 const firebaseConfig = Constants.expoConfig.extra.firebaseConfig

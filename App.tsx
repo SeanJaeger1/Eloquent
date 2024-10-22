@@ -1,11 +1,12 @@
 import React from 'react'
-import { View, Dimensions } from 'react-native'
+
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native'
+import { View, Dimensions, ViewStyle } from 'react-native'
 
 import Background from './components/Background'
-import SquaresIcon from './components/icons/SquaresIcon'
 import BookIcon from './components/icons/BookIcon'
+import SquaresIcon, { SquaresIconProps } from './components/icons/SquaresIcon'
 import AuthFormPage from './components/pages/AuthFormPage'
 import LearnPage from './components/pages/LearnPage'
 import MyWordsPage from './components/pages/MyWordsPage'
@@ -21,7 +22,16 @@ const NAV_BAR_WIDTH = 280
 const NAV_BAR_HEIGHT = 60
 const ICON_SIZE = 48
 
-const TabIcon = ({ focused, Icon }) => (
+interface TabIconProps {
+  focused: boolean
+  Icon: React.ComponentType<SquaresIconProps>
+}
+
+interface User {
+  skillLevel?: string
+}
+
+const TabIcon = ({ focused, Icon }: TabIconProps) => (
   <View
     style={{
       width: ICON_SIZE,
@@ -32,14 +42,15 @@ const TabIcon = ({ focused, Icon }) => (
       alignItems: 'center',
     }}
   >
-    <Icon stroke={focused ? palette.secondary : palette.lightGrey} width={24} height={24} />
+    <Icon stroke={focused ? palette.secondary : palette.lightGrey} width='24' height='24' />
   </View>
 )
 
 const App = () => {
   const loggedIn = useAuthState()
-  const user = useUser()
+  const user = useUser() as User | null
   const unranked = loggedIn && user?.skillLevel === ''
+
   const navTheme = {
     ...DefaultTheme,
     colors: {
@@ -48,7 +59,22 @@ const App = () => {
     },
   }
 
-  let content
+  const tabBarStyle: ViewStyle = {
+    backgroundColor: palette.secondary,
+    position: 'absolute',
+    bottom: 54,
+    left: (SCREEN_WIDTH - NAV_BAR_WIDTH) / 2,
+    width: NAV_BAR_WIDTH,
+    height: NAV_BAR_HEIGHT,
+    elevation: 0,
+    borderRadius: NAV_BAR_HEIGHT / 2,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderTopWidth: 0, // Fixed from borderTop: 'none'
+  }
+
+  let content: React.ReactNode
 
   if (!loggedIn || user === null) {
     content = <AuthFormPage />
@@ -61,20 +87,7 @@ const App = () => {
           initialRouteName='Learn'
           screenOptions={{
             tabBarShowLabel: false,
-            tabBarStyle: {
-              backgroundColor: palette.secondary,
-              position: 'absolute',
-              bottom: 54,
-              left: (SCREEN_WIDTH - NAV_BAR_WIDTH) / 2,
-              width: NAV_BAR_WIDTH,
-              height: NAV_BAR_HEIGHT,
-              elevation: 0,
-              borderRadius: NAV_BAR_HEIGHT / 2,
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderTop: 'none',
-            },
+            tabBarStyle,
             headerShown: false,
           }}
         >
