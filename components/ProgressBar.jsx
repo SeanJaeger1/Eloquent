@@ -17,7 +17,7 @@ const ProgressBar = ({ currentIndex, totalCount }) => {
   const animatedWidthStyle = {
     flex: animatedWidth.interpolate({
       inputRange: [0, 100],
-      outputRange: [0, 1], // Use flex to dynamically size the width
+      outputRange: [0, 1],
     }),
   }
 
@@ -40,8 +40,8 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   container: {
-    flex: 1, // Make the container fill available space
-    flexDirection: "row", // Ensure the animated view can be flexibly sized
+    flex: 1,
+    flexDirection: "row",
     height: 8,
     backgroundColor: "rgba(0, 0, 0, 0.1)",
     overflow: "hidden",

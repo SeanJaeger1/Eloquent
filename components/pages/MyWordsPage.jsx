@@ -38,7 +38,7 @@ const MyWordsPage = () => {
 
   async function fetchUserWords() {
     if (!nextPageToken && words.length !== 0) {
-      return // All pages have been loaded
+      return
     }
     try {
       setLoading(true)

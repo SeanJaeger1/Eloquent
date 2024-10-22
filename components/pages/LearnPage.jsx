@@ -117,8 +117,8 @@ const styles = StyleSheet.create({
     right: 24,
   },
   cardContainer: {
-    width: "90%", // Or set to the exact width of LearnWordCard if it's defined
-    alignItems: "center", // Ensure the ProgressBar and LearnWordCard are aligned
+    width: "90%",
+    alignItems: "center",
   },
 })
 
