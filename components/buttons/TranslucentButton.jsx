@@ -1,5 +1,6 @@
-import RightArrowIcon from '../icons/RightArrowIcon'
 import { Text, View, StyleSheet, Pressable } from 'react-native'
+
+import RightArrowIcon from '../icons/RightArrowIcon'
 
 const TransleucentButton = ({ text, onPress }) => {
   return (

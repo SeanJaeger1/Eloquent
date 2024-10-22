@@ -1,14 +1,16 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import { Card } from 'react-native-elements'
+
 import { Ionicons } from '@expo/vector-icons'
 import { Audio } from 'expo-av'
 import Constants from 'expo-constants'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { Card } from 'react-native-elements'
 
+import palette from '../palette'
 import capitalizeFirstLetter from '../utils/capitalizeFirstLetter'
+
 import ExampleText from './ExampleText'
 import ProgressMeter from './ProgressMeter'
-import palette from '../palette'
 
 const GOOGLE_TTS_API_KEY = Constants.expoConfig.extra.GOOGLE_TEXT_SPEECH_API_KEY
 

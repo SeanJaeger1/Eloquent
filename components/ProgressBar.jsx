@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react'
+
 import { View, StyleSheet, Animated, Text } from 'react-native'
 
 const ProgressBar = ({ currentIndex, totalCount }) => {

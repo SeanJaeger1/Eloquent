@@ -4,14 +4,14 @@ import { httpsCallable } from 'firebase/functions'
 import { View, StyleSheet } from 'react-native'
 
 import { functions } from '../../firebaseConfig'
+import useSetSkillLevel from '../../hooks/useSetSkillLevel'
+import useUser from '../../hooks/useUser'
+import capitalizeFirstLetter from '../../utils/capitalizeFirstLetter'
+import TransleucentButton from '../buttons/TranslucentButton'
 import LearnWordCard from '../LearnWordCard'
 import ProgressBar from '../ProgressBar'
 
 import LoadingPage from './LoadingPage'
-import TransleucentButton from '../buttons/TranslucentButton'
-import useSetSkillLevel from '../../hooks/useSetSkillLevel'
-import useUser from '../../hooks/useUser'
-import capitalizeFirstLetter from '../../utils/capitalizeFirstLetter'
 
 const LearnPage = () => {
   const [words, setWords] = useState([])

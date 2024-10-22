@@ -1,5 +1,7 @@
 import React from 'react'
+
 import { View, StyleSheet } from 'react-native'
+
 import palette from '../palette'
 
 const DotsComponent = ({ value }) => {

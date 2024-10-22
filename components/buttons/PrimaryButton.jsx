@@ -1,6 +1,7 @@
-import RightArrowIcon from '../icons/RightArrowIcon'
 import { Text, View, StyleSheet, Pressable } from 'react-native'
+
 import palette from '../../palette'
+import RightArrowIcon from '../icons/RightArrowIcon'
 
 const PrimaryButton = ({ text, onPress }) => {
   return (

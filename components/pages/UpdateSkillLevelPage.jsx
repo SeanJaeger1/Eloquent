@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 
 import { auth } from '../../firebaseConfig'
-import PrimaryButton from '../buttons/PrimaryButton'
 import useSetSkillLevel from '../../hooks/useSetSkillLevel'
+import PrimaryButton from '../buttons/PrimaryButton'
 
 const UpdateSkillLevelPage = () => {
   const [userId, setUserId] = useState(null)

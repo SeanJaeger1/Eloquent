@@ -7,7 +7,11 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "build-web": "npx expo export:web"
+    "build-web": "npx expo export:web",
+    "lint": "eslint \"./App.tsx\" \"./components/**/*.[tj]s?(x)\" \"./hooks/**/*.[tj]s?(x)\" \"./utils/**/*.[tj]s?(x)\" --max-warnings=0",
+    "lint:fix": "eslint \"./App.tsx\" \"./components/**/*.[tj]s?(x)\" \"./hooks/**/*.[tj]s?(x)\" \"./utils/**/*.[tj]s?(x)\" --fix",
+    "format": "prettier --write \"./App.tsx\" \"./components/**/*.[tj]s?(x)\" \"./hooks/**/*.[tj]s?(x)\" \"./utils/**/*.[tj]s?(x)\"",
+    "fix-all": "npm run format && npm run lint:fix"
   },
   "dependencies": {
     "@expo/metro-runtime": "~3.1.3",
