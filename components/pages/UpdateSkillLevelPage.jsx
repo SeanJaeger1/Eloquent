@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState } from 'react'
 
-import { View, Text, StyleSheet } from "react-native"
+import { View, Text, StyleSheet } from 'react-native'
 
-import { auth } from "../../firebaseConfig"
-import PrimaryButton from "../buttons/PrimaryButton"
-import useSetSkillLevel from "../../hooks/useSetSkillLevel"
+import { auth } from '../../firebaseConfig'
+import PrimaryButton from '../buttons/PrimaryButton'
+import useSetSkillLevel from '../../hooks/useSetSkillLevel'
 
 const UpdateSkillLevelPage = () => {
   const [userId, setUserId] = useState(null)
@@ -24,23 +24,14 @@ const UpdateSkillLevelPage = () => {
     <View style={styles.container}>
       <Text style={styles.title}>Select your English level</Text>
       <Text style={styles.subtitle}>Let&apos;s get started! 👋</Text>
+      <PrimaryButton text={'Beginner'} onPress={() => useSetSkillLevel('beginner')} />
+      <PrimaryButton text={'Intermediate'} onPress={() => useSetSkillLevel('intermediate')} />
       <PrimaryButton
-        text={"Beginner"}
-        onPress={() => useSetSkillLevel("beginner")}
-      />
-      <PrimaryButton
-        text={"Intermediate"}
-        onPress={() => useSetSkillLevel("intermediate")}
-      />
-      <PrimaryButton
-        text={"Advanced"}
-        onPress={() => useSetSkillLevel("advanced")}
+        text={'Advanced'}
+        onPress={() => useSetSkillLevel('advanced')}
         style={styles.button}
       />
-      <PrimaryButton
-        text={"Expert"}
-        onPress={() => useSetSkillLevel("expert")}
-      />
+      <PrimaryButton text={'Expert'} onPress={() => useSetSkillLevel('expert')} />
     </View>
   )
 }
@@ -48,7 +39,7 @@ const UpdateSkillLevelPage = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: 'center',
     padding: 32,
   },
   button: {
@@ -56,17 +47,17 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 24,
-    color: "white",
+    color: 'white',
   },
   title: {
     fontSize: 24,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 32,
   },
   subtitle: {
     fontSize: 16,
     marginBottom: 60,
-    textAlign: "left",
+    textAlign: 'left',
   },
 })
 

@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState } from 'react'
 
-import { doc, onSnapshot } from "firebase/firestore"
+import { doc, onSnapshot } from 'firebase/firestore'
 
-import { db, auth } from "../firebaseConfig"
+import { db, auth } from '../firebaseConfig'
 
 const useUser = () => {
   const [user, setUser] = useState(null)
@@ -11,9 +11,9 @@ const useUser = () => {
     let unsubscribe = null
 
     const fetchUser = async () => {
-      const userRef = doc(db, "users", auth.currentUser.uid)
+      const userRef = doc(db, 'users', auth.currentUser.uid)
 
-      unsubscribe = onSnapshot(userRef, (doc) => {
+      unsubscribe = onSnapshot(userRef, doc => {
         if (doc.exists()) {
           setUser(doc.data())
         }

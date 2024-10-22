@@ -1,6 +1,6 @@
-import React from "react"
-import { View, StyleSheet } from "react-native"
-import palette from "../palette"
+import React from 'react'
+import { View, StyleSheet } from 'react-native'
+import palette from '../palette'
 
 const DotsComponent = ({ value }) => {
   const dots = Array(5).fill(null)
@@ -14,8 +14,7 @@ const DotsComponent = ({ value }) => {
           style={[
             styles.dot,
             {
-              backgroundColor:
-                index < filledDots ? palette.darkBlue : palette.lightBlue,
+              backgroundColor: index < filledDots ? palette.darkBlue : palette.lightBlue,
             },
           ]}
         />
@@ -26,8 +25,8 @@ const DotsComponent = ({ value }) => {
 
 const styles = StyleSheet.create({
   container: {
-    display: "flex",
-    flexDirection: "row",
+    display: 'flex',
+    flexDirection: 'row',
   },
   dot: {
     width: 8,

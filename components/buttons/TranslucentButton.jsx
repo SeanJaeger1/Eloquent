@@ -1,5 +1,5 @@
-import RightArrowIcon from "../icons/RightArrowIcon"
-import { Text, View, StyleSheet, Pressable } from "react-native"
+import RightArrowIcon from '../icons/RightArrowIcon'
+import { Text, View, StyleSheet, Pressable } from 'react-native'
 
 const TransleucentButton = ({ text, onPress }) => {
   return (
@@ -14,24 +14,24 @@ const TransleucentButton = ({ text, onPress }) => {
 
 const styles = StyleSheet.create({
   pressable: {
-    backgroundColor: "rgba(0, 0, 0, 0.1)",
-    color: "white",
+    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+    color: 'white',
     borderRadius: 24,
     height: 38,
-    alignItems: "center",
-    justifyContent: "center",
-    display: "flex",
-    flexDirection: "row",
+    alignItems: 'center',
+    justifyContent: 'center',
+    display: 'flex',
+    flexDirection: 'row',
     marginBottom: 16,
     paddingHorizontal: 16,
   },
   buttonText: {
-    color: "white",
+    color: 'white',
     fontWeight: 700,
     fontSize: 14,
     marginRight: 12,
   },
-  arrowContainer: { transform: "rotate(90deg)" },
+  arrowContainer: { transform: 'rotate(90deg)' },
 })
 
 export default TransleucentButton

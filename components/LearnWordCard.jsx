@@ -1,22 +1,22 @@
-import React, { useState } from "react"
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native"
-import { Card } from "react-native-elements"
+import React, { useState } from 'react'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { Card } from 'react-native-elements'
 import { Ionicons } from '@expo/vector-icons'
 import { Audio } from 'expo-av'
 import Constants from 'expo-constants'
 
-import capitalizeFirstLetter from "../utils/capitalizeFirstLetter"
-import ExampleText from "./ExampleText"
-import ProgressMeter from "./ProgressMeter"
-import palette from "../palette"
+import capitalizeFirstLetter from '../utils/capitalizeFirstLetter'
+import ExampleText from './ExampleText'
+import ProgressMeter from './ProgressMeter'
+import palette from '../palette'
 
-const GOOGLE_TTS_API_KEY = Constants.expoConfig.extra.GOOGLE_TEXT_SPEECH_API_KEY;
+const GOOGLE_TTS_API_KEY = Constants.expoConfig.extra.GOOGLE_TEXT_SPEECH_API_KEY
 
 const WordChip = ({ word }) => (
   <View style={styles.wordChip}>
     <Text style={styles.wordChipText}>{word}</Text>
   </View>
-);
+)
 
 const LearnWordCard = ({ userWord, onTick, onCross }) => {
   const { progress, word } = userWord
@@ -26,41 +26,44 @@ const LearnWordCard = ({ userWord, onTick, onCross }) => {
   const pronounceWord = async () => {
     setIsPlaying(true)
     try {
-      const response = await fetch(`https://texttospeech.googleapis.com/v1/text:synthesize?key=${GOOGLE_TTS_API_KEY}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          input: { text: wordText },
-          voice: { languageCode: 'en-US', ssmlGender: 'NEUTRAL' },
-          audioConfig: { audioEncoding: 'MP3' },
-        }),
-      });
+      const response = await fetch(
+        `https://texttospeech.googleapis.com/v1/text:synthesize?key=${GOOGLE_TTS_API_KEY}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            input: { text: wordText },
+            voice: { languageCode: 'en-US', ssmlGender: 'NEUTRAL' },
+            audioConfig: { audioEncoding: 'MP3' },
+          }),
+        }
+      )
 
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error('Network response was not ok')
       }
 
-      const data = await response.json();
-      const audioContent = data.audioContent;
-      const audioUri = `data:audio/mp3;base64,${audioContent}`;
-      
-      const { sound } = await Audio.Sound.createAsync({ uri: audioUri });
-      await sound.playAsync();
-      sound.setOnPlaybackStatusUpdate((status) => {
-        if (status.didJustFinish) {
-          setIsPlaying(false);
-        }
-      });
-    } catch (error) {
-      console.error('Error pronouncing word:', error);
-      setIsPlaying(false);
-    }
-  };
+      const data = await response.json()
+      const audioContent = data.audioContent
+      const audioUri = `data:audio/mp3;base64,${audioContent}`
 
-  const renderSynonyms = (synonyms) => {
-    if (!synonyms || synonyms.length === 0) return null;
+      const { sound } = await Audio.Sound.createAsync({ uri: audioUri })
+      await sound.playAsync()
+      sound.setOnPlaybackStatusUpdate(status => {
+        if (status.didJustFinish) {
+          setIsPlaying(false)
+        }
+      })
+    } catch (error) {
+      console.error('Error pronouncing word:', error)
+      setIsPlaying(false)
+    }
+  }
+
+  const renderSynonyms = synonyms => {
+    if (!synonyms || synonyms.length === 0) return null
     return (
       <View style={styles.synonymsContainer}>
         <Text style={styles.synonymsTitle}>SYNONYMS</Text>
@@ -70,8 +73,8 @@ const LearnWordCard = ({ userWord, onTick, onCross }) => {
           ))}
         </View>
       </View>
-    );
-  };
+    )
+  }
 
   return (
     <Card containerStyle={styles.card}>
@@ -79,10 +82,10 @@ const LearnWordCard = ({ userWord, onTick, onCross }) => {
         <View style={styles.header}>
           <Text style={styles.word}>{wordText}</Text>
           <TouchableOpacity onPress={pronounceWord} disabled={isPlaying}>
-            <Ionicons 
-              name={isPlaying ? "volume-high" : "volume-high-outline"} 
-              size={24} 
-              color={isPlaying ? palette.lightGrey : "#4AC3BE"} 
+            <Ionicons
+              name={isPlaying ? 'volume-high' : 'volume-high-outline'}
+              size={24}
+              color={isPlaying ? palette.lightGrey : '#4AC3BE'}
             />
           </TouchableOpacity>
         </View>
@@ -95,15 +98,12 @@ const LearnWordCard = ({ userWord, onTick, onCross }) => {
         {renderSynonyms(synonyms)}
       </View>
       <View style={styles.buttonsContainer}>
-        <TouchableOpacity
-          style={[styles.button, styles.crossButton]}
-          onPress={onCross}
-        >
-          <Ionicons name="close" size={24} color="#8F8F8F" />
+        <TouchableOpacity style={[styles.button, styles.crossButton]} onPress={onCross}>
+          <Ionicons name='close' size={24} color='#8F8F8F' />
         </TouchableOpacity>
         <View style={styles.buttonSeparator} />
         <TouchableOpacity style={[styles.button, styles.tickButton]} onPress={onTick}>
-          <Ionicons name="checkmark" size={24} color="#4AC3BE" />
+          <Ionicons name='checkmark' size={24} color='#4AC3BE' />
         </TouchableOpacity>
       </View>
     </Card>
@@ -115,31 +115,31 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     padding: 0,
     margin: 0,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
-    marginVertical: 16
+    marginVertical: 16,
   },
   infoContainer: {
     padding: 20,
   },
   header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 4,
   },
   word: {
     fontSize: 28,
-    fontWeight: "bold",
-    color: "#000000",
+    fontWeight: 'bold',
+    color: '#000000',
   },
   type: {
     fontSize: 16,
-    fontStyle: "italic",
-    color: "#8F8F8F",
+    fontStyle: 'italic',
+    color: '#8F8F8F',
     marginBottom: 12,
   },
   progressContainer: {
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
   },
   meaning: {
     fontSize: 16,
-    color: "#000000",
+    color: '#000000',
     marginBottom: 16,
     lineHeight: 24,
   },
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     fontWeight: '400',
   },
   buttonsContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
     borderTopWidth: 1,
     borderTopColor: '#E5E5E5',
   },

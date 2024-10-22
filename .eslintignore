@@ -1,0 +1,46 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Testing
+coverage/
+__tests__/coverage/
+
+# Production
+build/
+dist/
+out/
+
+# React Native
+ios/
+android/
+*.bundle
+
+# Cache
+.cache/
+.eslintcache
+.npm
+.yarn-cache
+
+# Environment
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE
+.idea/
+.vscode/
+
+# Misc
+.DS_Store
+*.log
+*.lock
+temp/
+tmp/
+
+# Generated files
+*.generated.*
+*.d.ts

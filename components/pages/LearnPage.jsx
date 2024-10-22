@@ -1,17 +1,17 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect } from 'react'
 
-import { httpsCallable } from "firebase/functions"
-import { View, StyleSheet } from "react-native"
+import { httpsCallable } from 'firebase/functions'
+import { View, StyleSheet } from 'react-native'
 
-import { functions } from "../../firebaseConfig"
-import LearnWordCard from "../LearnWordCard"
-import ProgressBar from "../ProgressBar"
+import { functions } from '../../firebaseConfig'
+import LearnWordCard from '../LearnWordCard'
+import ProgressBar from '../ProgressBar'
 
-import LoadingPage from "./LoadingPage"
-import TransleucentButton from "../buttons/TranslucentButton"
-import useSetSkillLevel from "../../hooks/useSetSkillLevel"
-import useUser from "../../hooks/useUser"
-import capitalizeFirstLetter from "../../utils/capitalizeFirstLetter"
+import LoadingPage from './LoadingPage'
+import TransleucentButton from '../buttons/TranslucentButton'
+import useSetSkillLevel from '../../hooks/useSetSkillLevel'
+import useUser from '../../hooks/useUser'
+import capitalizeFirstLetter from '../../utils/capitalizeFirstLetter'
 
 const LearnPage = () => {
   const [words, setWords] = useState([])
@@ -35,13 +35,13 @@ const LearnPage = () => {
   async function fetchUserWords() {
     try {
       setLoading(true)
-      const getUserWords = httpsCallable(functions, "getLearningWords")
+      const getUserWords = httpsCallable(functions, 'getLearningWords')
       const result = await getUserWords()
       const userWords = result.data
       setWords(userWords)
       setLoading(false)
     } catch (error) {
-      console.error("Error fetching user words:", error)
+      console.error('Error fetching user words:', error)
       setLoading(false)
     }
   }
@@ -51,14 +51,14 @@ const LearnPage = () => {
       setTimeout(() => {
         nextWord()
       }, 500)
-      const updateWordProgress = httpsCallable(functions, "updateWordProgress")
+      const updateWordProgress = httpsCallable(functions, 'updateWordProgress')
 
       await updateWordProgress({
         userWordId: words[currentWordIndex].id,
         increment,
       })
     } catch (error) {
-      console.error("Error updating/creating user word:", error)
+      console.error('Error updating/creating user word:', error)
     }
   }
 
@@ -72,7 +72,7 @@ const LearnPage = () => {
         <TransleucentButton
           text={capitalizeFirstLetter(user?.skillLevel)}
           onPress={() => {
-            useSetSkillLevel("")
+            useSetSkillLevel('')
           }}
         />
       </View>
@@ -80,10 +80,7 @@ const LearnPage = () => {
         <LoadingPage />
       ) : (
         <View style={styles.cardContainer}>
-          <ProgressBar
-            currentIndex={currentWordIndex}
-            totalCount={words.length}
-          />
+          <ProgressBar currentIndex={currentWordIndex} totalCount={words.length} />
           <LearnWordCard
             userWord={words[currentWordIndex]}
             onTick={() => updateWordProgress(1)}
@@ -98,27 +95,27 @@ const LearnPage = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   buttonContainer: {
-    position: "absolute",
+    position: 'absolute',
     top: 28,
     right: 24,
   },
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   buttonContainer: {
-    position: "absolute",
+    position: 'absolute',
     top: 28,
     right: 24,
   },
   cardContainer: {
-    width: "90%",
-    alignItems: "center",
+    width: '90%',
+    alignItems: 'center',
   },
 })
 

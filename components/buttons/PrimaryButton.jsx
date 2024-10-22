@@ -1,6 +1,6 @@
-import RightArrowIcon from "../icons/RightArrowIcon"
-import { Text, View, StyleSheet, Pressable } from "react-native"
-import palette from "../../palette"
+import RightArrowIcon from '../icons/RightArrowIcon'
+import { Text, View, StyleSheet, Pressable } from 'react-native'
+import palette from '../../palette'
 
 const PrimaryButton = ({ text, onPress }) => {
   return (
@@ -16,21 +16,21 @@ const PrimaryButton = ({ text, onPress }) => {
 const styles = StyleSheet.create({
   pressable: {
     backgroundColor: palette.secondary,
-    color: "white",
+    color: 'white',
     borderRadius: 24,
     height: 64,
-    alignItems: "center",
-    justifyContent: "center",
-    display: "flex",
-    flexDirection: "row",
+    alignItems: 'center',
+    justifyContent: 'center',
+    display: 'flex',
+    flexDirection: 'row',
     marginBottom: 16,
   },
   signUpButton: {
-    color: "white",
+    color: 'white',
     fontWeight: 600,
     fontSize: 18,
   },
-  arrowContainer: { position: "absolute", right: 36 },
+  arrowContainer: { position: 'absolute', right: 36 },
 })
 
 export default PrimaryButton

@@ -1,33 +1,33 @@
-import "dotenv/config"
+import 'dotenv/config'
 
 export default {
   expo: {
-    name: "Eloquent",
-    slug: "eloquent",
-    version: "1.0.0",
-    orientation: "portrait",
-    icon: "./assets/icon.png",
-    userInterfaceStyle: "light",
+    name: 'Eloquent',
+    slug: 'eloquent',
+    version: '1.0.0',
+    orientation: 'portrait',
+    icon: './assets/icon.png',
+    userInterfaceStyle: 'light',
     splash: {
-      image: "./assets/splash.png",
-      resizeMode: "contain",
-      backgroundColor: "#ffffff",
+      image: './assets/splash.png',
+      resizeMode: 'contain',
+      backgroundColor: '#ffffff',
     },
-    assetBundlePatterns: ["**/*"],
+    assetBundlePatterns: ['**/*'],
     ios: {
       supportsTablet: true,
-      bundleIdentifier: "com.seanjaeger.eloquent",
+      bundleIdentifier: 'com.seanjaeger.eloquent',
     },
     android: {
       adaptiveIcon: {
-        foregroundImage: "./assets/adaptive-icon.png",
-        backgroundColor: "#ffffff",
+        foregroundImage: './assets/adaptive-icon.png',
+        backgroundColor: '#ffffff',
       },
     },
     web: {
-      bundler: "webpack",
-      output: "static",
-      favicon: "./assets/eloquent-favicon.png",
+      bundler: 'webpack',
+      output: 'static',
+      favicon: './assets/eloquent-favicon.png',
     },
     extra: {
       firebaseConfig: {
@@ -41,9 +41,9 @@ export default {
       },
       GOOGLE_TEXT_SPEECH_API_KEY: process.env.GOOGLE_TEXT_SPEECH_API_KEY,
       eas: {
-        projectId: "9ef30b88-ee33-41c5-9039-11c413596d0a",
+        projectId: '9ef30b88-ee33-41c5-9039-11c413596d0a',
       },
     },
-    owner: "seanjaeger123",
+    owner: 'seanjaeger123',
   },
 }

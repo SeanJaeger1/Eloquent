@@ -1,16 +1,16 @@
-import React, { useState } from "react"
+import React, { useState } from 'react'
 
-import { useFocusEffect } from "@react-navigation/native"
-import { httpsCallable } from "firebase/functions"
-import { View, ScrollView, StyleSheet, Text, TextInput } from "react-native"
+import { useFocusEffect } from '@react-navigation/native'
+import { httpsCallable } from 'firebase/functions'
+import { View, ScrollView, StyleSheet, Text, TextInput } from 'react-native'
 
-import { functions } from "../../firebaseConfig"
-import WordPanel from "../WordPanel"
+import { functions } from '../../firebaseConfig'
+import WordPanel from '../WordPanel'
 
-import LoadingPage from "./LoadingPage"
+import LoadingPage from './LoadingPage'
 
 const MyWordsPage = () => {
-  const [searchText, setSearchText] = useState("")
+  const [searchText, setSearchText] = useState('')
   const [words, setWords] = useState([])
   const [loading, setLoading] = useState(true)
   const [nextPageToken, setNextPageToken] = useState(null)
@@ -21,7 +21,7 @@ const MyWordsPage = () => {
     }, [])
   )
 
-  const handleScroll = (event) => {
+  const handleScroll = event => {
     if (loading) {
       return
     }
@@ -42,7 +42,7 @@ const MyWordsPage = () => {
     }
     try {
       setLoading(true)
-      const getUserWords = httpsCallable(functions, "getUserWords")
+      const getUserWords = httpsCallable(functions, 'getUserWords')
       const result = await getUserWords({ lastSeenAt: nextPageToken })
       const { userWords, nextPageToken: newToken } = result.data
       // const sortingAlgo = (a, b) => a.word.word.localeCompare(b.word.word)
@@ -51,7 +51,7 @@ const MyWordsPage = () => {
       setNextPageToken(newToken)
       setLoading(false)
     } catch (error) {
-      console.error("Error fetching user words:", error)
+      console.error('Error fetching user words:', error)
       setLoading(false)
     }
   }
@@ -64,9 +64,9 @@ const MyWordsPage = () => {
     <View style={styles.container}>
       <TextInput
         style={styles.input}
-        placeholder="Search my words..."
-        placeholderTextColor="black"
-        onChangeText={(text) => setSearchText(text)}
+        placeholder='Search my words...'
+        placeholderTextColor='black'
+        onChangeText={text => setSearchText(text)}
         value={searchText}
       />
       {loading && words.length === 0 ? (
@@ -79,9 +79,7 @@ const MyWordsPage = () => {
           onScroll={handleScroll}
         >
           {filteredWords.length > 0 ? (
-            filteredWords.map((word, index) => (
-              <WordPanel key={index} userWord={word} />
-            ))
+            filteredWords.map((word, index) => <WordPanel key={index} userWord={word} />)
           ) : (
             <Text style={styles.noWordsText}>
               You don't have any words yet! Start learning new words.
@@ -102,8 +100,8 @@ const styles = StyleSheet.create({
   },
   noWordsText: {
     fontSize: 18,
-    color: "white",
-    textAlign: "center",
+    color: 'white',
+    textAlign: 'center',
     marginTop: 20,
   },
   scroll: {
@@ -115,8 +113,8 @@ const styles = StyleSheet.create({
     padding: 12,
     marginTop: 5,
     marginBottom: 10,
-    width: "100%",
-    backgroundColor: "white",
+    width: '100%',
+    backgroundColor: 'white',
     borderRadius: 24,
     paddingLeft: 24,
   },

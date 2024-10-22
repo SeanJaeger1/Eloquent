@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from "react"
-import { View, StyleSheet, Animated, Text } from "react-native"
+import React, { useEffect, useRef } from 'react'
+import { View, StyleSheet, Animated, Text } from 'react-native'
 
 const ProgressBar = ({ currentIndex, totalCount }) => {
   const initialWidthPercent = (currentIndex / totalCount) * 100
@@ -26,34 +26,32 @@ const ProgressBar = ({ currentIndex, totalCount }) => {
       <View style={styles.container}>
         <Animated.View style={[styles.progressBar, animatedWidthStyle]} />
       </View>
-      <Text style={styles.textStyle}>{`${
-        currentIndex + 1
-      } / ${totalCount}`}</Text>
+      <Text style={styles.textStyle}>{`${currentIndex + 1} / ${totalCount}`}</Text>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   wrapper: {
-    flexDirection: "row",
-    alignItems: "center",
-    width: "100%",
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
   },
   container: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: 'row',
     height: 8,
-    backgroundColor: "rgba(0, 0, 0, 0.1)",
-    overflow: "hidden",
+    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+    overflow: 'hidden',
     borderRadius: 4,
     marginRight: 8,
   },
   progressBar: {
     height: 8,
-    backgroundColor: "white",
+    backgroundColor: 'white',
   },
   textStyle: {
-    color: "white",
+    color: 'white',
     fontSize: 14,
   },
 })
