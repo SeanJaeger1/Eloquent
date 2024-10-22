@@ -82,7 +82,7 @@ const MyWordsPage = () => {
             filteredWords.map((word, index) => <WordPanel key={index} userWord={word} />)
           ) : (
             <Text style={styles.noWordsText}>
-              You don't have any words yet! Start learning new words.
+              You don&apos;t have any words yet! Start learning new words.
             </Text>
           )}
           {loading && <LoadingPage />}
@@ -109,7 +109,6 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderRadius: 5,
     padding: 12,
     marginTop: 5,
     marginBottom: 10,

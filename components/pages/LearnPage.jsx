@@ -103,16 +103,6 @@ const styles = StyleSheet.create({
     top: 28,
     right: 24,
   },
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  buttonContainer: {
-    position: 'absolute',
-    top: 28,
-    right: 24,
-  },
   cardContainer: {
     width: '90%',
     alignItems: 'center',
