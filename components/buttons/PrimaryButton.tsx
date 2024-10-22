@@ -1,9 +1,16 @@
-import { Text, View, StyleSheet, Pressable } from 'react-native'
+import React from 'react'
+
+import { Text, View, StyleSheet, Pressable, GestureResponderEvent } from 'react-native'
 
 import palette from '../../palette'
 import RightArrowIcon from '../icons/RightArrowIcon'
 
-const PrimaryButton = ({ text, onPress }) => {
+interface PrimaryButtonProps {
+  text: string
+  onPress: (event: GestureResponderEvent) => void
+}
+
+const PrimaryButton: React.FC<PrimaryButtonProps> = ({ text, onPress }) => {
   return (
     <Pressable style={styles.pressable} onPress={onPress}>
       <Text style={styles.signUpButton}>{text}</Text>
@@ -28,10 +35,13 @@ const styles = StyleSheet.create({
   },
   signUpButton: {
     color: 'white',
-    fontWeight: 600,
+    fontWeight: '600',
     fontSize: 18,
   },
-  arrowContainer: { position: 'absolute', right: 36 },
+  arrowContainer: {
+    position: 'absolute',
+    right: 36,
+  },
 })
 
 export default PrimaryButton
