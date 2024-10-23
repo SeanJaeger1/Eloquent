@@ -1,4 +1,12 @@
-const palette = {
+interface Palette {
+  secondary: string
+  darkBlue: string
+  lightBlue: string
+  subtleBlue: string
+  lightGrey: string
+}
+
+const palette: Palette = {
   secondary: '#0E101B',
   darkBlue: '#059DA2',
   lightBlue: '#D6E4E4',

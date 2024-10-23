@@ -6,14 +6,30 @@ import shortenType from '../utils/shortenType'
 
 import ProgressMeter from './ProgressMeter'
 
-const WordPanel = ({ userWord }) => {
-  const [isExpanded, setIsExpanded] = useState(false)
+interface Word {
+  definition: string
+  meaning: string
+  word: string
+  wordType: string
+}
+
+interface UserWord {
+  word: Word
+  progress: number
+}
+
+interface WordPanelProps {
+  userWord: UserWord
+}
+
+const WordPanel: React.FC<WordPanelProps> = ({ userWord }) => {
+  const [isExpanded, setIsExpanded] = useState<boolean>(false)
   const {
     word: { definition, meaning, word, wordType },
     progress,
   } = userWord
 
-  const handlePress = () => {
+  const handlePress = (): void => {
     setIsExpanded(!isExpanded)
   }
 

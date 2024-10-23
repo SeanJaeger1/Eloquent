@@ -2,7 +2,12 @@ import React, { useEffect, useRef } from 'react'
 
 import { View, StyleSheet, Animated, Text } from 'react-native'
 
-const ProgressBar = ({ currentIndex, totalCount }) => {
+interface ProgressBarProps {
+  currentIndex: number
+  totalCount: number
+}
+
+const ProgressBar: React.FC<ProgressBarProps> = ({ currentIndex, totalCount }) => {
   const initialWidthPercent = (currentIndex / totalCount) * 100
   const animatedWidth = useRef(new Animated.Value(initialWidthPercent)).current
 

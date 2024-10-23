@@ -1,28 +1,52 @@
 import { useState } from 'react'
 
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from '@firebase/auth'
-import { collection, doc, setDoc, serverTimestamp } from '@firebase/firestore'
-import { View, TextInput, Text, StyleSheet, Pressable } from 'react-native'
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  UserCredential,
+} from '@firebase/auth'
+import {
+  collection,
+  doc,
+  setDoc,
+  serverTimestamp,
+  CollectionReference,
+  Timestamp,
+} from '@firebase/firestore'
+import { View, TextInput, Text, StyleSheet, Pressable, TextStyle, ViewStyle } from 'react-native'
 
 import { auth, db } from '../../firebaseConfig'
 import palette from '../../palette'
 import PrimaryButton from '../buttons/PrimaryButton'
 
-const AuthFormPage = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [isSignUp, setIsSignUp] = useState(true)
+interface UserData {
+  uid: string
+  email: string
+  dateJoined: Timestamp
+  skillLevel: string
+  nextWords: number[]
+}
 
-  const handleAuth = async () => {
+const AuthFormPage: React.FC = () => {
+  const [email, setEmail] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
+  const [isSignUp, setIsSignUp] = useState<boolean>(true)
+
+  const handleAuth = async (): Promise<void> => {
     try {
       if (isSignUp) {
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+        const userCredential: UserCredential = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        )
 
         // Create a Firestore document for the new user
-        await setDoc(doc(collection(db, 'users'), userCredential.user.uid), {
+        const userCollection = collection(db, 'users') as CollectionReference<UserData>
+        await setDoc(doc(userCollection, userCredential.user.uid), {
           uid: userCredential.user.uid,
           email: email,
-          dateJoined: serverTimestamp(),
+          dateJoined: serverTimestamp() as Timestamp,
           skillLevel: '',
           nextWords: [0, 0, 0, 0],
         })
@@ -30,7 +54,11 @@ const AuthFormPage = () => {
         await signInWithEmailAndPassword(auth, email, password)
       }
     } catch (error) {
-      alert(error.message)
+      if (error instanceof Error) {
+        alert(error.message)
+      } else {
+        alert('An unknown error occurred')
+      }
     }
   }
 
@@ -41,7 +69,7 @@ const AuthFormPage = () => {
       <TextInput
         style={styles.input}
         placeholder='Email address'
-        onChangeText={text => setEmail(text)}
+        onChangeText={(text: string) => setEmail(text)}
         value={email}
         placeholderTextColor='black'
       />
@@ -49,7 +77,7 @@ const AuthFormPage = () => {
         style={styles.input}
         placeholder='Password'
         secureTextEntry={true}
-        onChangeText={text => setPassword(text)}
+        onChangeText={(text: string) => setPassword(text)}
         value={password}
         placeholderTextColor='black'
       />
@@ -73,7 +101,18 @@ const AuthFormPage = () => {
   )
 }
 
-const styles = StyleSheet.create({
+interface Styles {
+  container: ViewStyle
+  title: TextStyle
+  subtitle: TextStyle
+  pressable: ViewStyle
+  signUpButton: TextStyle
+  input: ViewStyle
+  toggleText: TextStyle
+  highlighted: TextStyle
+}
+
+const styles = StyleSheet.create<Styles>({
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -100,7 +139,7 @@ const styles = StyleSheet.create({
   },
   signUpButton: {
     color: 'white',
-    fontWeight: 600,
+    fontWeight: '600',
     fontSize: 18,
   },
   input: {
@@ -113,7 +152,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     paddingLeft: 24,
   },
-  toggleText: { textAlign: 'center', marginTop: 16, fontSize: 16 },
+  toggleText: {
+    textAlign: 'center',
+    marginTop: 16,
+    fontSize: 16,
+  },
   highlighted: {
     color: palette.secondary,
     fontWeight: 'bold',

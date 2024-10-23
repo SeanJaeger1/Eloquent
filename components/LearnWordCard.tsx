@@ -12,22 +12,68 @@ import capitalizeFirstLetter from '../utils/capitalizeFirstLetter'
 import ExampleText from './ExampleText'
 import ProgressMeter from './ProgressMeter'
 
-const GOOGLE_TTS_API_KEY = Constants.expoConfig.extra.GOOGLE_TEXT_SPEECH_API_KEY
+// Access manifest extra values correctly in newer Expo versions
+const manifestExtra = Constants.manifest?.extra || Constants.manifest2?.extra || {}
+const GOOGLE_TTS_API_KEY = manifestExtra.GOOGLE_TEXT_SPEECH_API_KEY || ''
 
-const WordChip = ({ word }) => (
+interface Word {
+  word: string
+  examples: string[]
+  definition: string
+  wordType: string
+  synonyms: string[]
+}
+
+interface UserWord {
+  progress: number
+  word: Word
+}
+
+interface WordChipProps {
+  word: string
+}
+
+interface LearnWordCardProps {
+  userWord: UserWord
+  onTick: () => void
+  onCross: () => void
+}
+
+// Define the audio playback status type
+interface AudioPlaybackStatus {
+  didJustFinish: boolean
+  isLoaded: boolean
+  positionMillis: number
+  durationMillis: number
+  shouldPlay: boolean
+  isPlaying: boolean
+  isBuffering: boolean
+  volume: number
+  isMuted: boolean
+  shouldCorrectPitch: boolean
+  pitchCorrectionQuality: string
+  progressUpdateIntervalMillis: number
+  androidImplementation?: string
+}
+
+const WordChip: React.FC<WordChipProps> = ({ word }) => (
   <View style={styles.wordChip}>
     <Text style={styles.wordChipText}>{word}</Text>
   </View>
 )
 
-const LearnWordCard = ({ userWord, onTick, onCross }) => {
+const LearnWordCard: React.FC<LearnWordCardProps> = ({ userWord, onTick, onCross }) => {
   const { progress, word } = userWord
   const { word: wordText, examples, definition, wordType, synonyms } = word
-  const [isPlaying, setIsPlaying] = useState(false)
+  const [isPlaying, setIsPlaying] = useState<boolean>(false)
 
-  const pronounceWord = async () => {
+  const pronounceWord = async (): Promise<void> => {
     setIsPlaying(true)
     try {
+      if (!GOOGLE_TTS_API_KEY) {
+        throw new Error('Google TTS API key not found')
+      }
+
       const response = await fetch(
         `https://texttospeech.googleapis.com/v1/text:synthesize?key=${GOOGLE_TTS_API_KEY}`,
         {
@@ -53,9 +99,10 @@ const LearnWordCard = ({ userWord, onTick, onCross }) => {
 
       const { sound } = await Audio.Sound.createAsync({ uri: audioUri })
       await sound.playAsync()
-      sound.setOnPlaybackStatusUpdate(status => {
+      sound.setOnPlaybackStatusUpdate((status: AudioPlaybackStatus) => {
         if (status.didJustFinish) {
           setIsPlaying(false)
+          sound.unloadAsync().catch(console.error)
         }
       })
     } catch (error) {
@@ -64,7 +111,7 @@ const LearnWordCard = ({ userWord, onTick, onCross }) => {
     }
   }
 
-  const renderSynonyms = synonyms => {
+  const renderSynonyms = (synonyms: string[]): React.ReactNode => {
     if (!synonyms || synonyms.length === 0) return null
     return (
       <View style={styles.synonymsContainer}>

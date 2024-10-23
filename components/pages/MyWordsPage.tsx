@@ -2,18 +2,51 @@ import React, { useState, useCallback } from 'react'
 
 import { useFocusEffect } from '@react-navigation/native'
 import { httpsCallable } from 'firebase/functions'
-import { View, ScrollView, StyleSheet, Text, TextInput } from 'react-native'
+import {
+  View,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
+  ViewStyle,
+  TextStyle,
+} from 'react-native'
 
 import { functions } from '../../firebaseConfig'
 import WordPanel from '../WordPanel'
 
 import LoadingPage from './LoadingPage'
 
-const MyWordsPage = () => {
-  const [searchText, setSearchText] = useState('')
-  const [words, setWords] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [nextPageToken, setNextPageToken] = useState(null)
+interface Word {
+  word: string
+  // Add other word properties as needed
+}
+
+interface UserWord {
+  word: Word
+  // Add other user word properties as needed
+}
+
+interface GetUserWordsResponse {
+  userWords: UserWord[]
+  nextPageToken: string | null
+}
+
+interface ScrollEvent extends NativeSyntheticEvent<NativeScrollEvent> {
+  nativeEvent: NativeScrollEvent & {
+    contentOffset: { y: number }
+    contentSize: { height: number }
+    layoutMeasurement: { height: number }
+  }
+}
+
+const MyWordsPage: React.FC = () => {
+  const [searchText, setSearchText] = useState<string>('')
+  const [words, setWords] = useState<UserWord[]>([])
+  const [loading, setLoading] = useState<boolean>(true)
+  const [nextPageToken, setNextPageToken] = useState<string | null>(null)
 
   useFocusEffect(
     useCallback(() => {
@@ -21,7 +54,7 @@ const MyWordsPage = () => {
     }, [])
   )
 
-  const handleScroll = event => {
+  const handleScroll = (event: ScrollEvent): void => {
     if (loading) {
       return
     }
@@ -36,16 +69,19 @@ const MyWordsPage = () => {
     }
   }
 
-  async function fetchUserWords() {
+  const fetchUserWords = async (): Promise<void> => {
     if (!nextPageToken && words.length !== 0) {
       return
     }
     try {
       setLoading(true)
-      const getUserWords = httpsCallable(functions, 'getUserWords')
+      const getUserWords = httpsCallable<{ lastSeenAt: string | null }, GetUserWordsResponse>(
+        functions,
+        'getUserWords'
+      )
       const result = await getUserWords({ lastSeenAt: nextPageToken })
       const { userWords, nextPageToken: newToken } = result.data
-      // const sortingAlgo = (a, b) => a.word.word.localeCompare(b.word.word)
+      // const sortingAlgo = (a: UserWord, b: UserWord) => a.word.word.localeCompare(b.word.word)
       // userWords.sort(sortingAlgo)
       setWords([...words, ...userWords])
       setNextPageToken(newToken)
@@ -66,7 +102,7 @@ const MyWordsPage = () => {
         style={styles.input}
         placeholder='Search my words...'
         placeholderTextColor='black'
-        onChangeText={text => setSearchText(text)}
+        onChangeText={(text: string) => setSearchText(text)}
         value={searchText}
       />
       {loading && words.length === 0 ? (
@@ -92,7 +128,14 @@ const MyWordsPage = () => {
   )
 }
 
-const styles = StyleSheet.create({
+interface Styles {
+  container: ViewStyle
+  noWordsText: TextStyle
+  scroll: ViewStyle
+  input: ViewStyle
+}
+
+const styles = StyleSheet.create<Styles>({
   container: {
     flex: 1,
     paddingHorizontal: 20,

@@ -5,7 +5,7 @@ import { updateDoc, doc, Firestore } from 'firebase/firestore'
 
 import { auth, db } from '../firebaseConfig'
 
-type SkillLevel = 'beginner' | 'intermediate' | 'advanced'
+type SkillLevel = '' | 'beginner' | 'intermediate' | 'advanced' | 'expert'
 
 const useSetSkillLevel = () => {
   const setSkillLevel = useCallback(async (skillLevel: SkillLevel): Promise<void> => {

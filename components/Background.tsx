@@ -1,6 +1,12 @@
+import React, { ReactNode } from 'react'
+
 import { ImageBackground, StyleSheet, View } from 'react-native'
 
-const Background = ({ children }) => {
+interface BackgroundProps {
+  children: ReactNode
+}
+
+const Background = ({ children }: BackgroundProps): JSX.Element => {
   return (
     <View style={styles.container}>
       <ImageBackground

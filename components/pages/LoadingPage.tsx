@@ -1,8 +1,10 @@
-import { View, ActivityIndicator, StyleSheet } from 'react-native'
+import React from 'react'
+
+import { View, ActivityIndicator, StyleSheet, ViewStyle } from 'react-native'
 
 import palette from '../../palette'
 
-const LoadingPage = () => {
+const LoadingPage: React.FC = () => {
   return (
     <View style={styles.container}>
       <ActivityIndicator size='large' color={palette.secondary} />
@@ -10,7 +12,11 @@ const LoadingPage = () => {
   )
 }
 
-const styles = StyleSheet.create({
+interface Styles {
+  container: ViewStyle
+}
+
+const styles = StyleSheet.create<Styles>({
   container: {
     flex: 1,
     justifyContent: 'center',
