@@ -1,4 +1,4 @@
-const shortenType = {
+const shortenType: Record<string, string> = {
   noun: 'n.',
   verb: 'v.',
   adjective: 'adj.',
