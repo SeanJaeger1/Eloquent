@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
 
 import { Ionicons } from '@expo/vector-icons'
-import { Audio } from 'expo-av'
+import { Audio, AVPlaybackStatus } from 'expo-av'
 import Constants from 'expo-constants'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { Card } from 'react-native-elements'
 
 import palette from '../palette'
+import { UserWord } from '../types/words'
 import capitalizeFirstLetter from '../utils/capitalizeFirstLetter'
 
 import ExampleText from './ExampleText'
@@ -16,19 +17,6 @@ import ProgressMeter from './ProgressMeter'
 const manifestExtra = Constants.manifest?.extra || Constants.manifest2?.extra || {}
 const GOOGLE_TTS_API_KEY = manifestExtra.GOOGLE_TEXT_SPEECH_API_KEY || ''
 
-interface Word {
-  word: string
-  examples: string[]
-  definition: string
-  wordType: string
-  synonyms: string[]
-}
-
-interface UserWord {
-  progress: number
-  word: Word
-}
-
 interface WordChipProps {
   word: string
 }
@@ -37,23 +25,6 @@ interface LearnWordCardProps {
   userWord: UserWord
   onTick: () => void
   onCross: () => void
-}
-
-// Define the audio playback status type
-interface AudioPlaybackStatus {
-  didJustFinish: boolean
-  isLoaded: boolean
-  positionMillis: number
-  durationMillis: number
-  shouldPlay: boolean
-  isPlaying: boolean
-  isBuffering: boolean
-  volume: number
-  isMuted: boolean
-  shouldCorrectPitch: boolean
-  pitchCorrectionQuality: string
-  progressUpdateIntervalMillis: number
-  androidImplementation?: string
 }
 
 const WordChip: React.FC<WordChipProps> = ({ word }) => (
@@ -99,8 +70,8 @@ const LearnWordCard: React.FC<LearnWordCardProps> = ({ userWord, onTick, onCross
 
       const { sound } = await Audio.Sound.createAsync({ uri: audioUri })
       await sound.playAsync()
-      sound.setOnPlaybackStatusUpdate((status: AudioPlaybackStatus) => {
-        if (status.didJustFinish) {
+      sound.setOnPlaybackStatusUpdate((status: AVPlaybackStatus) => {
+        if (status.isLoaded && status.didJustFinish) {
           setIsPlaying(false)
           sound.unloadAsync().catch(console.error)
         }

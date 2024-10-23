@@ -4,9 +4,8 @@ import { View, Text, StyleSheet, ViewStyle, TextStyle } from 'react-native'
 
 import { auth } from '../../firebaseConfig'
 import useSetSkillLevel from '../../hooks/useSetSkillLevel'
+import { SkillLevel } from '../../types/user'
 import PrimaryButton from '../buttons/PrimaryButton'
-
-type SkillLevel = 'beginner' | 'intermediate' | 'advanced' | 'expert'
 
 const UpdateSkillLevelPage: React.FC = () => {
   const [userId, setUserId] = useState<string | null>(null)
