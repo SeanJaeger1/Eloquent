@@ -10,7 +10,11 @@ export interface Word {
 }
 
 export interface UserWord {
-  id: string
-  word: Word
+  alreadyKnown: boolean
+  difficulty: string
+  lastSeenAt: string | null
+  learned: boolean
   progress: number
+  userId: string
+  word: Word
 }
