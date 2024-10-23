@@ -17,8 +17,11 @@ const config: ExpoConfig = {
   ios: {
     supportsTablet: true,
     bundleIdentifier: 'com.seanjaeger.eloquent',
+    buildNumber: '2',
   },
   android: {
+    package: 'com.seanjaeger.eloquent',
+    versionCode: 2,
     adaptiveIcon: {
       foregroundImage: './assets/adaptive-icon.png',
       backgroundColor: '#ffffff',
