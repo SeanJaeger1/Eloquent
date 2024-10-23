@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { View, Text, StyleSheet, ViewStyle } from 'react-native'
+import { View, Text, StyleSheet, ViewStyle, TextStyle } from 'react-native'
 
 import { auth } from '../../firebaseConfig'
 import useSetSkillLevel from '../../hooks/useSetSkillLevel'
@@ -31,14 +31,26 @@ const UpdateSkillLevelPage: React.FC = () => {
     <View style={styles.container}>
       <Text style={styles.title}>Select your English level</Text>
       <Text style={styles.subtitle}>Let&apos;s get started! 👋</Text>
-      <PrimaryButton text='Beginner' onPress={() => handleSetSkillLevel('beginner')} />
-      <PrimaryButton text='Intermediate' onPress={() => handleSetSkillLevel('intermediate')} />
+      <PrimaryButton
+        text='Beginner'
+        onPress={() => handleSetSkillLevel('beginner')}
+        style={styles.button}
+      />
+      <PrimaryButton
+        text='Intermediate'
+        onPress={() => handleSetSkillLevel('intermediate')}
+        style={styles.button}
+      />
       <PrimaryButton
         text='Advanced'
         onPress={() => handleSetSkillLevel('advanced')}
         style={styles.button}
       />
-      <PrimaryButton text='Expert' onPress={() => handleSetSkillLevel('expert')} />
+      <PrimaryButton
+        text='Expert'
+        onPress={() => handleSetSkillLevel('expert')}
+        style={styles.button}
+      />
     </View>
   )
 }
@@ -46,9 +58,9 @@ const UpdateSkillLevelPage: React.FC = () => {
 interface Styles {
   container: ViewStyle
   button: ViewStyle
-  buttonText: ViewStyle
-  title: ViewStyle
-  subtitle: ViewStyle
+  buttonText: TextStyle
+  title: TextStyle
+  subtitle: TextStyle
 }
 
 const styles = StyleSheet.create<Styles>({

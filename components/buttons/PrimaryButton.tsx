@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Text, View, StyleSheet, Pressable, GestureResponderEvent } from 'react-native'
+import { Text, View, StyleSheet, Pressable, GestureResponderEvent, ViewStyle } from 'react-native'
 
 import palette from '../../palette'
 import RightArrowIcon from '../icons/RightArrowIcon'
@@ -8,11 +8,12 @@ import RightArrowIcon from '../icons/RightArrowIcon'
 interface PrimaryButtonProps {
   text: string
   onPress: (event: GestureResponderEvent) => void
+  style?: ViewStyle
 }
 
-const PrimaryButton: React.FC<PrimaryButtonProps> = ({ text, onPress }) => {
+const PrimaryButton: React.FC<PrimaryButtonProps> = ({ text, onPress, style }) => {
   return (
-    <Pressable style={styles.pressable} onPress={onPress}>
+    <Pressable style={[styles.pressable, style]} onPress={onPress}>
       <Text style={styles.signUpButton}>{text}</Text>
       <View style={styles.arrowContainer}>
         <RightArrowIcon />

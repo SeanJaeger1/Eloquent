@@ -6,6 +6,7 @@ export interface Word {
 }
 
 export interface UserWord {
+  id: string
   word: Word
   progress: number
 }

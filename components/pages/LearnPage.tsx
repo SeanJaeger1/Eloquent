@@ -6,6 +6,7 @@ import { View, StyleSheet } from 'react-native'
 import { functions } from '../../firebaseConfig'
 import useSetSkillLevel from '../../hooks/useSetSkillLevel'
 import useUser from '../../hooks/useUser'
+import { UserWord } from '../../types/words'
 import capitalizeFirstLetter from '../../utils/capitalizeFirstLetter'
 import TransleucentButton from '../buttons/TranslucentButton'
 import LearnWordCard from '../LearnWordCard'
@@ -13,19 +14,13 @@ import ProgressBar from '../ProgressBar'
 
 import LoadingPage from './LoadingPage'
 
-interface UserWord {
-  id: string
-  word?: string
-  // Add other word properties as needed
-}
-
 interface User {
   skillLevel?: string
   // Add other user properties as needed
 }
 
 const LearnPage: React.FC = () => {
-  const [words, setWords] = useState<UserWord[]>([])
+  const [words, setWords] = useState<(UserWord & { id: string })[]>([])
   const [currentWordIndex, setCurrentWordIndex] = useState<number>(0)
   const [loading, setLoading] = useState<boolean>(true)
   const user = useUser() as User | null
@@ -47,7 +42,7 @@ const LearnPage: React.FC = () => {
   const fetchUserWords = async (): Promise<void> => {
     try {
       setLoading(true)
-      const getUserWords = httpsCallable<void, UserWord[]>(
+      const getUserWords = httpsCallable<void, (UserWord & { id: string })[]>(
         functions as Functions,
         'getLearningWords'
       )
