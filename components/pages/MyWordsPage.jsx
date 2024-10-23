@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 
 import { useFocusEffect } from '@react-navigation/native'
 import { httpsCallable } from 'firebase/functions'
@@ -16,7 +16,7 @@ const MyWordsPage = () => {
   const [nextPageToken, setNextPageToken] = useState(null)
 
   useFocusEffect(
-    React.useCallback(() => {
+    useCallback(() => {
       fetchUserWords()
     }, [])
   )
