@@ -14,11 +14,7 @@ import ProgressBar from '../ProgressBar'
 import LoadingPage from './LoadingPage'
 
 import type { UserWord } from '../../types/words'
-
-interface User {
-  skillLevel?: string
-  // Add other user properties as needed
-}
+import type { User } from 'types/user'
 
 const LearnPage: React.FC = () => {
   const [words, setWords] = useState<(UserWord & { id: string })[]>([])
