@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 
+import { onAuthStateChanged } from 'firebase/auth'
 import { doc, onSnapshot, DocumentSnapshot, Firestore } from 'firebase/firestore'
 
 import { db, auth } from '../firebaseConfig'
@@ -7,49 +8,54 @@ import { db, auth } from '../firebaseConfig'
 interface UserData {
   email?: string
   displayName?: string
-  skillLevel?: 'beginner' | 'intermediate' | 'advanced'
+  skillLevel?: 'beginner' | 'intermediate' | 'advanced' | 'expert'
 }
 
 const useUser = (): UserData | null => {
   const [user, setUser] = useState<UserData | null>(null)
 
   useEffect(() => {
-    let unsubscribe: (() => void) | null = null
+    let unsubscribeFirestore: (() => void) | null = null
 
-    const fetchUser = async (): Promise<void> => {
-      if (!auth.currentUser?.uid) return
+    // Set up auth state listener
+    const unsubscribeAuth = onAuthStateChanged(auth, authUser => {
+      if (authUser?.uid) {
+        // User is signed in, set up Firestore listener
+        const userRef = doc(db as Firestore, 'users', authUser.uid)
 
-      const userRef = doc(db as Firestore, 'users', auth.currentUser.uid)
-
-      unsubscribe = onSnapshot(
-        userRef,
-        (doc: DocumentSnapshot) => {
-          if (doc.exists()) {
-            setUser(doc.data() as UserData)
+        unsubscribeFirestore = onSnapshot(
+          userRef,
+          (doc: DocumentSnapshot) => {
+            if (doc.exists()) {
+              setUser(doc.data() as UserData)
+            }
+          },
+          error => {
+            console.error(
+              'Error fetching user data:',
+              error instanceof Error ? error.message : String(error)
+            )
+            setUser(null)
           }
-        },
-        error => {
-          console.error(
-            'Error fetching user data:',
-            error instanceof Error ? error.message : String(error)
-          )
-          setUser(null)
+        )
+      } else {
+        // User is signed out
+        setUser(null)
+        if (unsubscribeFirestore) {
+          unsubscribeFirestore()
+          unsubscribeFirestore = null
         }
-      )
-    }
-
-    if (auth?.currentUser?.uid) {
-      fetchUser()
-    } else {
-      setUser(null)
-    }
-
-    return () => {
-      if (unsubscribe) {
-        unsubscribe()
       }
+    })
+
+    // Cleanup function
+    return () => {
+      if (unsubscribeFirestore) {
+        unsubscribeFirestore()
+      }
+      unsubscribeAuth()
     }
-  }, [auth?.currentUser?.uid])
+  }, [])
 
   return user
 }

@@ -8,6 +8,7 @@ import PrimaryButton from '../buttons/PrimaryButton'
 
 const UpdateSkillLevelPage = () => {
   const [userId, setUserId] = useState(null)
+  const setSkillLevel = useSetSkillLevel()
 
   useEffect(() => {
     const user = auth.currentUser
@@ -24,14 +25,14 @@ const UpdateSkillLevelPage = () => {
     <View style={styles.container}>
       <Text style={styles.title}>Select your English level</Text>
       <Text style={styles.subtitle}>Let&apos;s get started! 👋</Text>
-      <PrimaryButton text={'Beginner'} onPress={() => useSetSkillLevel('beginner')} />
-      <PrimaryButton text={'Intermediate'} onPress={() => useSetSkillLevel('intermediate')} />
+      <PrimaryButton text={'Beginner'} onPress={() => setSkillLevel('beginner')} />
+      <PrimaryButton text={'Intermediate'} onPress={() => setSkillLevel('intermediate')} />
       <PrimaryButton
         text={'Advanced'}
-        onPress={() => useSetSkillLevel('advanced')}
+        onPress={() => setSkillLevel('advanced')}
         style={styles.button}
       />
-      <PrimaryButton text={'Expert'} onPress={() => useSetSkillLevel('expert')} />
+      <PrimaryButton text={'Expert'} onPress={() => setSkillLevel('expert')} />
     </View>
   )
 }

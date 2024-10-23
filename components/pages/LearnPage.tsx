@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-import { httpsCallable } from 'firebase/functions'
+import { httpsCallable, Functions } from 'firebase/functions'
 import { View, StyleSheet } from 'react-native'
 
 import { functions } from '../../firebaseConfig'
@@ -13,17 +13,29 @@ import ProgressBar from '../ProgressBar'
 
 import LoadingPage from './LoadingPage'
 
-const LearnPage = () => {
-  const [words, setWords] = useState([])
-  const [currentWordIndex, setCurrentWordIndex] = useState(0)
-  const [loading, setLoading] = useState(true)
-  const user = useUser()
+interface UserWord {
+  id: string
+  word?: string
+  // Add other word properties as needed
+}
+
+interface User {
+  skillLevel?: string
+  // Add other user properties as needed
+}
+
+const LearnPage: React.FC = () => {
+  const [words, setWords] = useState<UserWord[]>([])
+  const [currentWordIndex, setCurrentWordIndex] = useState<number>(0)
+  const [loading, setLoading] = useState<boolean>(true)
+  const user = useUser() as User | null
+  const setSkillLevel = useSetSkillLevel()
 
   useEffect(() => {
     fetchUserWords()
   }, [])
 
-  function nextWord() {
+  const nextWord = (): void => {
     if (currentWordIndex < words.length - 1) {
       setCurrentWordIndex(currentWordIndex + 1)
     } else {
@@ -32,33 +44,42 @@ const LearnPage = () => {
     }
   }
 
-  async function fetchUserWords() {
+  const fetchUserWords = async (): Promise<void> => {
     try {
       setLoading(true)
-      const getUserWords = httpsCallable(functions, 'getLearningWords')
+      const getUserWords = httpsCallable<void, UserWord[]>(
+        functions as Functions,
+        'getLearningWords'
+      )
       const result = await getUserWords()
       const userWords = result.data
       setWords(userWords)
       setLoading(false)
     } catch (error) {
-      console.error('Error fetching user words:', error)
+      console.error(
+        'Error fetching user words:',
+        error instanceof Error ? error.message : String(error)
+      )
       setLoading(false)
     }
   }
 
-  async function updateWordProgress(increment) {
+  const updateWordProgress = async (increment: number): Promise<void> => {
     try {
       setTimeout(() => {
         nextWord()
       }, 500)
-      const updateWordProgress = httpsCallable(functions, 'updateWordProgress')
+      const updateWordProgressFn = httpsCallable(functions as Functions, 'updateWordProgress')
 
-      await updateWordProgress({
+      await updateWordProgressFn({
         userWordId: words[currentWordIndex].id,
         increment,
       })
     } catch (error) {
-      console.error('Error updating/creating user word:', error)
+      console.error(
+        'Error updating/creating user word:',
+        error instanceof Error ? error.message : String(error)
+      )
     }
   }
 
@@ -70,10 +91,8 @@ const LearnPage = () => {
     <View style={styles.container}>
       <View style={styles.buttonContainer}>
         <TransleucentButton
-          text={capitalizeFirstLetter(user?.skillLevel)}
-          onPress={() => {
-            useSetSkillLevel('')
-          }}
+          text={capitalizeFirstLetter(user?.skillLevel || '')}
+          onPress={() => setSkillLevel('')}
         />
       </View>
       {loading || words.length === 0 ? (

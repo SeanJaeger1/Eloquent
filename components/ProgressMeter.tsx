@@ -1,12 +1,16 @@
 import React from 'react'
 
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, ViewStyle } from 'react-native'
 
 import palette from '../palette'
 
-const DotsComponent = ({ value }) => {
-  const dots = Array(5).fill(null)
-  const filledDots = value > 0 && value <= 5 ? value : 0
+interface DotsComponentProps {
+  value: number
+}
+
+const DotsComponent: React.FC<DotsComponentProps> = ({ value }) => {
+  const dots: null[] = Array(5).fill(null)
+  const filledDots: number = value > 0 && value <= 5 ? value : 0
 
   return (
     <View style={styles.container}>
@@ -17,7 +21,7 @@ const DotsComponent = ({ value }) => {
             styles.dot,
             {
               backgroundColor: index < filledDots ? palette.darkBlue : palette.lightBlue,
-            },
+            } as ViewStyle,
           ]}
         />
       ))}

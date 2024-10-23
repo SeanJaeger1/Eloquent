@@ -1,8 +1,14 @@
+import React from 'react'
+
 import { View, StyleSheet, Text } from 'react-native'
 
 import palette from '../palette'
 
-const ExampleText = ({ text }) => {
+interface ExampleTextProps {
+  text: string
+}
+
+const ExampleText: React.FC<ExampleTextProps> = ({ text }) => {
   return (
     <View style={styles.container}>
       <View style={styles.box}></View>

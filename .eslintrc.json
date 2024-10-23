@@ -38,6 +38,13 @@
     }
   },
   "rules": {
+    "@typescript-eslint/no-require-imports": [
+      "error",
+      {
+        "allow": ["\\.(png|jpg|jpeg|gif)$"]
+      }
+    ],
+    "react/prop-types": "off",
     "import/order": [
       "error",
       {

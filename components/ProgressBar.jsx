@@ -8,12 +8,20 @@ const ProgressBar = ({ currentIndex, totalCount }) => {
 
   useEffect(() => {
     const targetWidthPercent = ((currentIndex + 1) / totalCount) * 100
-    Animated.timing(animatedWidth, {
+
+    const animation = Animated.timing(animatedWidth, {
       toValue: targetWidthPercent,
       duration: 500,
       useNativeDriver: false,
-    }).start()
-  }, [currentIndex, totalCount])
+    })
+
+    animation.start()
+
+    // Clean up animation if component unmounts mid-animation
+    return () => {
+      animation.stop()
+    }
+  }, [currentIndex, totalCount, animatedWidth])
 
   const animatedWidthStyle = {
     flex: animatedWidth.interpolate({
