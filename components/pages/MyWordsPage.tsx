@@ -40,12 +40,6 @@ const MyWordsPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true)
   const [nextPageToken, setNextPageToken] = useState<string | null>(null)
 
-  useFocusEffect(
-    useCallback(() => {
-      fetchUserWords()
-    }, [])
-  )
-
   const handleScroll = (event: ScrollEvent): void => {
     if (loading) {
       return
@@ -61,7 +55,7 @@ const MyWordsPage: React.FC = () => {
     }
   }
 
-  const fetchUserWords = async (): Promise<void> => {
+  const fetchUserWords = useCallback(async (): Promise<void> => {
     if (!nextPageToken && words.length !== 0) {
       return
     }
@@ -75,14 +69,20 @@ const MyWordsPage: React.FC = () => {
       const { userWords, nextPageToken: newToken } = result.data
       // const sortingAlgo = (a: UserWord, b: UserWord) => a.word.word.localeCompare(b.word.word)
       // userWords.sort(sortingAlgo)
-      setWords([...words, ...userWords])
+      setWords(prevWords => [...prevWords, ...userWords])
       setNextPageToken(newToken)
       setLoading(false)
     } catch (error) {
       console.error('Error fetching user words:', error)
       setLoading(false)
     }
-  }
+  }, [nextPageToken, words.length])
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchUserWords()
+    }, [fetchUserWords])
+  )
 
   const filteredWords = words.filter(({ word: { word } }) =>
     word.toLowerCase().includes(searchText.toLowerCase())
