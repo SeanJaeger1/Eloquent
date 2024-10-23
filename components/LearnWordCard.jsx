@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import { Ionicons } from '@expo/vector-icons'
 import { Audio } from 'expo-av'
-import Constants from 'expo-constants'
+import { Constants } from 'expo-constants'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { Card } from 'react-native-elements'
 
