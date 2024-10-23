@@ -136,7 +136,7 @@ const styles = StyleSheet.create<Styles>({
     height: 64,
     alignItems: 'center',
     justifyContent: 'center',
-  },
+  } as TextStyle,
   signUpButton: {
     color: 'white',
     fontWeight: '600',
@@ -151,7 +151,7 @@ const styles = StyleSheet.create<Styles>({
     color: 'black',
     backgroundColor: 'white',
     paddingLeft: 24,
-  },
+  } as TextStyle,
   toggleText: {
     textAlign: 'center',
     marginTop: 16,
