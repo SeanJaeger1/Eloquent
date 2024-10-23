@@ -7,6 +7,7 @@ interface Palette {
   white: string
   transleucent: string
   black: string
+  error: string
 }
 
 const palette: Palette = {
@@ -18,6 +19,7 @@ const palette: Palette = {
   white: 'white',
   transleucent: 'rgba(0, 0, 0, 0.1)',
   black: 'black',
+  error: 'red',
 }
 
 export default palette

@@ -24,18 +24,19 @@ const LearnPage: React.FC = () => {
   const [words, setWords] = useState<(UserWord & { id: string })[]>([])
   const [currentWordIndex, setCurrentWordIndex] = useState<number>(0)
   const [loading, setLoading] = useState<boolean>(true)
+  const [updating, setUpdating] = useState<boolean>(false)
   const user = useUser() as User | null
   const setSkillLevel = useSetSkillLevel()
 
   useEffect(() => {
-    fetchUserWords()
+    void fetchUserWords()
   }, [])
 
   const nextWord = (): void => {
     if (currentWordIndex < words.length - 1) {
       setCurrentWordIndex(currentWordIndex + 1)
     } else {
-      fetchUserWords()
+      void fetchUserWords()
       setCurrentWordIndex(0)
     }
   }
@@ -50,33 +51,50 @@ const LearnPage: React.FC = () => {
       const result = await getUserWords()
       const userWords = result.data
       setWords(userWords)
-      setLoading(false)
     } catch (error) {
       console.error(
         'Error fetching user words:',
         error instanceof Error ? error.message : String(error)
       )
+    } finally {
       setLoading(false)
     }
   }
 
   const updateWordProgress = async (increment: number): Promise<void> => {
+    if (updating) return
     try {
-      setTimeout(() => {
-        nextWord()
-      }, 500)
+      setUpdating(true)
       const updateWordProgressFn = httpsCallable(functions, 'updateWordProgress')
-
       await updateWordProgressFn({
         userWordId: words[currentWordIndex].id,
         increment,
       })
+      setTimeout(() => {
+        nextWord()
+      }, 500)
     } catch (error) {
       console.error(
         'Error updating/creating user word:',
         error instanceof Error ? error.message : String(error)
       )
+    } finally {
+      setUpdating(false)
     }
+  }
+
+  // Create wrapper functions for the onTick and onCross handlers
+  const handleTick = (): void => {
+    void updateWordProgress(1)
+  }
+
+  const handleCross = (): void => {
+    void updateWordProgress(-1)
+  }
+
+  // Create a wrapper function for setSkillLevel
+  const handleSkillLevelReset = (): void => {
+    void setSkillLevel('')
   }
 
   if (user?.skillLevel === undefined) {
@@ -88,7 +106,7 @@ const LearnPage: React.FC = () => {
       <View style={styles.buttonContainer}>
         <TransleucentButton
           text={capitalizeFirstLetter(user?.skillLevel || '')}
-          onPress={() => setSkillLevel('')}
+          onPress={handleSkillLevelReset}
         />
       </View>
       {loading || words.length === 0 ? (
@@ -98,8 +116,9 @@ const LearnPage: React.FC = () => {
           <ProgressBar currentIndex={currentWordIndex} totalCount={words.length} />
           <LearnWordCard
             userWord={words[currentWordIndex]}
-            onTick={() => updateWordProgress(1)}
-            onCross={() => updateWordProgress(-1)}
+            onTick={handleTick}
+            onCross={handleCross}
+            disabled={updating}
           />
         </View>
       )}

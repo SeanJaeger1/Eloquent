@@ -31,7 +31,10 @@ const UpdateSkillLevelPage: React.FC = () => {
       await setSkillLevel(level)
       Alert.alert('Success', 'Your skill level has been updated!')
     } catch (error) {
-      Alert.alert('Error', 'Failed to update skill level. Please try again.')
+      Alert.alert(
+        'Error',
+        `Failed to update skill level: ${error instanceof Error ? error.message : String(error)}`
+      )
     } finally {
       setIsUpdating(false)
     }

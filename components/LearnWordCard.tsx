@@ -16,9 +16,20 @@ import ProgressMeter from './ProgressMeter'
 import type { UserWord } from '../types/words'
 import type { AVPlaybackStatus } from 'expo-av'
 
-// Access manifest extra values correctly in newer Expo versions
-const manifestExtra = Constants.manifest?.extra || Constants.manifest2?.extra || {}
-const GOOGLE_TTS_API_KEY = manifestExtra.GOOGLE_TEXT_SPEECH_API_KEY || ''
+interface Config {
+  GOOGLE_TEXT_SPEECH_API_KEY: string
+}
+
+interface AppManifestExtra {
+  extra?: Partial<Config>
+}
+
+// Properly type and access manifest data
+const manifest = Constants.manifest as AppManifestExtra | null | undefined
+const manifest2 = Constants.manifest2 as AppManifestExtra | null | undefined
+
+const manifestExtra = manifest?.extra ?? manifest2?.extra ?? {}
+const GOOGLE_TTS_API_KEY = manifestExtra.GOOGLE_TEXT_SPEECH_API_KEY ?? ''
 
 interface WordChipProps {
   word: string
@@ -28,6 +39,11 @@ interface LearnWordCardProps {
   userWord: UserWord
   onTick: () => void
   onCross: () => void
+  disabled?: boolean
+}
+
+interface GoogleTTSResponse {
+  audioContent: string
 }
 
 const WordChip: React.FC<WordChipProps> = ({ word }) => (
@@ -36,7 +52,7 @@ const WordChip: React.FC<WordChipProps> = ({ word }) => (
   </View>
 )
 
-const LearnWordCard: React.FC<LearnWordCardProps> = ({ userWord, onTick, onCross }) => {
+const LearnWordCard: React.FC<LearnWordCardProps> = ({ userWord, onTick, onCross, disabled }) => {
   const { progress, word } = userWord
   const { word: wordText, examples, definition, wordType, synonyms } = word
   const [isPlaying, setIsPlaying] = useState<boolean>(false)
@@ -67,7 +83,7 @@ const LearnWordCard: React.FC<LearnWordCardProps> = ({ userWord, onTick, onCross
         throw new Error('Network response was not ok')
       }
 
-      const data = await response.json()
+      const data = (await response.json()) as GoogleTTSResponse
       const audioContent = data.audioContent
       const audioUri = `data:audio/mp3;base64,${audioContent}`
 
@@ -76,7 +92,7 @@ const LearnWordCard: React.FC<LearnWordCardProps> = ({ userWord, onTick, onCross
       sound.setOnPlaybackStatusUpdate((status: AVPlaybackStatus) => {
         if (status.isLoaded && status.didJustFinish) {
           setIsPlaying(false)
-          sound.unloadAsync().catch(console.error)
+          void sound.unloadAsync()
         }
       })
     } catch (error) {
@@ -85,13 +101,13 @@ const LearnWordCard: React.FC<LearnWordCardProps> = ({ userWord, onTick, onCross
     }
   }
 
-  const renderSynonyms = (synonyms: string[]): React.ReactNode => {
-    if (!synonyms || synonyms.length === 0) return null
+  const renderSynonyms = (synonymList: string[]): React.ReactNode => {
+    if (!synonymList || synonymList.length === 0) return null
     return (
       <View style={styles.synonymsContainer}>
         <Text style={styles.synonymsTitle}>SYNONYMS</Text>
         <View style={styles.synonymsWrapper}>
-          {synonyms.map((synonym, index) => (
+          {synonymList.map((synonym, index) => (
             <WordChip key={index} word={synonym} />
           ))}
         </View>
@@ -99,16 +115,20 @@ const LearnWordCard: React.FC<LearnWordCardProps> = ({ userWord, onTick, onCross
     )
   }
 
+  const handlePronounce = (): void => {
+    void pronounceWord()
+  }
+
   return (
     <Card containerStyle={styles.card}>
       <View style={styles.infoContainer}>
         <View style={styles.header}>
           <Text style={styles.word}>{wordText}</Text>
-          <TouchableOpacity onPress={pronounceWord} disabled={isPlaying}>
+          <TouchableOpacity onPress={handlePronounce} disabled={isPlaying}>
             <Ionicons
               name={isPlaying ? 'volume-high' : 'volume-high-outline'}
               size={24}
-              color={isPlaying ? palette.lightGrey : '#4AC3BE'}
+              color={isPlaying ? palette.lightGrey : palette.darkBlue}
             />
           </TouchableOpacity>
         </View>
@@ -121,12 +141,20 @@ const LearnWordCard: React.FC<LearnWordCardProps> = ({ userWord, onTick, onCross
         {renderSynonyms(synonyms)}
       </View>
       <View style={styles.buttonsContainer}>
-        <TouchableOpacity style={[styles.button, styles.crossButton]} onPress={onCross}>
-          <Ionicons name='close' size={24} color='#8F8F8F' />
+        <TouchableOpacity
+          style={[styles.button, styles.crossButton]}
+          onPress={onCross}
+          disabled={disabled}
+        >
+          <Ionicons name='close' size={24} color={palette.lightGrey} />
         </TouchableOpacity>
         <View style={styles.buttonSeparator} />
-        <TouchableOpacity style={[styles.button, styles.tickButton]} onPress={onTick}>
-          <Ionicons name='checkmark' size={24} color='#4AC3BE' />
+        <TouchableOpacity
+          style={[styles.button, styles.tickButton]}
+          onPress={onTick}
+          disabled={disabled}
+        >
+          <Ionicons name='checkmark' size={24} color={palette.darkBlue} />
         </TouchableOpacity>
       </View>
     </Card>
@@ -138,7 +166,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     padding: 0,
     margin: 0,
-    shadowColor: '#000',
+    shadowColor: palette.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -162,7 +190,7 @@ const styles = StyleSheet.create({
   type: {
     fontSize: 16,
     fontStyle: 'italic',
-    color: '#8F8F8F',
+    color: palette.lightGrey,
     marginBottom: 12,
   },
   progressContainer: {
@@ -180,7 +208,7 @@ const styles = StyleSheet.create({
   synonymsTitle: {
     fontSize: 12,
     fontWeight: '500',
-    color: '#8F8F8F',
+    color: palette.lightGrey,
     marginBottom: 8,
   },
   synonymsWrapper: {
@@ -191,7 +219,7 @@ const styles = StyleSheet.create({
     backgroundColor: palette.white,
     borderRadius: 13,
     borderWidth: 1,
-    borderColor: '#E4E4E4',
+    borderColor: palette.lightBlue,
     paddingVertical: 4,
     paddingHorizontal: 12,
     marginRight: 8,
@@ -199,13 +227,13 @@ const styles = StyleSheet.create({
   },
   wordChipText: {
     fontSize: 13,
-    color: '#474847',
+    color: palette.secondary,
     fontWeight: '400',
   },
   buttonsContainer: {
     flexDirection: 'row',
     borderTopWidth: 1,
-    borderTopColor: '#E5E5E5',
+    borderTopColor: palette.lightBlue,
   },
   button: {
     flex: 1,
@@ -215,7 +243,7 @@ const styles = StyleSheet.create({
   },
   buttonSeparator: {
     width: 1,
-    backgroundColor: '#E5E5E5',
+    backgroundColor: palette.lightBlue,
   },
   crossButton: {},
   tickButton: {},

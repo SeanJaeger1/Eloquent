@@ -32,6 +32,7 @@ const MyWordsPage: React.FC = () => {
   const [words, setWords] = useState<UserWord[]>([])
   const [loading, setLoading] = useState<boolean>(true)
   const [nextPageToken, setNextPageToken] = useState<string | null>(null)
+  const [error, setError] = useState<string | null>(null)
 
   const handleScroll = (event: ScrollEvent): void => {
     if (loading) {
@@ -44,7 +45,7 @@ const MyWordsPage: React.FC = () => {
     const threshold = 20 // fetch more items when within 20px of the bottom
 
     if (bottom > contentHeight - threshold) {
-      fetchUserWords()
+      void fetchUserWords()
     }
   }
 
@@ -54,28 +55,29 @@ const MyWordsPage: React.FC = () => {
     }
     try {
       setLoading(true)
+      setError(null)
       const getUserWords = httpsCallable<{ lastSeenAt: string | null }, GetUserWordsResponse>(
         functions,
         'getUserWords'
       )
       const result = await getUserWords({ lastSeenAt: nextPageToken })
       const { userWords, nextPageToken: newToken } = result.data
-      // const sortingAlgo = (a: UserWord, b: UserWord) => a.word.word.localeCompare(b.word.word)
-      // userWords.sort(sortingAlgo)
       setWords(prevWords => [...prevWords, ...userWords])
       setNextPageToken(newToken)
-      setLoading(false)
     } catch (error) {
       console.error('Error fetching user words:', error)
+      setError('Failed to load words. Please try again.')
+    } finally {
       setLoading(false)
     }
   }, [nextPageToken, words.length])
 
-  useFocusEffect(
-    useCallback(() => {
-      fetchUserWords()
-    }, [fetchUserWords])
-  )
+  // Wrap the fetchUserWords call in a function that handles the promise
+  const initializeFetch = useCallback(() => {
+    void fetchUserWords()
+  }, [fetchUserWords])
+
+  useFocusEffect(initializeFetch)
 
   const filteredWords = words.filter(({ word: { word } }) =>
     word.toLowerCase().includes(searchText.toLowerCase())
@@ -99,7 +101,9 @@ const MyWordsPage: React.FC = () => {
           showsVerticalScrollIndicator={false}
           onScroll={handleScroll}
         >
-          {filteredWords.length > 0 ? (
+          {error ? (
+            <Text style={styles.errorText}>{error}</Text>
+          ) : filteredWords.length > 0 ? (
             filteredWords.map((word, index) => <WordPanel key={index} userWord={word} />)
           ) : (
             <Text style={styles.noWordsText}>
@@ -116,6 +120,7 @@ const MyWordsPage: React.FC = () => {
 interface Styles {
   container: ViewStyle
   noWordsText: TextStyle
+  errorText: TextStyle
   scroll: ViewStyle
   input: ViewStyle
 }
@@ -131,6 +136,12 @@ const styles = StyleSheet.create<Styles>({
     color: palette.white,
     textAlign: 'center',
     marginTop: 20,
+  },
+  errorText: {
+    fontSize: 18,
+    textAlign: 'center',
+    marginTop: 20,
+    color: palette.error,
   },
   scroll: {
     paddingBottom: 148,

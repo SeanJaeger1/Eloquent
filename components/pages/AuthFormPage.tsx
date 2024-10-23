@@ -24,9 +24,11 @@ const AuthFormPage: React.FC = () => {
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [isSignUp, setIsSignUp] = useState<boolean>(true)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const handleAuth = async (): Promise<void> => {
     try {
+      setIsLoading(true)
       if (isSignUp) {
         const userCredential: UserCredential = await createUserWithEmailAndPassword(
           auth,
@@ -52,7 +54,14 @@ const AuthFormPage: React.FC = () => {
       } else {
         alert('An unknown error occurred')
       }
+    } finally {
+      setIsLoading(false)
     }
+  }
+
+  // Create a non-async wrapper function for the onPress handler
+  const handlePress = (): void => {
+    void handleAuth()
   }
 
   return (
@@ -65,6 +74,8 @@ const AuthFormPage: React.FC = () => {
         onChangeText={(text: string) => setEmail(text)}
         value={email}
         placeholderTextColor='black'
+        autoCapitalize='none'
+        keyboardType='email-address'
       />
       <TextInput
         style={styles.input}
@@ -73,10 +84,15 @@ const AuthFormPage: React.FC = () => {
         onChangeText={(text: string) => setPassword(text)}
         value={password}
         placeholderTextColor='black'
+        autoCapitalize='none'
       />
-      <PrimaryButton text={isSignUp ? 'Sign Up' : 'Sign In'} onPress={handleAuth} />
-      <Pressable onPress={() => setIsSignUp(!isSignUp)}>
-        <Text style={styles.toggleText}>
+      <PrimaryButton
+        text={isSignUp ? 'Sign Up' : 'Sign In'}
+        onPress={handlePress}
+        disabled={isLoading}
+      />
+      <Pressable onPress={() => setIsSignUp(!isSignUp)} disabled={isLoading}>
+        <Text style={[styles.toggleText, isLoading && styles.disabledText]}>
           {isSignUp ? (
             <>
               Already joined?
@@ -101,6 +117,7 @@ interface Styles {
   input: ViewStyle
   toggleText: TextStyle
   highlighted: TextStyle
+  disabledText: TextStyle
 }
 
 const styles = StyleSheet.create<Styles>({
@@ -120,7 +137,6 @@ const styles = StyleSheet.create<Styles>({
     marginBottom: 40,
     textAlign: 'left',
   },
-
   input: {
     borderRadius: 24,
     padding: 12,
@@ -139,6 +155,9 @@ const styles = StyleSheet.create<Styles>({
   highlighted: {
     color: palette.secondary,
     fontWeight: 'bold',
+  },
+  disabledText: {
+    opacity: 0.5,
   },
 })
 

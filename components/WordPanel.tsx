@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   },
   definitionText: {
     fontSize: 14,
-    color: '#666',
+    color: palette.lightGrey,
     textAlign: 'center',
     paddingHorizontal: 10,
   },
