@@ -48,6 +48,7 @@ const config: ExpoConfig = {
     },
   },
   owner: 'seanjaeger123',
+  plugins: ['expo-router'],
 }
 
 export default config
