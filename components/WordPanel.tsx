@@ -14,7 +14,7 @@ interface WordPanelProps {
 const WordPanel: React.FC<WordPanelProps> = ({ userWord }) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(false)
   const {
-    word: { definition, meaning, word, wordType },
+    word: { definition, word, wordType },
     progress,
   } = userWord
 
@@ -36,9 +36,6 @@ const WordPanel: React.FC<WordPanelProps> = ({ userWord }) => {
         </View>
         <View style={styles.row}>
           <ProgressMeter value={progress} />
-        </View>
-        <View style={styles.row}>
-          <Text style={styles.meaningText}>{meaning}</Text>
         </View>
         {isExpanded && (
           <View style={styles.row}>

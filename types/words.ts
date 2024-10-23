@@ -1,6 +1,10 @@
 export interface Word {
   definition: string
-  meaning: string
+  difficulty: string
+  index: number
+  examples: string[]
+  synonyms: string[]
+  antonyms: string[]
   word: string
   wordType: string
 }
