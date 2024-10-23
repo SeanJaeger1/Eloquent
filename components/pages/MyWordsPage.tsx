@@ -19,15 +19,7 @@ import WordPanel from '../WordPanel'
 
 import LoadingPage from './LoadingPage'
 
-interface Word {
-  word: string
-  // Add other word properties as needed
-}
-
-interface UserWord {
-  word: Word
-  // Add other user word properties as needed
-}
+import { UserWord } from 'types/words'
 
 interface GetUserWordsResponse {
   userWords: UserWord[]
