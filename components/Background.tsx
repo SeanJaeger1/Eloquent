@@ -1,6 +1,8 @@
-import React, { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 import { ImageBackground, StyleSheet, View } from 'react-native'
+
+import type { ImageSourcePropType } from 'react-native'
 
 interface BackgroundProps {
   children: ReactNode
@@ -10,7 +12,7 @@ const Background = ({ children }: BackgroundProps): JSX.Element => {
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={require('../assets/background.png')}
+        source={require('../assets/background.png') as ImageSourcePropType}
         resizeMode='cover'
         style={styles.image}
       >

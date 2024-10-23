@@ -1,6 +1,9 @@
-import { Text, View, StyleSheet, Pressable, PressableProps } from 'react-native'
+import { Text, View, StyleSheet, Pressable } from 'react-native'
 
+import palette from '../../palette'
 import RightArrowIcon from '../icons/RightArrowIcon'
+
+import type { PressableProps } from 'react-native'
 
 interface TransleucentButtonProps {
   text: string
@@ -20,8 +23,8 @@ const TransleucentButton: React.FC<TransleucentButtonProps> = ({ text, onPress }
 
 const styles = StyleSheet.create({
   pressable: {
-    backgroundColor: 'rgba(0, 0, 0, 0.1)',
-    color: 'white',
+    backgroundColor: palette.transleucent,
+    color: palette.white,
     borderRadius: 24,
     height: 38,
     alignItems: 'center',
@@ -32,7 +35,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   buttonText: {
-    color: 'white',
+    color: palette.white,
     fontWeight: '700' as const,
     fontSize: 14,
     marginRight: 12,

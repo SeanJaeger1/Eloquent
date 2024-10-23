@@ -1,17 +1,20 @@
-import React, { useState } from 'react'
+import type React from 'react'
+import { useState } from 'react'
 
 import { Ionicons } from '@expo/vector-icons'
 import { Card } from '@rneui/themed'
-import { Audio, AVPlaybackStatus } from 'expo-av'
+import { Audio } from 'expo-av'
 import Constants from 'expo-constants'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 
 import palette from '../palette'
-import { UserWord } from '../types/words'
 import capitalizeFirstLetter from '../utils/capitalizeFirstLetter'
 
 import ExampleText from './ExampleText'
 import ProgressMeter from './ProgressMeter'
+
+import type { UserWord } from '../types/words'
+import type { AVPlaybackStatus } from 'expo-av'
 
 // Access manifest extra values correctly in newer Expo versions
 const manifestExtra = Constants.manifest?.extra || Constants.manifest2?.extra || {}
@@ -114,7 +117,7 @@ const LearnWordCard: React.FC<LearnWordCardProps> = ({ userWord, onTick, onCross
           <ProgressMeter value={progress} />
         </View>
         <Text style={styles.meaning}>{definition}</Text>
-        {examples.length > 0 && <ExampleText text={examples[0]} />}
+        {examples.length > 0 ? <ExampleText text={examples[0]} /> : null}
         {renderSynonyms(synonyms)}
       </View>
       <View style={styles.buttonsContainer}>
@@ -154,7 +157,7 @@ const styles = StyleSheet.create({
   word: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#000000',
+    color: palette.black,
   },
   type: {
     fontSize: 16,
@@ -167,7 +170,7 @@ const styles = StyleSheet.create({
   },
   meaning: {
     fontSize: 16,
-    color: '#000000',
+    color: palette.black,
     marginBottom: 16,
     lineHeight: 24,
   },
@@ -185,7 +188,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   wordChip: {
-    backgroundColor: 'white',
+    backgroundColor: palette.white,
     borderRadius: 13,
     borderWidth: 1,
     borderColor: '#E4E4E4',

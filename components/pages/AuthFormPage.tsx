@@ -1,23 +1,16 @@
 import { useState } from 'react'
 
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  UserCredential,
-} from '@firebase/auth'
-import {
-  collection,
-  doc,
-  setDoc,
-  serverTimestamp,
-  CollectionReference,
-  Timestamp,
-} from '@firebase/firestore'
-import { View, TextInput, Text, StyleSheet, Pressable, TextStyle, ViewStyle } from 'react-native'
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from '@firebase/auth'
+import { collection, doc, setDoc, serverTimestamp } from '@firebase/firestore'
+import { View, TextInput, Text, StyleSheet, Pressable } from 'react-native'
 
 import { auth, db } from '../../firebaseConfig'
 import palette from '../../palette'
 import PrimaryButton from '../buttons/PrimaryButton'
+
+import type { UserCredential } from '@firebase/auth'
+import type { CollectionReference, Timestamp } from '@firebase/firestore'
+import type { TextStyle, ViewStyle } from 'react-native'
 
 interface UserData {
   uid: string
@@ -76,7 +69,7 @@ const AuthFormPage: React.FC = () => {
       <TextInput
         style={styles.input}
         placeholder='Password'
-        secureTextEntry={true}
+        secureTextEntry
         onChangeText={(text: string) => setPassword(text)}
         value={password}
         placeholderTextColor='black'
@@ -105,8 +98,6 @@ interface Styles {
   container: ViewStyle
   title: TextStyle
   subtitle: TextStyle
-  pressable: ViewStyle
-  signUpButton: TextStyle
   input: ViewStyle
   toggleText: TextStyle
   highlighted: TextStyle
@@ -129,27 +120,15 @@ const styles = StyleSheet.create<Styles>({
     marginBottom: 40,
     textAlign: 'left',
   },
-  pressable: {
-    backgroundColor: palette.secondary,
-    color: 'white',
-    borderRadius: 16,
-    height: 64,
-    alignItems: 'center',
-    justifyContent: 'center',
-  } as TextStyle,
-  signUpButton: {
-    color: 'white',
-    fontWeight: '600',
-    fontSize: 18,
-  },
+
   input: {
     borderRadius: 24,
     padding: 12,
     marginTop: 5,
     height: 64,
     marginBottom: 20,
-    color: 'black',
-    backgroundColor: 'white',
+    color: palette.black,
+    backgroundColor: palette.white,
     paddingLeft: 24,
   } as TextStyle,
   toggleText: {

@@ -1,13 +1,15 @@
 import { useCallback } from 'react'
 
-import { User } from 'firebase/auth'
-import { updateDoc, doc, Firestore } from 'firebase/firestore'
+import { updateDoc, doc } from 'firebase/firestore'
 
 import { auth, db } from '../firebaseConfig'
 
-type SkillLevel = '' | 'beginner' | 'intermediate' | 'advanced' | 'expert'
+import type { User } from 'firebase/auth'
+import type { SkillLevel } from 'types/user'
 
-const useSetSkillLevel = () => {
+type SetSkillLevelFunction = (skillLevel: SkillLevel) => Promise<void>
+
+const useSetSkillLevel = (): SetSkillLevelFunction => {
   const setSkillLevel = useCallback(async (skillLevel: SkillLevel): Promise<void> => {
     const user: User | null = auth.currentUser
 
@@ -16,7 +18,7 @@ const useSetSkillLevel = () => {
         throw new Error('User is not authenticated.')
       }
 
-      const userRef = doc(db as Firestore, 'users', user.uid)
+      const userRef = doc(db, 'users', user.uid)
       await updateDoc(userRef, {
         skillLevel,
       })

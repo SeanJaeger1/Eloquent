@@ -4,6 +4,9 @@ interface Palette {
   lightBlue: string
   subtleBlue: string
   lightGrey: string
+  white: string
+  transleucent: string
+  black: string
 }
 
 const palette: Palette = {
@@ -12,6 +15,9 @@ const palette: Palette = {
   lightBlue: '#D6E4E4',
   subtleBlue: 'rgba(128, 182, 182, 0.5)',
   lightGrey: '#A3A3A3',
+  white: 'white',
+  transleucent: 'rgba(0, 0, 0, 0.1)',
+  black: 'black',
 }
 
 export default palette

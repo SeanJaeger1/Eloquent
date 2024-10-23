@@ -1,25 +1,18 @@
-import React, { useState, useCallback } from 'react'
+import type React from 'react'
+import { useState, useCallback } from 'react'
 
 import { useFocusEffect } from '@react-navigation/native'
 import { httpsCallable } from 'firebase/functions'
-import {
-  View,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  NativeSyntheticEvent,
-  NativeScrollEvent,
-  ViewStyle,
-  TextStyle,
-} from 'react-native'
+import { View, ScrollView, StyleSheet, Text, TextInput } from 'react-native'
 
 import { functions } from '../../firebaseConfig'
+import palette from '../../palette'
 import WordPanel from '../WordPanel'
 
 import LoadingPage from './LoadingPage'
 
-import { UserWord } from 'types/words'
+import type { NativeSyntheticEvent, NativeScrollEvent, ViewStyle, TextStyle } from 'react-native'
+import type { UserWord } from 'types/words'
 
 interface GetUserWordsResponse {
   userWords: UserWord[]
@@ -113,7 +106,7 @@ const MyWordsPage: React.FC = () => {
               You don&apos;t have any words yet! Start learning new words.
             </Text>
           )}
-          {loading && <LoadingPage />}
+          {loading ? <LoadingPage /> : null}
         </ScrollView>
       )}
     </View>
@@ -135,7 +128,7 @@ const styles = StyleSheet.create<Styles>({
   },
   noWordsText: {
     fontSize: 18,
-    color: 'white',
+    color: palette.white,
     textAlign: 'center',
     marginTop: 20,
   },
@@ -148,7 +141,7 @@ const styles = StyleSheet.create<Styles>({
     marginTop: 5,
     marginBottom: 10,
     width: '100%',
-    backgroundColor: 'white',
+    backgroundColor: palette.white,
     borderRadius: 24,
     paddingLeft: 24,
   },

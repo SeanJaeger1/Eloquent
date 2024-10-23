@@ -1,6 +1,9 @@
-import React, { useEffect, useRef } from 'react'
+import type React from 'react'
+import { useEffect, useRef } from 'react'
 
 import { View, StyleSheet, Animated, Text } from 'react-native'
+
+import palette from '../palette'
 
 interface ProgressBarProps {
   currentIndex: number
@@ -55,17 +58,17 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     height: 8,
-    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+    backgroundColor: palette.transleucent,
     overflow: 'hidden',
     borderRadius: 4,
     marginRight: 8,
   },
   progressBar: {
     height: 8,
-    backgroundColor: 'white',
+    backgroundColor: palette.white,
   },
   textStyle: {
-    color: 'white',
+    color: palette.white,
     fontSize: 14,
   },
 })

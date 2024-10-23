@@ -1,15 +1,17 @@
-import React from 'react'
+import type React from 'react'
 
-import { View, StyleSheet, ViewStyle } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 
 import palette from '../palette'
+
+import type { ViewStyle } from 'react-native'
 
 interface DotsComponentProps {
   value: number
 }
 
 const DotsComponent: React.FC<DotsComponentProps> = ({ value }) => {
-  const dots: null[] = Array(5).fill(null)
+  const dots = Array(5).fill(null) as null[]
   const filledDots: number = value > 0 && value <= 5 ? value : 0
 
   return (

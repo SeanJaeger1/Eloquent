@@ -1,11 +1,14 @@
-import React, { useState } from 'react'
+import type React from 'react'
+import { useState } from 'react'
 
 import { View, Text, StyleSheet, Pressable, Platform } from 'react-native'
 
-import { UserWord } from '../types/words'
+import palette from '../palette'
 import shortenType from '../utils/shortenType'
 
 import ProgressMeter from './ProgressMeter'
+
+import type { UserWord } from '../types/words'
 
 interface WordPanelProps {
   userWord: UserWord
@@ -37,11 +40,11 @@ const WordPanel: React.FC<WordPanelProps> = ({ userWord }) => {
         <View style={styles.row}>
           <ProgressMeter value={progress} />
         </View>
-        {isExpanded && (
+        {isExpanded ? (
           <View style={styles.row}>
             <Text style={styles.definitionText}>{definition}</Text>
           </View>
-        )}
+        ) : null}
       </View>
     </Pressable>
   )
@@ -49,7 +52,7 @@ const WordPanel: React.FC<WordPanelProps> = ({ userWord }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
+    backgroundColor: palette.white,
     borderRadius: 10,
     padding: 15,
     alignItems: 'center',
@@ -78,11 +81,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginRight: 8,
     textAlign: 'center',
-  },
-  meaningText: {
-    fontSize: 16,
-    textAlign: 'center',
-    paddingHorizontal: 10,
   },
   definitionText: {
     fontSize: 14,

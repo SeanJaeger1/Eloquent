@@ -1,14 +1,17 @@
 import { useEffect, useState } from 'react'
 
-import { View, Text, StyleSheet, ViewStyle, TextStyle } from 'react-native'
+import { View, Text, StyleSheet, Alert } from 'react-native'
 
 import { auth } from '../../firebaseConfig'
 import useSetSkillLevel from '../../hooks/useSetSkillLevel'
-import { SkillLevel } from '../../types/user'
 import PrimaryButton from '../buttons/PrimaryButton'
+
+import type { SkillLevel } from '../../types/user'
+import type { ViewStyle, TextStyle } from 'react-native'
 
 const UpdateSkillLevelPage: React.FC = () => {
   const [userId, setUserId] = useState<string | null>(null)
+  const [isUpdating, setIsUpdating] = useState(false)
   const setSkillLevel = useSetSkillLevel()
 
   useEffect(() => {
@@ -22,8 +25,16 @@ const UpdateSkillLevelPage: React.FC = () => {
     return null
   }
 
-  const handleSetSkillLevel = (level: SkillLevel): void => {
-    setSkillLevel(level)
+  const handleSetSkillLevel = async (level: SkillLevel): Promise<void> => {
+    try {
+      setIsUpdating(true)
+      await setSkillLevel(level)
+      Alert.alert('Success', 'Your skill level has been updated!')
+    } catch (error) {
+      Alert.alert('Error', 'Failed to update skill level. Please try again.')
+    } finally {
+      setIsUpdating(false)
+    }
   }
 
   return (
@@ -32,23 +43,27 @@ const UpdateSkillLevelPage: React.FC = () => {
       <Text style={styles.subtitle}>Let&apos;s get started! 👋</Text>
       <PrimaryButton
         text='Beginner'
-        onPress={() => handleSetSkillLevel('beginner')}
+        onPress={() => void handleSetSkillLevel('beginner')}
         style={styles.button}
+        disabled={isUpdating}
       />
       <PrimaryButton
         text='Intermediate'
-        onPress={() => handleSetSkillLevel('intermediate')}
+        onPress={() => void handleSetSkillLevel('intermediate')}
         style={styles.button}
+        disabled={isUpdating}
       />
       <PrimaryButton
         text='Advanced'
-        onPress={() => handleSetSkillLevel('advanced')}
+        onPress={() => void handleSetSkillLevel('advanced')}
         style={styles.button}
+        disabled={isUpdating}
       />
       <PrimaryButton
         text='Expert'
-        onPress={() => handleSetSkillLevel('expert')}
+        onPress={() => void handleSetSkillLevel('expert')}
         style={styles.button}
+        disabled={isUpdating}
       />
     </View>
   )
@@ -57,7 +72,6 @@ const UpdateSkillLevelPage: React.FC = () => {
 interface Styles {
   container: ViewStyle
   button: ViewStyle
-  buttonText: TextStyle
   title: TextStyle
   subtitle: TextStyle
 }
@@ -70,10 +84,6 @@ const styles = StyleSheet.create<Styles>({
   },
   button: {
     marginBottom: 18,
-  },
-  buttonText: {
-    fontSize: 24,
-    color: 'white',
   },
   title: {
     fontSize: 24,

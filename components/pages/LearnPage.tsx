@@ -1,18 +1,19 @@
 import { useState, useEffect } from 'react'
 
-import { httpsCallable, Functions } from 'firebase/functions'
+import { httpsCallable } from 'firebase/functions'
 import { View, StyleSheet } from 'react-native'
 
 import { functions } from '../../firebaseConfig'
 import useSetSkillLevel from '../../hooks/useSetSkillLevel'
 import useUser from '../../hooks/useUser'
-import { UserWord } from '../../types/words'
 import capitalizeFirstLetter from '../../utils/capitalizeFirstLetter'
 import TransleucentButton from '../buttons/TranslucentButton'
 import LearnWordCard from '../LearnWordCard'
 import ProgressBar from '../ProgressBar'
 
 import LoadingPage from './LoadingPage'
+
+import type { UserWord } from '../../types/words'
 
 interface User {
   skillLevel?: string
@@ -43,7 +44,7 @@ const LearnPage: React.FC = () => {
     try {
       setLoading(true)
       const getUserWords = httpsCallable<void, (UserWord & { id: string })[]>(
-        functions as Functions,
+        functions,
         'getLearningWords'
       )
       const result = await getUserWords()
@@ -64,7 +65,7 @@ const LearnPage: React.FC = () => {
       setTimeout(() => {
         nextWord()
       }, 500)
-      const updateWordProgressFn = httpsCallable(functions as Functions, 'updateWordProgress')
+      const updateWordProgressFn = httpsCallable(functions, 'updateWordProgress')
 
       await updateWordProgressFn({
         userWordId: words[currentWordIndex].id,

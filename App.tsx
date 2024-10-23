@@ -1,12 +1,12 @@
-import React from 'react'
+import type React from 'react'
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native'
-import { View, Dimensions, ViewStyle } from 'react-native'
+import { View, Dimensions } from 'react-native'
 
 import Background from './components/Background'
 import BookIcon from './components/icons/BookIcon'
-import SquaresIcon, { SquaresIconProps } from './components/icons/SquaresIcon'
+import SquaresIcon from './components/icons/SquaresIcon'
 import AuthFormPage from './components/pages/AuthFormPage'
 import LearnPage from './components/pages/LearnPage'
 import MyWordsPage from './components/pages/MyWordsPage'
@@ -14,6 +14,9 @@ import UpdateSkillLevelPage from './components/pages/UpdateSkillLevelPage'
 import useAuthState from './hooks/useAuthState'
 import useUser from './hooks/useUser'
 import palette from './palette'
+
+import type { SquaresIconProps } from './components/icons/SquaresIcon'
+import type { ViewStyle } from 'react-native'
 
 const Tab = createBottomTabNavigator()
 

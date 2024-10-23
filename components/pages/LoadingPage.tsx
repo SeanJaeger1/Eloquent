@@ -1,8 +1,10 @@
-import React from 'react'
+import type React from 'react'
 
-import { View, ActivityIndicator, StyleSheet, ViewStyle } from 'react-native'
+import { View, ActivityIndicator, StyleSheet } from 'react-native'
 
 import palette from '../../palette'
+
+import type { ViewStyle } from 'react-native'
 
 const LoadingPage: React.FC = () => {
   return (

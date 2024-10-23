@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
 
 import { onAuthStateChanged } from 'firebase/auth'
-import { doc, onSnapshot, DocumentSnapshot, Firestore } from 'firebase/firestore'
+import { doc, onSnapshot } from 'firebase/firestore'
 
 import { db, auth } from '../firebaseConfig'
+
+import type { DocumentSnapshot } from 'firebase/firestore'
 
 interface UserData {
   email?: string
@@ -21,7 +23,7 @@ const useUser = (): UserData | null => {
     const unsubscribeAuth = onAuthStateChanged(auth, authUser => {
       if (authUser?.uid) {
         // User is signed in, set up Firestore listener
-        const userRef = doc(db as Firestore, 'users', authUser.uid)
+        const userRef = doc(db, 'users', authUser.uid)
 
         unsubscribeFirestore = onSnapshot(
           userRef,
