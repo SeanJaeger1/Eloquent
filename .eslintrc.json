@@ -38,6 +38,7 @@
     }
   },
   "rules": {
+    "import/no-named-as-default": "off",
     "@typescript-eslint/no-require-imports": [
       "error",
       {

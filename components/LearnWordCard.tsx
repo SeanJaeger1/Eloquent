@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 
 import { Ionicons } from '@expo/vector-icons'
+import { Card } from '@rneui/themed'
 import { Audio, AVPlaybackStatus } from 'expo-av'
 import Constants from 'expo-constants'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import { Card } from 'react-native-elements'
 
 import palette from '../palette'
 import { UserWord } from '../types/words'
