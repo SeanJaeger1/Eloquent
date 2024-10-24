@@ -2,7 +2,6 @@ import type React from 'react'
 import { useState } from 'react'
 
 import { Ionicons } from '@expo/vector-icons'
-import { Card } from '@rneui/themed'
 import { Audio } from 'expo-av'
 import Constants from 'expo-constants'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
@@ -10,6 +9,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import palette from '../palette'
 import capitalizeFirstLetter from '../utils/capitalizeFirstLetter'
 
+import Card from './Card'
 import ExampleText from './ExampleText'
 import ProgressMeter from './ProgressMeter'
 
