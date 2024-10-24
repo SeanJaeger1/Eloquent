@@ -51,49 +51,6 @@ jobs:
           name: web-build
           path: web-build/
 
-  deploy-preview:
-    if: github.event_name == 'pull_request'
-    needs: test-build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: web-build
-          path: web-build
-
-      - name: Deploy to Vercel (Preview)
-        uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
-  deploy-production:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: test-build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: web-build
-          path: web-build
-
-      - name: Deploy to Vercel (Production)
-        uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          vercel-args: '--prod'
-
   build-expo:
     needs: lint-and-typecheck
     runs-on: ubuntu-latest
@@ -117,8 +74,8 @@ jobs:
 
       - name: Build on EAS
         run: |
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            eas build --platform all --profile preview --non-interactive
-          elif [ "${{ github.ref }}" = "refs/heads/main" ]; then
-            eas build --platform all --profile production --non-interactive
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            eas build --platform android --profile preview --non-interactive
+          elif [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            eas build --platform android --profile production --non-interactive
           fi
