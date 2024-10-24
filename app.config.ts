@@ -28,9 +28,24 @@ const config: ExpoConfig = {
     },
   },
   web: {
-    bundler: 'webpack',
-    output: 'static',
+    bundler: 'metro',
     favicon: './assets/eloquent-favicon.png',
+    name: 'Eloquent',
+    startUrl: '/',
+    backgroundColor: '#ffffff',
+    themeColor: '#ffffff',
+    viewport: {
+      width: 'device-width',
+      initialScale: 1,
+      maximumScale: 1,
+      minimumScale: 1,
+    },
+    resizeMode: 'contain',
+    meta: {
+      name: {
+        viewport: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no',
+      },
+    },
   },
   extra: {
     firebaseConfig: {

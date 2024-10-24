@@ -6,6 +6,7 @@ interface Palette {
   lightGrey: string
   white: string
   transleucent: string
+  transparent: string
   black: string
   error: string
 }
@@ -18,6 +19,7 @@ const palette: Palette = {
   lightGrey: '#A3A3A3',
   white: 'white',
   transleucent: 'rgba(0, 0, 0, 0.1)',
+  transparent: 'rgba(0, 0, 0, 0.0)',
   black: 'black',
   error: 'red',
 }
