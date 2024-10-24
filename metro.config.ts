@@ -2,21 +2,28 @@ import { getDefaultConfig } from 'expo/metro-config'
 
 import type { MetroConfig } from '@expo/metro-config'
 
-const config = getDefaultConfig(__dirname) as MetroConfig
+const defaultConfig = getDefaultConfig(__dirname)
 
-config.resolver.assetExts = [...(config.resolver.assetExts || []), 'png', 'jpg', 'jpeg']
-config.resolver.sourceExts = [...(config.resolver.sourceExts || []), 'css']
+if (!defaultConfig.resolver) {
+  throw new Error('Metro resolver configuration is missing')
+}
 
-// Enable web support
-config.resolver.platforms = ['ios', 'android', 'web']
-
-// Handle web-specific file extensions
-config.resolver.sourceExts = [
-  ...(config.resolver.sourceExts || []),
-  'web.js',
-  'web.jsx',
-  'web.ts',
-  'web.tsx',
-]
+const config = {
+  ...defaultConfig,
+  resolver: {
+    ...defaultConfig.resolver,
+    assetExts: [...(defaultConfig.resolver.assetExts ?? []), 'png', 'jpg', 'jpeg'],
+    sourceExts: [
+      ...(defaultConfig.resolver.sourceExts ?? []),
+      'css',
+      'web.js',
+      'web.jsx',
+      'web.ts',
+      'web.tsx',
+    ],
+    platforms: ['ios', 'android', 'web'],
+    assetResolutions: defaultConfig.resolver.assetResolutions ?? ['1', '1.5', '2', '3', '4'],
+  },
+} as MetroConfig
 
 export default config
