@@ -2,7 +2,7 @@ import type React from 'react'
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native'
-import { View, Dimensions, StyleSheet } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 
 import Background from './components/Background'
 import BookIcon from './components/icons/BookIcon'
@@ -20,10 +20,9 @@ import type { ViewStyle } from 'react-native'
 
 const Tab = createBottomTabNavigator()
 
-const SCREEN_WIDTH = Dimensions.get('window').width
-const NAV_BAR_WIDTH = 280
-const NAV_BAR_HEIGHT = 60
 const ICON_SIZE = 48
+const ICON_CONTAINER_SIZE = 56
+const NAV_BAR_WIDTH = 280
 
 interface TabIconProps {
   focused: boolean
@@ -116,15 +115,17 @@ const styles = StyleSheet.create<Styles>({
     backgroundColor: palette.secondary,
     position: 'absolute',
     bottom: 54,
-    left: (SCREEN_WIDTH - NAV_BAR_WIDTH) / 2,
+    left: '50%',
+    marginLeft: -(NAV_BAR_WIDTH / 2),
     width: NAV_BAR_WIDTH,
-    height: NAV_BAR_HEIGHT,
+    height: ICON_CONTAINER_SIZE,
     elevation: 0,
-    borderRadius: NAV_BAR_HEIGHT / 2,
+    borderRadius: ICON_CONTAINER_SIZE / 2,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     borderTopWidth: 0,
+    paddingHorizontal: 16,
   },
 })
 
