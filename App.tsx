@@ -107,6 +107,7 @@ const styles = StyleSheet.create<Styles>({
     backgroundColor: palette.transleucent,
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: -3,
   },
   iconContainerFocused: {
     backgroundColor: palette.white,
