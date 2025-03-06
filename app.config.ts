@@ -1,6 +1,19 @@
 import 'dotenv/config'
 import type { ExpoConfig } from 'expo/config'
 
+// Function to ensure env variables are defined
+const requireEnv = (name: string): string => {
+  // Disable TypeScript and ESLint errors for the next line
+  // @ts-expect-error - Accessing process.env with dynamic key
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+  const value = process.env[name]
+  if (!value) {
+    throw new Error(`Missing required environment variable: ${name}`)
+  }
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+  return value
+}
+
 const config: ExpoConfig = {
   name: 'Eloquent',
   slug: 'eloquent',
@@ -49,21 +62,22 @@ const config: ExpoConfig = {
   },
   extra: {
     firebaseConfig: {
-      apiKey: process.env.FIREBASE_API_KEY,
-      authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-      projectId: process.env.FIREBASE_PROJECT_ID,
-      storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
-      messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
-      appId: process.env.FIREBASE_APP_ID,
-      measurementId: process.env.FIREBASE_MEASUREMENT_ID,
+      apiKey: requireEnv('FIREBASE_API_KEY'),
+      authDomain: requireEnv('FIREBASE_AUTH_DOMAIN'),
+      projectId: requireEnv('FIREBASE_PROJECT_ID'),
+      storageBucket: requireEnv('FIREBASE_STORAGE_BUCKET'),
+      messagingSenderId: requireEnv('FIREBASE_MESSAGING_SENDER_ID'),
+      appId: requireEnv('FIREBASE_APP_ID'),
+      measurementId: requireEnv('FIREBASE_MEASUREMENT_ID'),
     },
-    GOOGLE_TEXT_SPEECH_API_KEY: process.env.GOOGLE_TEXT_SPEECH_API_KEY,
+    GOOGLE_TEXT_SPEECH_API_KEY: requireEnv('GOOGLE_TEXT_SPEECH_API_KEY'),
     eas: {
       projectId: '9ef30b88-ee33-41c5-9039-11c413596d0a',
     },
   },
   owner: 'seanjaeger123',
-  plugins: ['expo-router'],
+  plugins: ['expo-router', 'expo-font'],
+  newArchEnabled: true,
 }
 
 export default config

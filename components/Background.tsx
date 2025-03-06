@@ -1,6 +1,6 @@
-import { type ReactNode } from 'react'
+import { type ReactNode, useEffect, useState } from 'react'
 
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, Dimensions } from 'react-native'
 import Svg, { Defs, LinearGradient, Stop, G, Path, Circle, Rect, ClipPath } from 'react-native-svg'
 
 interface BackgroundProps {
@@ -8,9 +8,29 @@ interface BackgroundProps {
 }
 
 const Background = ({ children }: BackgroundProps): JSX.Element => {
+  const [dimensions, setDimensions] = useState(Dimensions.get('window'))
+
+  useEffect(() => {
+    const subscription = Dimensions.addEventListener('change', ({ window }) => {
+      setDimensions(window)
+    })
+
+    return () => subscription.remove()
+  }, [])
+
   return (
     <View style={styles.container}>
-      <View style={styles.svgContainer}>
+      <View
+        style={[
+          styles.svgContainer,
+          {
+            transform: [
+              { translateX: -dimensions.width / 2 },
+              { translateY: -dimensions.height / 2 },
+            ],
+          },
+        ]}
+      >
         <Svg
           width='120%'
           height='120%'
@@ -85,7 +105,6 @@ const styles = StyleSheet.create({
     left: '50%',
     width: '100%',
     height: '100%',
-    transform: [{ translateX: '-50%' }, { translateY: '-50%' }],
   },
   svg: {
     position: 'absolute',
