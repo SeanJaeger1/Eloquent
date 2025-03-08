@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
 
 import { httpsCallable } from 'firebase/functions'
-import { View, Text, StyleSheet, Alert, ActivityIndicator, Button } from 'react-native'
+import { View, Text, StyleSheet, Alert, ActivityIndicator, Button, Animated } from 'react-native'
 
 import { functions } from '../../firebaseConfig'
 import useSetSkillLevel from '../../hooks/useSetSkillLevel'
 import useUser from '../../hooks/useUser'
+import palette from '../../palette'
 import capitalizeFirstLetter from '../../utils/capitalizeFirstLetter'
 import TransleucentButton from '../buttons/TranslucentButton'
 import LearnWordCard from '../LearnWordCard'
@@ -25,12 +26,37 @@ const LearnPage: React.FC = () => {
     error: null as string | null,
   })
 
+  // Animation value for the updating state
+  const [pulseAnim] = useState(new Animated.Value(0))
+
   const user = useUser() as User | null
   const setSkillLevel = useSetSkillLevel()
 
   useEffect(() => {
     void fetchUserWords()
   }, [])
+
+  // Pulse animation when updating
+  useEffect(() => {
+    if (wordState.updating) {
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(pulseAnim, {
+            toValue: 1,
+            duration: 800,
+            useNativeDriver: true,
+          }),
+          Animated.timing(pulseAnim, {
+            toValue: 0,
+            duration: 800,
+            useNativeDriver: true,
+          }),
+        ])
+      ).start()
+    } else {
+      pulseAnim.setValue(0)
+    }
+  }, [wordState.updating])
 
   const nextWord = (): void => {
     if (wordState.currentIndex < wordState.words.length - 1) {
@@ -167,17 +193,36 @@ const LearnPage: React.FC = () => {
       ) : (
         <View style={styles.cardContainer}>
           <ProgressBar currentIndex={wordState.currentIndex} totalCount={wordState.words.length} />
-          <LearnWordCard
-            userWord={wordState.words[wordState.currentIndex]}
-            onTick={handleTick}
-            onCross={handleCross}
-            disabled={wordState.updating}
-          />
-          {wordState.updating ? (
-            <View style={styles.updatingOverlay}>
-              <ActivityIndicator size='large' color='#ffffff' />
-            </View>
-          ) : null}
+          <Animated.View
+            style={[
+              styles.cardWrapper,
+              wordState.updating && {
+                transform: [
+                  {
+                    scale: pulseAnim.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [1, 1.02],
+                    }),
+                  },
+                ],
+              },
+            ]}
+          >
+            <LearnWordCard
+              userWord={wordState.words[wordState.currentIndex]}
+              onTick={handleTick}
+              onCross={handleCross}
+              disabled={wordState.updating}
+            />
+            {wordState.updating ? (
+              <View style={styles.loadingIndicatorContainer}>
+                <View style={styles.loadingPill}>
+                  <ActivityIndicator size='small' color={palette.darkBlue} />
+                  <Text style={styles.loadingText}>Updating...</Text>
+                </View>
+              </View>
+            ) : null}
+          </Animated.View>
         </View>
       )}
     </View>
@@ -200,16 +245,35 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     position: 'relative',
   },
-  updatingOverlay: {
+  cardWrapper: {
+    width: '100%',
+    position: 'relative',
+  },
+  loadingIndicatorContainer: {
     position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0,0,0,0.3)',
-    justifyContent: 'center',
+    bottom: 16,
+    width: '100%',
     alignItems: 'center',
-    borderRadius: 8,
+    justifyContent: 'center',
+  },
+  loadingPill: {
+    flexDirection: 'row',
+    backgroundColor: palette.white,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: palette.black,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  loadingText: {
+    marginLeft: 8,
+    color: palette.darkBlue,
+    fontWeight: '500',
   },
   errorContainer: {
     padding: 20,
@@ -217,7 +281,7 @@ const styles = StyleSheet.create({
   },
   errorText: {
     fontSize: 16,
-    color: 'red',
+    color: palette.error,
     marginBottom: 20,
     textAlign: 'center',
   },
