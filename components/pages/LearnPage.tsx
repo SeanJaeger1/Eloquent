@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 
 import { httpsCallable } from 'firebase/functions'
-import { View, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, Alert, ActivityIndicator, Button } from 'react-native'
 
 import { functions } from '../../firebaseConfig'
 import useSetSkillLevel from '../../hooks/useSetSkillLevel'
@@ -17,10 +17,14 @@ import type { UserWord } from '../../types/words'
 import type { User } from 'types/user'
 
 const LearnPage: React.FC = () => {
-  const [words, setWords] = useState<(UserWord & { id: string })[]>([])
-  const [currentWordIndex, setCurrentWordIndex] = useState<number>(0)
-  const [loading, setLoading] = useState<boolean>(true)
-  const [updating, setUpdating] = useState<boolean>(false)
+  const [wordState, setWordState] = useState({
+    words: [] as (UserWord & { id: string })[],
+    currentIndex: 0,
+    loading: true,
+    updating: false,
+    error: null as string | null,
+  })
+
   const user = useUser() as User | null
   const setSkillLevel = useSetSkillLevel()
 
@@ -29,57 +33,100 @@ const LearnPage: React.FC = () => {
   }, [])
 
   const nextWord = (): void => {
-    if (currentWordIndex < words.length - 1) {
-      setCurrentWordIndex(currentWordIndex + 1)
+    if (wordState.currentIndex < wordState.words.length - 1) {
+      setWordState(prev => ({
+        ...prev,
+        currentIndex: prev.currentIndex + 1,
+      }))
     } else {
       void fetchUserWords()
-      setCurrentWordIndex(0)
+      setWordState(prev => ({
+        ...prev,
+        currentIndex: 0,
+      }))
     }
   }
 
   const fetchUserWords = async (): Promise<void> => {
     try {
-      setLoading(true)
+      setWordState(prev => ({
+        ...prev,
+        loading: true,
+        error: null,
+      }))
+
       const getUserWords = httpsCallable<void, (UserWord & { id: string })[]>(
         functions,
         'getLearningWords'
       )
       const result = await getUserWords()
       const userWords = result.data
-      setWords(userWords)
+
+      if (userWords.length === 0) {
+        setWordState(prev => ({
+          ...prev,
+          loading: false,
+          error: 'No words available to learn right now. Please check back later.',
+        }))
+        return
+      }
+
+      setWordState(prev => ({
+        ...prev,
+        words: userWords,
+        loading: false,
+        currentIndex: 0,
+      }))
     } catch (error) {
       console.error(
         'Error fetching user words:',
         error instanceof Error ? error.message : String(error)
       )
-    } finally {
-      setLoading(false)
+
+      setWordState(prev => ({
+        ...prev,
+        loading: false,
+        error: 'Failed to load words. Please try again.',
+      }))
     }
   }
 
   const updateWordProgress = async (increment: number): Promise<void> => {
-    if (updating) return
+    if (wordState.updating) return
+
     try {
-      setUpdating(true)
+      setWordState(prev => ({
+        ...prev,
+        updating: true,
+      }))
+
       const updateWordProgressFn = httpsCallable(functions, 'updateWordProgress')
       await updateWordProgressFn({
-        userWordId: words[currentWordIndex].id,
+        userWordId: wordState.words[wordState.currentIndex].id,
         increment,
       })
-      setTimeout(() => {
-        nextWord()
-      }, 500)
+
+      // Process the update then move to next word
+      setWordState(prev => ({
+        ...prev,
+        updating: false,
+      }))
+      nextWord()
     } catch (error) {
       console.error(
-        'Error updating/creating user word:',
+        'Error updating word progress:',
         error instanceof Error ? error.message : String(error)
       )
-    } finally {
-      setUpdating(false)
+
+      setWordState(prev => ({
+        ...prev,
+        updating: false,
+      }))
+
+      Alert.alert('Error', 'Failed to update progress. Please try again.', [{ text: 'OK' }])
     }
   }
 
-  // Create wrapper functions for the onTick and onCross handlers
   const handleTick = (): void => {
     void updateWordProgress(1)
   }
@@ -88,13 +135,23 @@ const LearnPage: React.FC = () => {
     void updateWordProgress(-1)
   }
 
-  // Create a wrapper function for setSkillLevel
   const handleSkillLevelReset = (): void => {
     void setSkillLevel('')
   }
 
   if (user?.skillLevel === undefined) {
     return <LoadingPage />
+  }
+
+  if (wordState.error) {
+    return (
+      <View style={styles.container}>
+        <View style={styles.errorContainer}>
+          <Text style={styles.errorText}>{wordState.error}</Text>
+          <Button title='Try Again' onPress={() => void fetchUserWords()} />
+        </View>
+      </View>
+    )
   }
 
   return (
@@ -105,17 +162,22 @@ const LearnPage: React.FC = () => {
           onPress={handleSkillLevelReset}
         />
       </View>
-      {loading || words.length === 0 ? (
+      {wordState.loading || wordState.words.length === 0 ? (
         <LoadingPage />
       ) : (
         <View style={styles.cardContainer}>
-          <ProgressBar currentIndex={currentWordIndex} totalCount={words.length} />
+          <ProgressBar currentIndex={wordState.currentIndex} totalCount={wordState.words.length} />
           <LearnWordCard
-            userWord={words[currentWordIndex]}
+            userWord={wordState.words[wordState.currentIndex]}
             onTick={handleTick}
             onCross={handleCross}
-            disabled={updating}
+            disabled={wordState.updating}
           />
+          {wordState.updating ? (
+            <View style={styles.updatingOverlay}>
+              <ActivityIndicator size='large' color='#ffffff' />
+            </View>
+          ) : null}
         </View>
       )}
     </View>
@@ -136,6 +198,28 @@ const styles = StyleSheet.create({
   cardContainer: {
     width: '90%',
     alignItems: 'center',
+    position: 'relative',
+  },
+  updatingOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0,0,0,0.3)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 8,
+  },
+  errorContainer: {
+    padding: 20,
+    alignItems: 'center',
+  },
+  errorText: {
+    fontSize: 16,
+    color: 'red',
+    marginBottom: 20,
+    textAlign: 'center',
   },
 })
 
