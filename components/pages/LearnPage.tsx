@@ -56,7 +56,7 @@ const LearnPage: React.FC = () => {
     } else {
       pulseAnim.setValue(0)
     }
-  }, [wordState.updating])
+  }, [wordState.updating, pulseAnim])
 
   const nextWord = (): void => {
     if (wordState.currentIndex < wordState.words.length - 1) {
