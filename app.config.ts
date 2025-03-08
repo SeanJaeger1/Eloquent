@@ -3,14 +3,14 @@ import type { ExpoConfig } from 'expo/config'
 
 // Function to ensure env variables are defined
 const requireEnv = (name: string): string => {
-  // Disable TypeScript and ESLint errors for the next line
-  // @ts-expect-error - Accessing process.env with dynamic key
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-  const value = process.env[name]
+  // Using Record type assertion to properly type process.env
+  const env = process.env as Record<string, string | undefined>
+  const value = env[name]
+
   if (!value) {
     throw new Error(`Missing required environment variable: ${name}`)
   }
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+
   return value
 }
 
