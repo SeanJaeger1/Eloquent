@@ -24,8 +24,17 @@ jobs:
       - name: Run linting
         run: npm run lint
 
-      - name: Type checking
-        run: npx tsc --noEmit
+      - name: Type checking with detailed error output
+        run: |
+          # Run TypeScript with maximum verbosity and save all errors to a file
+          npx tsc --noEmit --pretty false > typescript-errors.txt 2>&1 || true
+
+          # Display the errors
+          echo "=== TYPESCRIPT ERRORS ===" 
+          cat typescript-errors.txt
+
+          # Exit with error if there were actual errors
+          npx tsc --noEmit
 
   test-build:
     needs: lint-and-typecheck
