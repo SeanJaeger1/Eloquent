@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
+import { useIsFocused } from '@react-navigation/native'
 import { httpsCallable } from 'firebase/functions'
 import { View, Text, StyleSheet, Alert, ActivityIndicator, Button, Animated } from 'react-native'
 
@@ -29,12 +30,21 @@ const LearnPage: React.FC = () => {
   // Animation value for the updating state
   const [pulseAnim] = useState(new Animated.Value(0))
 
+  // Track whether initial data has been loaded
+  const initialLoadComplete = useRef(false)
+
+  // Check if the screen is focused
+  const isFocused = useIsFocused()
+
   const user = useUser() as User | null
   const setSkillLevel = useSetSkillLevel()
 
   useEffect(() => {
-    void fetchUserWords()
-  }, [])
+    // Only fetch words if we haven't loaded them already or if the words array is empty
+    if (isFocused && (!initialLoadComplete.current || wordState.words.length === 0)) {
+      void fetchUserWords()
+    }
+  }, [isFocused, wordState.words.length])
 
   // Pulse animation when updating
   useEffect(() => {
@@ -101,8 +111,15 @@ const LearnPage: React.FC = () => {
         ...prev,
         words: userWords,
         loading: false,
-        currentIndex: 0,
+        // Keep the current index if we're just returning to the page (and it's a valid index)
+        currentIndex:
+          initialLoadComplete.current && prev.currentIndex < userWords.length
+            ? prev.currentIndex
+            : 0,
       }))
+
+      // Mark that we've completed the initial load
+      initialLoadComplete.current = true
     } catch (error) {
       console.error(
         'Error fetching user words:',
