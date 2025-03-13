@@ -10,6 +10,7 @@ export interface Word {
 }
 
 export interface UserWord {
+  id: string
   alreadyKnown: boolean
   difficulty: string
   lastSeenAt: string | null
