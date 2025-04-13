@@ -3,11 +3,11 @@ import { useCallback, useRef, useState } from 'react'
 
 import { Ionicons } from '@expo/vector-icons'
 import { useFocusEffect } from '@react-navigation/native'
-import { httpsCallable } from 'firebase/functions'
 import { Animated, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
 
-import { functions } from '../../firebaseConfig'
 import palette from '../../palette'
+import { apiCache } from '../../services/apiCache'
+import { getUserWords } from '../../services/firebase'
 import WordPanel from '../WordPanel'
 
 import LoadingPage from './LoadingPage'
@@ -61,12 +61,23 @@ const MyWordsPage: React.FC = () => {
     try {
       setLoading(true)
       setError(null)
-      const getUserWords = httpsCallable<{ lastSeenAt: string | null }, GetUserWordsResponse>(
-        functions,
-        'getUserWords'
-      )
-      const result = await getUserWords({ lastSeenAt: nextPageToken })
-      const { userWords, nextPageToken: newToken } = result.data
+
+      // Cache key including pagination token
+      const cacheKey = `user_words_${nextPageToken ?? 'initial'}`
+      const cachedResult = apiCache.get<GetUserWordsResponse>(cacheKey)
+
+      let userWordsData: GetUserWordsResponse
+
+      if (cachedResult) {
+        userWordsData = cachedResult
+      } else {
+        userWordsData = await getUserWords(nextPageToken)
+
+        // Cache for 2 minutes - shorter time since user might be actively updating words
+        apiCache.set(cacheKey, userWordsData, 2 * 60 * 1000)
+      }
+
+      const { userWords, nextPageToken: newToken } = userWordsData
       setWords(prevWords => [...prevWords, ...userWords])
       setNextPageToken(newToken)
     } catch (error) {

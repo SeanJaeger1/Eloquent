@@ -1,13 +1,13 @@
 import { useState, useEffect, useRef } from 'react'
 
 import { useIsFocused } from '@react-navigation/native'
-import { httpsCallable } from 'firebase/functions'
 import { View, Text, StyleSheet, Alert, ActivityIndicator, Button, Animated } from 'react-native'
 
-import { functions } from '../../firebaseConfig'
 import useSetSkillLevel from '../../hooks/useSetSkillLevel'
 import useUser from '../../hooks/useUser'
 import palette from '../../palette'
+import { apiCache } from '../../services/apiCache'
+import { getLearningWords, updateWordProgress } from '../../services/firebase'
 import capitalizeFirstLetter from '../../utils/capitalizeFirstLetter'
 import TransleucentButton from '../buttons/TranslucentButton'
 import LearnWordCard from '../LearnWordCard'
@@ -16,7 +16,6 @@ import ProgressBar from '../ProgressBar'
 import LoadingPage from './LoadingPage'
 
 import type { UserWord } from '../../types/words'
-import type { User } from 'types/user'
 
 const LearnPage: React.FC = () => {
   const [wordState, setWordState] = useState({
@@ -36,7 +35,7 @@ const LearnPage: React.FC = () => {
   // Check if the screen is focused
   const isFocused = useIsFocused()
 
-  const user = useUser() as User | null
+  const user = useUser()
   const setSkillLevel = useSetSkillLevel()
 
   useEffect(() => {
@@ -91,13 +90,19 @@ const LearnPage: React.FC = () => {
         error: null,
       }))
 
-      const getUserWords = httpsCallable<void, (UserWord & { id: string })[]>(
-        functions,
-        'getLearningWords'
-      )
-      const result = await getUserWords()
-      const userWords = result.data
+      // Check cache first
+      const cacheKey = 'learning_words'
+      let userWords = apiCache.get<(UserWord & { id: string })[]>(cacheKey) ?? []
 
+      if (userWords) {
+        // Not in cache, fetch from API
+        userWords = await getLearningWords()
+
+        // Cache the result for 5 minutes
+        if (userWords.length > 0) {
+          apiCache.set(cacheKey, userWords, 5 * 60 * 1000)
+        }
+      }
       if (userWords.length === 0) {
         setWordState(prev => ({
           ...prev,
@@ -134,7 +139,7 @@ const LearnPage: React.FC = () => {
     }
   }
 
-  const updateWordProgress = async (increment: number): Promise<void> => {
+  const handleWordProgress = async (increment: number): Promise<void> => {
     if (wordState.updating) return
 
     try {
@@ -143,11 +148,11 @@ const LearnPage: React.FC = () => {
         updating: true,
       }))
 
-      const updateWordProgressFn = httpsCallable(functions, 'updateWordProgress')
-      await updateWordProgressFn({
-        userWordId: wordState.words[wordState.currentIndex].id,
-        increment,
-      })
+      const userWordId = wordState.words[wordState.currentIndex].id
+      await updateWordProgress(userWordId, increment)
+
+      // Clear the cache since word progress has changed
+      apiCache.delete('learning_words')
 
       // Process the update then move to next word
       setWordState(prev => ({
@@ -171,11 +176,11 @@ const LearnPage: React.FC = () => {
   }
 
   const handleTick = (): void => {
-    void updateWordProgress(1)
+    void handleWordProgress(1)
   }
 
   const handleCross = (): void => {
-    void updateWordProgress(-1)
+    void handleWordProgress(-1)
   }
 
   const handleSkillLevelReset = (): void => {

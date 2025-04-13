@@ -1,20 +1,14 @@
 import { useEffect, useState } from 'react'
 
 import { onAuthStateChanged } from 'firebase/auth'
-import { doc, onSnapshot } from 'firebase/firestore'
 
-import { db, auth } from '../firebaseConfig'
+import { auth } from '../firebaseConfig'
+import { listenToDocument } from '../services/firebase'
 
-import type { DocumentSnapshot } from 'firebase/firestore'
+import type { User } from '../types/user'
 
-interface UserData {
-  email?: string
-  displayName?: string
-  skillLevel?: 'beginner' | 'intermediate' | 'advanced' | 'expert'
-}
-
-const useUser = (): UserData | null => {
-  const [user, setUser] = useState<UserData | null>(null)
+const useUser = (): User | null => {
+  const [user, setUser] = useState<User | null>(null)
 
   useEffect(() => {
     let unsubscribeFirestore: (() => void) | null = null
@@ -23,23 +17,13 @@ const useUser = (): UserData | null => {
     const unsubscribeAuth = onAuthStateChanged(auth, authUser => {
       if (authUser?.uid) {
         // User is signed in, set up Firestore listener
-        const userRef = doc(db, 'users', authUser.uid)
-
-        unsubscribeFirestore = onSnapshot(
-          userRef,
-          (doc: DocumentSnapshot) => {
-            if (doc.exists()) {
-              setUser(doc.data() as UserData)
-            }
-          },
-          error => {
-            console.error(
-              'Error fetching user data:',
-              error instanceof Error ? error.message : String(error)
-            )
+        unsubscribeFirestore = listenToDocument<User>('users', authUser.uid, userData => {
+          if (userData) {
+            setUser(userData)
+          } else {
             setUser(null)
           }
-        )
+        })
       } else {
         // User is signed out
         setUser(null)
