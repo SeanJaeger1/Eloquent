@@ -2,20 +2,28 @@ import 'dotenv/config'
 import type { ExpoConfig } from 'expo/config'
 
 // Function to ensure env variables are defined
-const requireEnv = (name: string): string => {
+const requireEnv = (name: string, defaultValue?: string): string => {
   // Using Record type assertion to properly type process.env
   const env = process.env as Record<string, string | undefined>
   const value = env[name]
 
   if (!value) {
+    if (defaultValue !== undefined) {
+      return defaultValue
+    }
     throw new Error(`Missing required environment variable: ${name}`)
   }
 
   return value
 }
 
+const appEnvironment = requireEnv('APP_ENV', 'development')
+
+// Choose suffix based on environment
+const nameSuffix = appEnvironment === 'production' ? '' : ` (${appEnvironment})`
+
 const config: ExpoConfig = {
-  name: 'Eloquent',
+  name: `Eloquent${nameSuffix}`,
   slug: 'eloquent',
   version: '1.0.0',
   orientation: 'portrait',
